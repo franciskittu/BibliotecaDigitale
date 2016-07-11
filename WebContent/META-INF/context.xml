@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context antiJARLocking="true" path="/BiblioTech">
+  <!-- Copiare il driver nella directory CATALINA_HOME/lib -->
+  <!-- Se lo si mette in WEB-INF/lib non sarà visibile al common class loader usato per il pooling -->
+  <!-- in tal caso non si potrà usare il pooler di Tomcat, ma uno esterno da aggiungere all'applicazione -->
+    <Resource
+        name="jdbc/bibliodb" 
+        type="javax.sql.DataSource"
+        auth="Container"
+        driverClassName="org.postgresql.Driver"
+        url="jdbc:postgresql://localhost/bibliotech"
+        username="biblioadmin"
+        password="biblioadmin"
+        maxActive="50"
+        maxIdle="5"
+        maxWait="10000"
+    />
+</Context>

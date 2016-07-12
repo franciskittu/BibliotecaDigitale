@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_gRF6QEd5EeaJP9Rrdf2jdg" name="BiblioTech.war" visibility="public">
+  <packagedElement xmi:type="uml:Device" xmi:id="_k4qiUEd5EeaJP9Rrdf2jdg" name="SERVER">
+    <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_mDc6cEd5EeaJP9Rrdf2jdg" name="Application Server">
+      <nestedClassifier xmi:type="uml:Artifact" xmi:id="_lOg2gEd5EeaJP9Rrdf2jdg" name="WebApp" fileName="BiblioTech.war"/>
+    </nestedClassifier>
+    <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="_Y4zBkEd6EeaJP9Rrdf2jdg" name="DBServer"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Artifact" xmi:id="_dSYQ8Ed6EeaJP9Rrdf2jdg" name="Bibliodb" fileName=""/>
+  <packagedElement xmi:type="uml:Device" xmi:id="_jHId0Ed6EeaJP9Rrdf2jdg" name="CLIENT">
+    <nestedNode xmi:type="uml:ExecutionEnvironment" xmi:id="_tm_H4Ed6EeaJP9Rrdf2jdg" name="Web  Browser"/>
+  </packagedElement>
+</uml:Model>

@@ -17,6 +17,11 @@
 		<param-value>java:comp/env/jdbc/bibliodb</param-value>
 	</context-param>
 
+	<listener>
+        <description>Inizializza il pool di connesioni per il database fornendo il datasource alle altre servlet</description>
+        <listener-class>it.biblio.config.InizializzatoreContesto</listener-class>
+    </listener>
+    
 	<session-config>
         <session-timeout>
             30

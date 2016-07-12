@@ -62,19 +62,7 @@ public class EsempioDS extends HttpServlet {
         result.setTitle("Query executor results");
         result.appendToBody("<p><b>Query:</b> " + query + "</p>");
         try {
-            //preleviamo un riferimento al naming context
-            //get a reference to the naming context
-            InitialContext ctx = new InitialContext();
-            //e da questo otteniamo un riferimento alla DataSource
-            //che gestisce il pool di connessioni. 
-            //usiamo un parametro del contesto per ottenere il nome della sorgente dati (vedi web.xml)
-
-            //and from the context we get a reference to the DataSource
-            //that manages the connection pool
-            //we also use a context parameter to obtain the data source name (see web.xml)
-            DataSource ds = (DataSource) ctx.lookup(getServletContext().getInitParameter("data.source"));
-            //connessione al database locale
-            //database connection
+        	DataSource ds = (DataSource) getServletContext().getAttribute("datasource");
             connection = ds.getConnection();
 
             //eseguiamo la query

@@ -13,7 +13,7 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="lib" path="/home/francesco/Documents/Magistrale/OOP/PROJ/apache-freemarker-2.3.25-incubating-bin/freemarker.jar"/>
-	<classpathentry kind="lib" path="/home/francesco/Documents/Magistrale/OOP/PROJ/postgresql-9.4.1208.jre6.jar"/>
+	<classpathentry kind="lib" path="/Users/marco/Downloads/apache-freemarker-2.3.25-incubating-bin/freemarker.jar"/>
+	<classpathentry kind="lib" path="/Users/marco/Downloads/postgresql-9.4.1208.jre6.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

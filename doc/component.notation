@@ -32,7 +32,7 @@
       </children>
       <children xmi:type="notation:Shape" xmi:id="_4nM0EEjaEeahbcqRjpFGeQ" type="Interface_Shape">
         <children xmi:type="notation:DecorationNode" xmi:id="_4nOCMEjaEeahbcqRjpFGeQ" type="Interface_NameLabel">
-          <layoutConstraint xmi:type="notation:Location" xmi:id="_4nOpQEjaEeahbcqRjpFGeQ" x="57" y="65"/>
+          <layoutConstraint xmi:type="notation:Location" xmi:id="_4nOpQEjaEeahbcqRjpFGeQ" x="-2" y="27"/>
         </children>
         <children xmi:type="notation:DecorationNode" xmi:id="_4nOpQUjaEeahbcqRjpFGeQ" type="Interface_FloatingNameLabel">
           <layoutConstraint xmi:type="notation:Location" xmi:id="_4nOpQkjaEeahbcqRjpFGeQ" y="5"/>

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_UP0D8EjdEeaxcqA5pAcC3Q" name="RootElement">
-  <packageImport xmi:type="uml:PackageImport" xmi:id="_UVAtAEjdEeaxcqA5pAcC3Q">
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_vDkS8EjgEeaxcqA5pAcC3Q" name="RootElement">
+  <packageImport xmi:type="uml:PackageImport" xmi:id="_vHOq8EjgEeaxcqA5pAcC3Q">
     <importedPackage xmi:type="uml:Model" href="pathmap://UML_LIBRARIES/UMLPrimitiveTypes.library.uml#_0"/>
   </packageImport>
-  <packagedElement xmi:type="uml:Component" xmi:id="_WTS-oEjdEeaxcqA5pAcC3Q" name="Component1">
-    <nestedClassifier xmi:type="uml:Interface" xmi:id="_f7zJ8EjdEeaxcqA5pAcC3Q" name="Data_Op"/>
-    <packagedElement xmi:type="uml:Component" xmi:id="_ZMn8MEjdEeaxcqA5pAcC3Q" name="WebApplication"/>
-    <packagedElement xmi:type="uml:Component" xmi:id="_aZUY0EjdEeaxcqA5pAcC3Q" name="PostgreSQL_db">
-      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_qYhAcEjdEeaxcqA5pAcC3Q" client="_aZUY0EjdEeaxcqA5pAcC3Q" supplier="_f7zJ8EjdEeaxcqA5pAcC3Q" contract="_f7zJ8EjdEeaxcqA5pAcC3Q"/>
-    </packagedElement>
+  <packagedElement xmi:type="uml:Component" xmi:id="_vzjlcEjgEeaxcqA5pAcC3Q" name="Component1">
+    <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_ydgqQEjgEeaxcqA5pAcC3Q" client="_vzjlcEjgEeaxcqA5pAcC3Q" supplier="_w4ZtoEjgEeaxcqA5pAcC3Q" contract="_w4ZtoEjgEeaxcqA5pAcC3Q"/>
   </packagedElement>
-  <packagedElement xmi:type="uml:Usage" xmi:id="_8GBHgEjeEeaxcqA5pAcC3Q" client="_ZMn8MEjdEeaxcqA5pAcC3Q" supplier="_f7zJ8EjdEeaxcqA5pAcC3Q"/>
+  <packagedElement xmi:type="uml:Interface" xmi:id="_w4ZtoEjgEeaxcqA5pAcC3Q" name="Interface1"/>
+  <packagedElement xmi:type="uml:Component" xmi:id="_xIyTAEjgEeaxcqA5pAcC3Q" name="Component2">
+    <packagedElement xmi:type="uml:Usage" xmi:id="_0fDEMEjgEeaxcqA5pAcC3Q" client="_xIyTAEjgEeaxcqA5pAcC3Q" supplier="_w4ZtoEjgEeaxcqA5pAcC3Q"/>
+  </packagedElement>
 </uml:Model>

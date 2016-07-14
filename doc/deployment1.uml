@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uml:Model xmi:version="20131001" xmlns:xmi="http://www.omg.org/spec/XMI/20131001" xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" xmlns:uml="http://www.eclipse.org/uml2/5.0.0/UML" xmi:id="_mArMgEmYEeaLb-RB8hRurA" name="RootElement">
+  <packagedElement xmi:type="uml:Node" xmi:id="_rN5fUEmYEeaLb-RB8hRurA" name="Web_server">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_kwKfgkmbEeaLb-RB8hRurA" name="database_server" type="_9viOgEmYEeaLb-RB8hRurA" association="_kwJ4cEmbEeaLb-RB8hRurA"/>
+    <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_WdOTcEmdEeaLb-RB8hRurA" name="Servlet_container"/>
+    <nestedClassifier xmi:type="uml:Component" xmi:id="_fl_10EmdEeaLb-RB8hRurA" name="Application">
+      <nestedClassifier xmi:type="uml:Interface" xmi:id="_fl_10UmdEeaLb-RB8hRurA" name="data_layer" visibility="public"/>
+      <packagedElement xmi:type="uml:Component" xmi:id="_fl_10kmdEeaLb-RB8hRurA" name="Process_request">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_fl_100mdEeaLb-RB8hRurA" client="_fl_10kmdEeaLb-RB8hRurA _fl_10kmdEeaLb-RB8hRurA _fl_10kmdEeaLb-RB8hRurA _fl_10kmdEeaLb-RB8hRurA _fl_10kmdEeaLb-RB8hRurA">
+          <supplier xmi:type="uml:Interface" href="component1.uml#_M_GycEkJEeaLb-RB8hRurA"/>
+          <contract xmi:type="uml:Interface" href="component1.uml#_M_GycEkJEeaLb-RB8hRurA"/>
+        </interfaceRealization>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_fl_11EmdEeaLb-RB8hRurA" client="_fl_10kmdEeaLb-RB8hRurA" supplier="_fl_10UmdEeaLb-RB8hRurA"/>
+      </packagedElement>
+      <packagedElement xmi:type="uml:Component" xmi:id="_fl_11UmdEeaLb-RB8hRurA" name="Data_management">
+        <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_fl_11kmdEeaLb-RB8hRurA" client="_fl_11UmdEeaLb-RB8hRurA _fl_11UmdEeaLb-RB8hRurA _fl_11UmdEeaLb-RB8hRurA _fl_11UmdEeaLb-RB8hRurA _fl_11UmdEeaLb-RB8hRurA" supplier="_fl_10UmdEeaLb-RB8hRurA" contract="_fl_10UmdEeaLb-RB8hRurA"/>
+        <packagedElement xmi:type="uml:Usage" xmi:id="_fl_110mdEeaLb-RB8hRurA" client="_fl_11UmdEeaLb-RB8hRurA">
+          <supplier xmi:type="uml:Interface" href="component1.uml#_w4ZtoEjgEeaxcqA5pAcC3Q"/>
+        </packagedElement>
+      </packagedElement>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_kykBUEmdEeaLb-RB8hRurA" name="Biblioteca.war" fileName="Biblioteca.war">
+      <manifestation xmi:type="uml:Manifestation" xmi:id="_kykBUUmdEeaLb-RB8hRurA" client="_kykBUEmdEeaLb-RB8hRurA" supplier="_MiBOkEmdEeaLb-RB8hRurA" utilizedElement="_MiBOkEmdEeaLb-RB8hRurA"/>
+      <manifestation xmi:type="uml:Manifestation" xmi:id="_m4nu4EmdEeaLb-RB8hRurA" client="_kykBUEmdEeaLb-RB8hRurA" supplier="_fl_10EmdEeaLb-RB8hRurA" utilizedElement="_fl_10EmdEeaLb-RB8hRurA"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_9viOgEmYEeaLb-RB8hRurA" name="Database_server">
+    <nestedClassifier xmi:type="uml:Component" xmi:id="_7TTcoEmYEeaLb-RB8hRurA" name="Database">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_7TUDsEmYEeaLb-RB8hRurA" client="_7TTcoEmYEeaLb-RB8hRurA _7TTcoEmYEeaLb-RB8hRurA _7TTcoEmYEeaLb-RB8hRurA">
+        <supplier xmi:type="uml:Interface" href="component1.uml#_w4ZtoEjgEeaxcqA5pAcC3Q"/>
+        <contract xmi:type="uml:Interface" href="component1.uml#_w4ZtoEjgEeaxcqA5pAcC3Q"/>
+      </interfaceRealization>
+    </nestedClassifier>
+    <nestedClassifier xmi:type="uml:Artifact" xmi:id="_fKhXkEmZEeaLb-RB8hRurA" name="PostgreSql.sh" fileName="PostgreSql.sh">
+      <manifestation xmi:type="uml:Manifestation" xmi:id="_mIKfIEmZEeaLb-RB8hRurA" client="_fKhXkEmZEeaLb-RB8hRurA" supplier="_7TTcoEmYEeaLb-RB8hRurA" utilizedElement="_7TTcoEmYEeaLb-RB8hRurA"/>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Node" xmi:id="_9jymoEmaEeaLb-RB8hRurA" name="Client">
+    <ownedAttribute xmi:type="uml:Property" xmi:id="_jS0XwUmbEeaLb-RB8hRurA" name="web_server" type="_rN5fUEmYEeaLb-RB8hRurA" association="_jSzwsEmbEeaLb-RB8hRurA"/>
+    <nestedClassifier xmi:type="uml:ExecutionEnvironment" xmi:id="_6sqhIEmdEeaLb-RB8hRurA" name="Operating_System">
+      <nestedClassifier xmi:type="uml:Component" xmi:id="_8b6YkEmaEeaLb-RB8hRurA" name="Client_Application">
+        <packagedElement xmi:type="uml:Usage" xmi:id="_8b6YkUmaEeaLb-RB8hRurA" client="_8b6YkEmaEeaLb-RB8hRurA">
+          <supplier xmi:type="uml:Interface" href="component1.uml#_M_GycEkJEeaLb-RB8hRurA"/>
+        </packagedElement>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:Artifact" xmi:id="_CwtXcEmbEeaLb-RB8hRurA" name="Chrome.exe">
+        <manifestation xmi:type="uml:Manifestation" xmi:id="_TOpwkEmbEeaLb-RB8hRurA" client="_CwtXcEmbEeaLb-RB8hRurA" supplier="_8b6YkEmaEeaLb-RB8hRurA" utilizedElement="_8b6YkEmaEeaLb-RB8hRurA"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:Artifact" xmi:id="_CcieQEmbEeaLb-RB8hRurA" name="Firefox.exe" fileName="">
+        <manifestation xmi:type="uml:Manifestation" xmi:id="_ScwZkEmbEeaLb-RB8hRurA" client="_CcieQEmbEeaLb-RB8hRurA" supplier="_8b6YkEmaEeaLb-RB8hRurA" utilizedElement="_8b6YkEmaEeaLb-RB8hRurA"/>
+      </nestedClassifier>
+      <nestedClassifier xmi:type="uml:Artifact" xmi:id="_B_WzAEmbEeaLb-RB8hRurA" name="Opera.exe" fileName="">
+        <manifestation xmi:type="uml:Manifestation" xmi:id="_RNNdQEmbEeaLb-RB8hRurA" client="_B_WzAEmbEeaLb-RB8hRurA" supplier="_8b6YkEmaEeaLb-RB8hRurA" utilizedElement="_8b6YkEmaEeaLb-RB8hRurA"/>
+      </nestedClassifier>
+    </nestedClassifier>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_jSzwsEmbEeaLb-RB8hRurA" memberEnd="_jS0XwUmbEeaLb-RB8hRurA _jS0XwkmbEeaLb-RB8hRurA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_jSzwsUmbEeaLb-RB8hRurA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_jS0XwEmbEeaLb-RB8hRurA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_jS0XwkmbEeaLb-RB8hRurA" name="client" type="_9jymoEmaEeaLb-RB8hRurA" association="_jSzwsEmbEeaLb-RB8hRurA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:CommunicationPath" xmi:id="_kwJ4cEmbEeaLb-RB8hRurA" memberEnd="_kwKfgkmbEeaLb-RB8hRurA _kwKfg0mbEeaLb-RB8hRurA">
+    <eAnnotations xmi:type="ecore:EAnnotation" xmi:id="_kwKfgEmbEeaLb-RB8hRurA" source="org.eclipse.papyrus">
+      <details xmi:type="ecore:EStringToStringMapEntry" xmi:id="_kwKfgUmbEeaLb-RB8hRurA" key="nature" value="UML_Nature"/>
+    </eAnnotations>
+    <ownedEnd xmi:type="uml:Property" xmi:id="_kwKfg0mbEeaLb-RB8hRurA" name="web_server" type="_rN5fUEmYEeaLb-RB8hRurA" association="_kwJ4cEmbEeaLb-RB8hRurA"/>
+  </packagedElement>
+  <packagedElement xmi:type="uml:Component" xmi:id="_MiBOkEmdEeaLb-RB8hRurA" name="Application">
+    <nestedClassifier xmi:type="uml:Interface" xmi:id="_MiBOkUmdEeaLb-RB8hRurA" name="data_layer" visibility="public"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_MiBOkkmdEeaLb-RB8hRurA" name="Process_request">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_MiBOk0mdEeaLb-RB8hRurA" client="_MiBOkkmdEeaLb-RB8hRurA _MiBOkkmdEeaLb-RB8hRurA _MiBOkkmdEeaLb-RB8hRurA">
+        <supplier xmi:type="uml:Interface" href="component1.uml#_M_GycEkJEeaLb-RB8hRurA"/>
+        <contract xmi:type="uml:Interface" href="component1.uml#_M_GycEkJEeaLb-RB8hRurA"/>
+      </interfaceRealization>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_MiBOlEmdEeaLb-RB8hRurA" client="_MiBOkkmdEeaLb-RB8hRurA" supplier="_MiBOkUmdEeaLb-RB8hRurA"/>
+    </packagedElement>
+    <packagedElement xmi:type="uml:Component" xmi:id="_MiBOlUmdEeaLb-RB8hRurA" name="Data_management">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_MiBOlkmdEeaLb-RB8hRurA" client="_MiBOlUmdEeaLb-RB8hRurA _MiBOlUmdEeaLb-RB8hRurA _MiBOlUmdEeaLb-RB8hRurA" supplier="_MiBOkUmdEeaLb-RB8hRurA" contract="_MiBOkUmdEeaLb-RB8hRurA"/>
+      <packagedElement xmi:type="uml:Usage" xmi:id="_MiBOl0mdEeaLb-RB8hRurA" client="_MiBOlUmdEeaLb-RB8hRurA">
+        <supplier xmi:type="uml:Interface" href="component1.uml#_w4ZtoEjgEeaxcqA5pAcC3Q"/>
+      </packagedElement>
+    </packagedElement>
+  </packagedElement>
+</uml:Model>

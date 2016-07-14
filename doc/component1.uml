@@ -5,6 +5,9 @@
   </packageImport>
   <packagedElement xmi:type="uml:Component" xmi:id="_Z24V8EjkEeaLb-RB8hRurA" name="Server ">
     <nestedClassifier xmi:type="uml:Interface" xmi:id="_w4ZtoEjgEeaxcqA5pAcC3Q" name="data_query" visibility="public"/>
+    <packagedElement xmi:type="uml:Component" xmi:id="_vzjlcEjgEeaxcqA5pAcC3Q" name="Database">
+      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_ja70YEkLEeaLb-RB8hRurA" client="_vzjlcEjgEeaxcqA5pAcC3Q" supplier="_w4ZtoEjgEeaxcqA5pAcC3Q" contract="_w4ZtoEjgEeaxcqA5pAcC3Q"/>
+    </packagedElement>
     <packagedElement xmi:type="uml:Component" xmi:id="_xIyTAEjgEeaxcqA5pAcC3Q" name="Application">
       <nestedClassifier xmi:type="uml:Interface" xmi:id="_Yzd74EkKEeaLb-RB8hRurA" name="data_layer" visibility="public"/>
       <packagedElement xmi:type="uml:Component" xmi:id="_t7xAwEkJEeaLb-RB8hRurA" name="Process_request">
@@ -15,9 +18,6 @@
         <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_piir0EkLEeaLb-RB8hRurA" client="_UJh8UEkKEeaLb-RB8hRurA" supplier="_Yzd74EkKEeaLb-RB8hRurA" contract="_Yzd74EkKEeaLb-RB8hRurA"/>
         <packagedElement xmi:type="uml:Usage" xmi:id="_elvnEEkLEeaLb-RB8hRurA" client="_UJh8UEkKEeaLb-RB8hRurA" supplier="_w4ZtoEjgEeaxcqA5pAcC3Q"/>
       </packagedElement>
-    </packagedElement>
-    <packagedElement xmi:type="uml:Component" xmi:id="_vzjlcEjgEeaxcqA5pAcC3Q" name="Database">
-      <interfaceRealization xmi:type="uml:InterfaceRealization" xmi:id="_ja70YEkLEeaLb-RB8hRurA" client="_vzjlcEjgEeaxcqA5pAcC3Q" supplier="_w4ZtoEjgEeaxcqA5pAcC3Q" contract="_w4ZtoEjgEeaxcqA5pAcC3Q"/>
     </packagedElement>
   </packagedElement>
   <packagedElement xmi:type="uml:Component" xmi:id="_8G2b4EkIEeaLb-RB8hRurA" name="Client_Application">

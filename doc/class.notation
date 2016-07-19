@@ -24,7 +24,7 @@
       <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2UnMyUjiEeaxcqA5pAcC3Q"/>
     </children>
     <element xmi:type="uml:Class" href="class.uml#_2Ui7UEjiEeaxcqA5pAcC3Q"/>
-    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2UlXkUjiEeaxcqA5pAcC3Q" x="774" y="98"/>
+    <layoutConstraint xmi:type="notation:Bounds" xmi:id="_2UlXkUjiEeaxcqA5pAcC3Q" x="153" y="94"/>
   </children>
   <styles xmi:type="notation:StringValueStyle" xmi:id="_14LvcUjiEeaxcqA5pAcC3Q" name="diagram_compatibility_version" stringValue="1.2.0"/>
   <styles xmi:type="notation:DiagramStyle" xmi:id="_14LvckjiEeaxcqA5pAcC3Q"/>

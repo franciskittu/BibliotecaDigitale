@@ -1,10 +1,6 @@
 package it.biblio.framework.result;
 
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -18,6 +14,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import freemarker.template.*;
 
 /**
  *

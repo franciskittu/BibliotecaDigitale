@@ -8,6 +8,14 @@
 		<servlet-name>EsempioDS</servlet-name>
 		<servlet-class>it.biblio.servlet.EsempioDS</servlet-class>
 	</servlet>
+	<servlet>
+		<servlet-name>addUtente</servlet-name>
+		<servlet-class>it.biblio.servlet.addUtente</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>addUtente</servlet-name>
+		<url-pattern>/addUtente</url-pattern>
+	</servlet-mapping>
 	<servlet-mapping>
         <servlet-name>EsempioDS</servlet-name>
         <url-pattern>/EsempioDS</url-pattern>
@@ -16,7 +24,24 @@
 		<param-name>data.source</param-name>
 		<param-value>java:comp/env/jdbc/bibliodb</param-value>
 	</context-param>
+	<context-param>
+		<param-name>view.template_directory</param-name>
+        <param-value>template</param-value>
+	</context-param>
 
+<context-param>
+        <param-name>view.debug</param-name>
+        <param-value>true</param-value>
+    </context-param>
+    <context-param>
+        <param-name>view.date_format</param-name>
+        <param-value>dd/MM/yyyy hh:mm:ss</param-value>
+    </context-param>
+	<context-param>
+        <param-name>view.outline_template</param-name>
+        <param-value>outline.ftl.html</param-value>
+        <!--da modificare-->
+    </context-param>
 	<listener>
         <description>Inizializza il pool di connesioni per il database fornendo il datasource alle altre servlet</description>
         <listener-class>it.biblio.config.InizializzatoreContesto</listener-class>

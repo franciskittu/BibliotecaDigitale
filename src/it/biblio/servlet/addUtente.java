@@ -38,7 +38,7 @@ public class addUtente extends HttpServlet {
 			
 			Map template_data = new HashMap();
 			template_data.put("nome", ris.getNome());
-			template_data.put("outline_template", "");
+			template_data.put("outline_tpl", "");
 			
 			String html = "result.ftl.html";
 			

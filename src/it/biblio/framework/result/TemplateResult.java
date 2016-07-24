@@ -15,7 +15,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import freemarker.template.*;
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
 
 /**
  *
@@ -36,7 +40,7 @@ public class TemplateResult {
         //impostiamo l'encoding di default per l'input e l'output
         //set the default input and outpout encoding
         if (context.getInitParameter("view.encoding") != null) {
-            cfg.setOutputEncoding(context.getInitParameter("view.encoding"));
+            //cfg.setOutputEncoding(context.getInitParameter("view.encoding"));
             cfg.setDefaultEncoding(context.getInitParameter("view.encoding"));
         }
         //impostiamo la directory (relativa al contesto) da cui caricare i templates
@@ -102,9 +106,6 @@ public class TemplateResult {
     //questo metodo principale si occupa di chiamare Freemarker e compilare il template
     //se � stato specificato un template di outline, quello richiesto viene inserito
     //all'interno dell'outline
-    //this main method calls Freemarker and compiles the template
-    //if an outline template has been specified, the requested template is
-    //embedded in the outline
     protected void process(String tplname, Map datamodel, Writer out) throws ServletException {
         Template t;
         //assicuriamoci di avere sempre un data model da passare al template, che contenga anche tutti i default
@@ -157,9 +158,9 @@ public class TemplateResult {
         //impostiamo l'encoding, se specificato dall'utente, o usiamo il default
         //set the output encoding, if user-specified, or use the default
         String encoding = (String) datamodel.get("encoding");
-        if (encoding == null) {
+        /*if (encoding == null) {
             encoding = cfg.getOutputEncoding();
-        }
+        }*/
         response.setCharacterEncoding(encoding);
 
         process(tplname, datamodel, response.getWriter());
@@ -179,7 +180,7 @@ public class TemplateResult {
         //impostiamo l'encoding, se specificato dall'utente, o usiamo il default
         String encoding = (String) datamodel.get("encoding");
         if (encoding == null) {
-            encoding = cfg.getOutputEncoding();
+            encoding = cfg.getDefaultEncoding();
         }
         //notare la gestione dell'encoding, che viene invece eseguita implicitamente tramite il setContentType nel contesto servlet
         //note how we set the output encoding, which is usually handled via setContentType when the output is sent to a browser

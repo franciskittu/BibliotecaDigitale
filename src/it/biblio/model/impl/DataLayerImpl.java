@@ -12,7 +12,7 @@ import it.biblio.model.Utente;
 
 public class DataLayerImpl implements DataLayer {
 
-	private final PreparedStatement aUtente, gUtente;
+	private final PreparedStatement aUtente, gUtente,gUtenteUsername;
 	private final PreparedStatement aRuolo, gRuolo;
 
 	public DataLayerImpl(Connection c) throws SQLException {
@@ -20,7 +20,7 @@ public class DataLayerImpl implements DataLayer {
 		gUtente = c.prepareStatement("SELECT * FROM Utente WHERE id = ?");
 		aRuolo = c.prepareStatement("INSERT INTO Ruolo(nome, descrizione) VALUES (?,?) RETURNING progressivo");
 		gRuolo = c.prepareStatement("SELECT * FROM Ruolo WHERE id = ?");
-		
+		gUtenteUsername = c.prepareStatement("SELECT * FROM Utente WHERE username = ?");
 	}
 
 	@Override
@@ -125,6 +125,28 @@ public class DataLayerImpl implements DataLayer {
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public Utente getUtenteByUsername(String username) {
+		Utente ris = null;
+		ResultSet rs = null;
+		try {
+			gUtenteUsername.setString(1, username);
+			rs = gUtenteUsername.executeQuery();
+			if (rs.next()) {
+				ris = new UtenteImpl(this, rs);
+			}
+		} catch (SQLException ex) {
+			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			try {
+				rs.close();
+			} catch (SQLException ex) {
+				java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		return ris;
 	}
 
 }

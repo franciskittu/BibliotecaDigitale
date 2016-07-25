@@ -8,9 +8,12 @@ public interface DataLayer {
 	
 	Utente aggiungiUtente(Utente U);
 	
+	Utente getUtenteByUsername(String username);
+	
 	Ruolo creaRuolo();
 	
 	Ruolo getRuolo(long progressivo);
 	
 	Ruolo aggiungiRuolo(Ruolo R);
+
 }

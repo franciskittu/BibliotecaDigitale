@@ -9,12 +9,12 @@
 		<servlet-class>it.biblio.servlet.EsempioDS</servlet-class>
 	</servlet>
 	<servlet>
-		<servlet-name>addUtente</servlet-name>
-		<servlet-class>it.biblio.servlet.addUtente</servlet-class>
+		<servlet-name>Registrazione</servlet-name>
+		<servlet-class>it.biblio.servlet.Registrazione</servlet-class>
 	</servlet>
 	<servlet-mapping>
-		<servlet-name>addUtente</servlet-name>
-		<url-pattern>/addUtente</url-pattern>
+		<servlet-name>Registrazione</servlet-name>
+		<url-pattern>/Registrazione</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
         <servlet-name>EsempioDS</servlet-name>

@@ -17,8 +17,14 @@ import it.biblio.framework.result.TemplateResult;
 import it.biblio.model.Utente;
 import it.biblio.model.impl.DataLayerImpl;
 
-public class addUtente extends HttpServlet {
-
+public class Registrazione extends HttpServlet {
+	
+	private String checkUsername(DataLayerImpl datalayer, String campousername){
+			if (datalayer.getUtenteByUsername(campousername)==null){
+				return "false";
+			}
+			return "true";
+	}
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -26,25 +32,32 @@ public class addUtente extends HttpServlet {
         try {
         	Connection connection = ds.getConnection();
 			DataLayerImpl datalayer = new DataLayerImpl(connection);
-			
-			Utente U = datalayer.creaUtente();
-			U.setCognome("Proietti");
-			U.setEmail("franciskittu@gmail.com");
-			U.setNome("Francesco");
-			U.setPassword("ciaomamma");
-			U.setUsername("franciskittu");
-			
-			Utente ris = datalayer.aggiungiUtente(U);
-			
-			Map template_data = new HashMap();
-			template_data.put("nome", ris.getNome());
-			template_data.put("outline_tpl", "");
-			
-			String html = "result.ftl.html";
-			
-			TemplateResult tr = new TemplateResult(getServletContext());
-			tr.activate(html, template_data, response);
-			
+			if (request.getParameter("usernameAjax")!=null){
+				Map template_data = new HashMap();
+				String ris=checkUsername(datalayer, request.getParameter("usernameAjax"));
+				template_data.put("outline_tpl", "");
+				template_data.put("risultato", ris);
+				TemplateResult tr = new TemplateResult(getServletContext());
+				tr.activate("controlloRegistrazione.ftl.json", template_data, response);
+			}
+			else {
+				Utente U = datalayer.creaUtente();
+				U.setCognome("Proietti");
+				U.setEmail("franciskittu@gmail.com");
+				U.setNome("Francesco");
+				U.setPassword("ciaomamma");
+				U.setUsername("marcolino");
+				
+				Utente ris = datalayer.aggiungiUtente(U);
+				
+				Map template_data = new HashMap();
+				template_data.put("nome", ris.getNome());
+				
+				String html = "result.ftl.html";
+				
+				TemplateResult tr = new TemplateResult(getServletContext());
+				tr.activate(html, template_data, response);
+			}
 		} catch (SQLException e) {
 			FailureResult res = new FailureResult(getServletContext());
             res.activate(e.getMessage(), request, response);

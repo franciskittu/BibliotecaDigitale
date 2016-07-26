@@ -64,16 +64,17 @@ public class Registrazione extends HttpServlet {
 				String email = request.getParameter("email");
 				String password = request.getParameter("password");
 				String username = request.getParameter("username");
-				Utente U = datalayer.creaUtente();
-				U.setCognome(cognome);
-				U.setEmail(email);
-				U.setNome(nome);
-				U.setPassword(SecurityLayer.criptaPassword(password, username));
-				U.setUsername(username);
-				if(request.getParameter("username") != null){
-					
-				Utente ris = datalayer.aggiungiUtente(U);
-				template_data.put("nome", ris.getNome());
+				
+				if(username != null){
+					Utente U = datalayer.creaUtente();
+					U.setCognome(SecurityLayer.addSlashes(cognome));
+					U.setEmail(SecurityLayer.addSlashes(email));
+					U.setNome(SecurityLayer.addSlashes(nome));
+					U.setPassword(SecurityLayer.criptaPassword(SecurityLayer.addSlashes(password), SecurityLayer.addSlashes(username)));
+					U.setUsername(SecurityLayer.addSlashes(username));
+						
+					Utente ris = datalayer.aggiungiUtente(U);
+					template_data.put("nome", SecurityLayer.stripSlashes(ris.getNome()));
 				}
 				
 				

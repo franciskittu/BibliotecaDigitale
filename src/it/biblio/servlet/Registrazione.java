@@ -16,9 +16,18 @@ import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.TemplateResult;
 import it.biblio.model.Utente;
 import it.biblio.model.impl.DataLayerImpl;
+import it.biblio.utility.SecurityLayer;
 
 public class Registrazione extends HttpServlet {
 	
+	/**
+	 * Metodo usato per chiamata AJAX per la verifica
+	 * di username duplicati
+	 * 
+	 * @param datalayer DAO
+	 * @param campousername valore username appena inserito
+	 * @return stringa "false" se lo username non è presente nel DB, "true" altrimenti 
+	 */
 	private String checkUsername(DataLayerImpl datalayer, String campousername){
 			if (datalayer.getUtenteByUsername(campousername)==null){
 				return "false";
@@ -28,37 +37,52 @@ public class Registrazione extends HttpServlet {
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+		
 		DataSource ds = (DataSource) getServletContext().getAttribute("datasource");
-        try {
+        
+		try {
         	Connection connection = ds.getConnection();
 			DataLayerImpl datalayer = new DataLayerImpl(connection);
+			Map template_data = new HashMap();
+			String html;
+		
+			/*gestione richiesta AJAX*/
 			if (request.getParameter("usernameAjax")!=null){
-				Map template_data = new HashMap();
 				String ris=checkUsername(datalayer, request.getParameter("usernameAjax"));
 				template_data.put("outline_tpl", "");
 				template_data.put("risultato", ris);
 				TemplateResult tr = new TemplateResult(getServletContext());
-				tr.activate("controlloRegistrazione.ftl.json", template_data, response);
+				html = "controlloRegistrazione.ftl.json";
 			}
+			/*gestione richiesta registrazione*/
 			else {
+				/*il check dei campi è fatto tramite javascript, da implementare qui nella prossima revisione*/
+				String cognome = request.getParameter("cognome");
+				String nome = request.getParameter("nome");
+				String email = request.getParameter("email");
+				String password = request.getParameter("password");
+				String username = request.getParameter("username");
 				Utente U = datalayer.creaUtente();
-				U.setCognome("Proietti");
-				U.setEmail("franciskittu@gmail.com");
-				U.setNome("Francesco");
-				U.setPassword("ciaomamma");
-				U.setUsername("marcolino");
+				U.setCognome(cognome);
+				U.setEmail(email);
+				U.setNome(nome);
+				U.setPassword(SecurityLayer.criptaPassword(password, username));
+				U.setUsername(username);
 				
 				Utente ris = datalayer.aggiungiUtente(U);
 				
-				Map template_data = new HashMap();
 				template_data.put("nome", ris.getNome());
 				
-				String html = "result.ftl.html";
+				html = "result.ftl.html";
 				
-				TemplateResult tr = new TemplateResult(getServletContext());
-				tr.activate(html, template_data, response);
+				
 			}
-		} catch (SQLException e) {
+			
+			/*chiama il template per il rendering corretto*/
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate(html, template_data, response);
+		
+        } catch (SQLException e) {
 			FailureResult res = new FailureResult(getServletContext());
             res.activate(e.getMessage(), request, response);
 		}
@@ -93,15 +117,5 @@ public class Registrazione extends HttpServlet {
             throws ServletException, IOException {
         processRequest(request, response);
     }
-
-    /**
-     * Returns a short description of the servlet.
-     *
-     * @return a String containing servlet description
-     */
-    @Override
-    public String getServletInfo() {
-        return "Short description";
-    }// </editor-fold>
 
 }

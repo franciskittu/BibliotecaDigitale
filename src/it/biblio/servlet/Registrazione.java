@@ -3,7 +3,9 @@ package it.biblio.servlet;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -68,10 +70,12 @@ public class Registrazione extends HttpServlet {
 				U.setNome(nome);
 				U.setPassword(SecurityLayer.criptaPassword(password, username));
 				U.setUsername(username);
-				
+				if(request.getParameter("username") != null){
+					
 				Utente ris = datalayer.aggiungiUtente(U);
-				
 				template_data.put("nome", ris.getNome());
+				}
+				
 				
 				html = "result.ftl.html";
 				

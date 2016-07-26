@@ -35,7 +35,7 @@ public class DataLayerImpl implements DataLayer {
 		try {
 			aUtente.setString(1, U1.getUsername());
 			aUtente.setString(2, U1.getPassword());
-			aUtente.setString(3, U1.getPassword());
+			aUtente.setString(3, U1.getEmail());
 			aUtente.setString(4, U1.getNome());
 			aUtente.setString(5, U1.getCognome());
 			chiave = aUtente.executeQuery();

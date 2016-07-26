@@ -124,39 +124,39 @@
                 <div class="col-lg-8 col-lg-offset-2">
                     <!-- To configure the contact form email address, go to mail/contact_me.php and update the email address in the PHP file on line 19. -->
                     <!-- The form should work on most web servers, but if the form is not working you may need to configure your web server differently. -->
-                    <form name="sentMessage" id="contactForm" novalidate action="Registrazione">
+                    <form novalidate action="Registrazione">
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Nome</label>
-                                <input onBlur="prova()" type="text" class="form-control" placeholder="Name" id="name" required data-validation-required-message="Please enter your name.">
+                                <input type="text" class="form-control" placeholder="Nome" id="nome" required data-validation-required-message="Per favore inserisci il nome.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                          <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Cognome</label>
-                                <input type="text" class="form-control" placeholder="Cognome" id="cognome" required data-validation-required-message="Please enter your cognome.">
+                                <input type="text" class="form-control" placeholder="Cognome" id="cognome" required data-validation-required-message="Per favore inserisci il cognome.">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Email Address" id="email" required data-validation-required-message="Please enter your email address.">
+                                <input type="email" class="form-control" placeholder="Email" id="email" required data-validation-required-message="Per favore inserisci un indirizzo email valido">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Username</label>
-                                <input onBlur="registrazione(this)" type="text" class="form-control" placeholder="Username" id="username" required data-validation-required-message="Please enter your username number.">
+                                <input onBlur="registrazione(this)" type="text" class="form-control" placeholder="Username" id="username" required data-validation-required-message="Per favore inserisci uno username">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Password</label>
-                                <input type="password" rows="5" class="form-control" placeholder="password" id="password" required data-validation-required-message="Please enter a password."></input>
+                                <input type="password" rows="5" class="form-control" placeholder="password" id="password" required data-validation-required-message="Per favore inserisci la password"></input>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>

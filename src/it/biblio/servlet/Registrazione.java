@@ -2,10 +2,7 @@ package it.biblio.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -21,6 +18,18 @@ import it.biblio.model.impl.DataLayerImpl;
 import it.biblio.utility.SecurityLayer;
 
 public class Registrazione extends HttpServlet {
+	
+	/**
+	 * Metodo per il controllo della correttezza dei parametri
+	 * della form di registrazione.
+	 * 
+	 * @param servlet request per i parametri
+	 * @return true se il controllo passa, false altrimenti
+	 */
+	private Boolean checkParametriRegistrazione(HttpServletRequest request){
+		//da implementare in futuro
+		return true;
+	}
 	
 	/**
 	 * Metodo usato per chiamata AJAX per la verifica
@@ -59,6 +68,9 @@ public class Registrazione extends HttpServlet {
 			/*gestione richiesta registrazione*/
 			else {
 				/*il check dei campi è fatto tramite javascript, da implementare qui nella prossima revisione*/
+				if(!checkParametriRegistrazione(request)){
+					throw new Exception("Controllo parametri fallito!");
+				}
 				String cognome = request.getParameter("cognome");
 				String nome = request.getParameter("nome");
 				String email = request.getParameter("email");
@@ -87,7 +99,7 @@ public class Registrazione extends HttpServlet {
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate(html, template_data, response);
 		
-        } catch (SQLException e) {
+        } catch (Exception e) {
 			FailureResult res = new FailureResult(getServletContext());
             res.activate(e.getMessage(), request, response);
 		}

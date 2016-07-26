@@ -26,6 +26,10 @@
     <param-value>template</param-value>
   </context-param>
   <context-param>
+    <param-name>view.error_template</param-name>
+    <param-value>errore.ftl.html</param-value>
+  </context-param>
+  <context-param>
     <param-name>view.debug</param-name>
     <param-value>true</param-value>
   </context-param>

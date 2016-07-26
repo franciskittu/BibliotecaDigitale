@@ -4,9 +4,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 
 import it.biblio.model.DataLayer;
+import it.biblio.model.Opera;
+import it.biblio.model.Privilegi;
 import it.biblio.model.Ruolo;
 import it.biblio.model.Utente;
 
@@ -14,13 +17,22 @@ public class DataLayerImpl implements DataLayer {
 
 	private final PreparedStatement aUtente, gUtente,gUtenteUsername;
 	private final PreparedStatement aRuolo, gRuolo;
-
+	private final PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
+	private final PreparedStatement gOpera, aOpera;
+	
 	public DataLayerImpl(Connection c) throws SQLException {
 		aUtente = c.prepareStatement("INSERT INTO Utente(username,password,email,nome,cognome) VALUES (?,?,?,?,?) RETURNING ID");
 		gUtente = c.prepareStatement("SELECT * FROM Utente WHERE id = ?");
+		gUtenteUsername = c.prepareStatement("SELECT * FROM Utente WHERE username = ?");
 		aRuolo = c.prepareStatement("INSERT INTO Ruolo(nome, descrizione) VALUES (?,?) RETURNING progressivo");
 		gRuolo = c.prepareStatement("SELECT * FROM Ruolo WHERE id = ?");
-		gUtenteUsername = c.prepareStatement("SELECT * FROM Utente WHERE username = ?");
+		gPrivilegi = c.prepareStatement("SELECT * FROM Privilegi WHERE id = ?");
+		aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
+		rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
+		gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
+		aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,pubblicata) VALUES(?,?,?,?,?,?) RETURNING ID");
+		
+		
 	}
 
 	@Override
@@ -147,6 +159,85 @@ public class DataLayerImpl implements DataLayer {
 			}
 		}
 		return ris;
+	}
+
+	@Override
+	public Privilegi creaPrivilegio() {
+		return new PrivilegiImpl(this);
+	}
+
+	@Override
+	public Privilegi getPrivilegi(long progressivo) {
+		Opera ris = null;
+		ResultSet rs = null;
+		try{
+			gPrivilegi.setLong(1, progressivo);
+			rs = gPrivilegi.executeQuery();
+			if(rs.next()){
+				ris = new OperaImpl(this,rs);
+			}
+		} catch(SQLException ex){
+			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+		} finally{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Privilegi aggiungiPrivilegi(Privilegi P) {
+		Privilegi PI = (PrivilegiImpl) P;
+		ResultSet chiave = null;
+		try{
+			aPrivilegi.setLong(1, PI.getUtente().getID());
+			aPrivilegi.setLong(2, PI.getRuolo().getID());
+			chiave = aPrivilegi.executeQuery();
+			if(chiave.next()){
+				return getPrivilegi(chiave.getLong("progressivo"));
+			}
+		} catch(SQLException ex){
+			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}finally{
+			try{
+				chiave.close();
+			}catch(SQLException ex){
+				java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public Privilegi rimuoviPrivilegiUtente(long id_utente) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Opera creaOpera() {
+		return new OperaImpl(this);
+		
+	}
+
+	@Override
+	public Opera getOpera(long id) {
+		return null;
+	}
+
+	@Override
+	public Opera aggiungiOpera(Opera O) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Opera> getOpereByQuery(Opera P) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

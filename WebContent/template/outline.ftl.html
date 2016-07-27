@@ -54,7 +54,7 @@
                         <a href="#about">About</a>
                     </li>
                 </ul>
-                <form class="form-inline" action="Login" method="POST">
+                <form action="Login" class="form-inline">
                             <div class="form-group">
                                 <input class="form-control" type="text" name="username" placeholder="Username" />
                             </div>
@@ -185,7 +185,7 @@
         
         
         function registrazione(obj){
-
+            var value=obj.value;
             $.ajax({
             url: 'Registrazione',
             type: 'GET',
@@ -193,11 +193,11 @@
                 success: function(data) {
                             if (eval(data.risultato)){
                                 $( "#username" ).focus(function() {
-                                document.getElementById("usernamecheck").innerHTML ="";                                    });
+                                document.getElementById("usernamecheck").innerHTML ="<div class=\"form-group has-error has-feedback\"><label class=\"control-label\" for=\"inputError2\">Input with error</label><input type=\"text\" class=\"form-control\" id=\"inputError2\" aria-describedby=\"inputError2Status\"><span class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div>";                                    });
                             }
                             else {
-                            	var value=obj.value;
-                                document.getElementById("usernamecheck").innerHTML ="<div class=\"form-group has-success has-feedback\"><label class=\"control-label\" for=\"inputSuccess2\"></label><input value=\""+obj.value+"\" type=\"text\" class=\"form-control\" id=\"inputSuccess2\" aria-describedby=\"inputSuccess2Status\"><span class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
+                                
+                                document.getElementById("usernamecheck").innerHTML ="<div class=\"form-group col-xs-12 floating-label-form-group controls has-success\"><label>Username</label><input placeholder=\"Username\" onBlur=\"registrazione(this)\" value=\""+obj.value+"\" type=\"text\" class=\"form-control\" name=\"username\" id=\"inputSuccess2\" aria-describedby=\"inputSuccess2Status\" required data-validation-required-message=\"Per favore inserisci uno username\"><span class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                                 
                             }
                 }

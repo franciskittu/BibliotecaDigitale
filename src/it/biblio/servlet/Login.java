@@ -41,7 +41,7 @@ public class Login extends HttpServlet {
 			if(U != null){
 				if(U.getPassword().equals(
 						SecurityLayer.criptaPassword(
-								request.getParameter("password"), request.getParameter("username")))){
+								SecurityLayer.addSlashes(request.getParameter("password")), SecurityLayer.addSlashes(request.getParameter("username"))))){
 					html = "result.ftl.html";
 					template_data.put("nome", "qualcuno");
 				}else{

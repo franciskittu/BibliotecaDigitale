@@ -54,7 +54,7 @@
                         <a href="#about">About</a>
                     </li>
                 </ul>
-                <form class="form-inline">
+                <form action="Login" class="form-inline">
                             <div class="form-group">
                                 <input class="form-control" type="text" name="username" placeholder="Username" />
                             </div>
@@ -120,12 +120,12 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email" name="email" required data-validation-required-message="Per favore inserisci un indirizzo email valido">
+                                <input type="email" class="form-control" placeholder="Email" id="email" name="email" required data-validation-required-message="Per favore inserisci un indirizzo email">
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
                         <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                            <div id="usernamecheck" class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Username</label>
                                 <input onBlur="registrazione(this)" type="text" class="form-control" name="username" placeholder="Username" id="username" required data-validation-required-message="Per favore inserisci uno username">
                                 <p class="help-block text-danger"></p>
@@ -193,11 +193,12 @@
                 success: function(data) {
                             if (eval(data.risultato)){
                                 $( "#username" ).focus(function() {
-                                    alert( "Utente già presente" );
-                                    });
+                                document.getElementById("usernamecheck").innerHTML =""                                    });
                             }
                             else {
-                                alert("utente ");
+                            	var value=obj.value;
+                                document.getElementById("usernamecheck").innerHTML ="<div class=\"form-group has-success has-feedback\"><label class=\"control-label\" for=\"inputSuccess2\"></label><input value=\""+obj.value+"\" type=\"text\" class=\"form-control\" id=\"inputSuccess2\" aria-describedby=\"inputSuccess2Status\"><span class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
+                                
                             }
                 }
             });

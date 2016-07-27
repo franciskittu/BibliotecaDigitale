@@ -125,9 +125,9 @@
                             </div>
                         </div>
                         <div class="row control-group">
-                            <div id="usernamecheck" class="form-group col-xs-12 floating-label-form-group controls">
+                            <div class="form-group col-xs-12 floating-label-form-group controls has-success">
                                 <label>Username</label>
-                                <input onBlur="registrazione(this)" type="text" class="form-control" name="username" placeholder="Username" id="username" required data-validation-required-message="Per favore inserisci uno username">
+                                <input type="text" class="form-control" name="username" placeholder="Username" id="username" required data-validation-required-message="Per favore inserisci uno username"/><div id="usernamecheck"></div>
                                 <p class="help-block text-danger"></p>
                             </div>
                         </div>
@@ -184,25 +184,28 @@
      <script type="text/javascript">
         
         
-        function registrazione(obj){
-            var value=obj.value;
+            $("#username").keypress(function(){
             $.ajax({
             url: 'Registrazione',
             type: 'GET',
-            data: 'usernameAjax='+obj.value,
+            data: 'usernameAjax='+$("#username")[0].value,
                 success: function(data) {
                             if (eval(data.risultato)){
-                                $( "#username" ).focus(function() {
-                                document.getElementById("usernamecheck").innerHTML ="<div class=\"form-group has-error has-feedback\"><label class=\"control-label\" for=\"inputError2\">Input with error</label><input type=\"text\" class=\"form-control\" id=\"inputError2\" aria-describedby=\"inputError2Status\"><span class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div>";                                    });
-                            }
-                            else {
+                                alert("utente già presente");
+                                document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div>";
                                 
-                                document.getElementById("usernamecheck").innerHTML ="<div class=\"form-group col-xs-12 floating-label-form-group controls has-success\"><label>Username</label><input placeholder=\"Username\" onBlur=\"registrazione(this)\" value=\""+obj.value+"\" type=\"text\" class=\"form-control\" name=\"username\" id=\"inputSuccess2\" aria-describedby=\"inputSuccess2Status\" required data-validation-required-message=\"Per favore inserisci uno username\"><span class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
+                            }
+                            else if ($("#username")[0].value==" "||""){
+                                $('#status').remove();
+                            }
+
+                            else {
+                                document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                                 
                             }
                 }
             });
-            }; 
+            });
     </script>
 </body>
 

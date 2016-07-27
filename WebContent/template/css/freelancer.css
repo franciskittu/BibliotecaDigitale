@@ -91,6 +91,13 @@ header .intro-text .skills {
   font-size: 1.25em;
   font-weight: 300;
 }
+.img_small{
+  width:50px;
+}
+.list{
+  background-color: #18BC9C;
+  border-color: #18BC9C;
+}
 @media (min-width: 768px) {
   header .container {
     padding-top: 200px;

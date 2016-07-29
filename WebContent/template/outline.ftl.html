@@ -146,10 +146,11 @@
             //$("#username").keypress(function(){
             $.ajax({
             url: 'Registrazione',
-            type: 'GET',
+            type: 'POST',
             data: 'usernameAjax='+obj.value,
                 success: function(data) {
-                            if (eval(data.risultato)){
+                			console.log((data));
+                            if (eval(data)){
                                 console.log("0");
                                 document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div>";
                                 

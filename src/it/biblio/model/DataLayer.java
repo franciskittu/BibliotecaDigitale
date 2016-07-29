@@ -17,6 +17,10 @@ public interface DataLayer {
 	
 	Ruolo getRuolo(long progressivo);
 	
+	Ruolo getRuoloByNome(String nome);
+	
+	List<Ruolo> getListaRuoliUtente(Utente U);
+	
 	Ruolo aggiungiRuolo(Ruolo R);
 	
 	/*Operazioni Privilegi*/

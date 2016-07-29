@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 import it.biblio.framework.result.FailureResult;
@@ -50,20 +51,20 @@ public class Registrazione extends HttpServlet {
             throws ServletException, IOException {
 		
 		DataSource ds = (DataSource) getServletContext().getAttribute("datasource");
-        
+		HttpSession s;
 		try {
         	Connection connection = ds.getConnection();
 			DataLayerImpl datalayer = new DataLayerImpl(connection);
 			Map template_data = new HashMap();
-			String html;
 		
 			/*gestione richiesta AJAX*/
 			if (request.getParameter("usernameAjax")!=null){
 				String ris=checkUsername(datalayer, request.getParameter("usernameAjax"));
 				template_data.put("outline_tpl", "");
 				template_data.put("risultato", ris);
+				/*chiama il template per l'oggetto JSON*/
 				TemplateResult tr = new TemplateResult(getServletContext());
-				html = "controlloRegistrazione.ftl.json";
+				tr.activate("controlloRegistrazione.ftl.json", template_data, response);
 			}
 			/*gestione richiesta registrazione*/
 			else {
@@ -71,6 +72,7 @@ public class Registrazione extends HttpServlet {
 				if(!checkParametriRegistrazione(request)){
 					throw new Exception("Controllo parametri fallito!");
 				}
+				/*prende i campi della form*/
 				String cognome = request.getParameter("cognome");
 				String nome = request.getParameter("nome");
 				String email = request.getParameter("email");
@@ -85,19 +87,21 @@ public class Registrazione extends HttpServlet {
 					U.setPassword(SecurityLayer.criptaPassword(SecurityLayer.addSlashes(password), SecurityLayer.addSlashes(username)));
 					U.setUsername(SecurityLayer.addSlashes(username));
 						
-					Utente ris = datalayer.aggiungiUtente(U);
-					template_data.put("nome", SecurityLayer.stripSlashes(ris.getNome()));
-				}
-				
-				
-				html = "result.ftl.html";
-				
+					Utente ris = datalayer.aggiungiUtente(U);//inserimento nel DB
+					/*crea sessione*/
+					if(ris != null){
+						s = SecurityLayer.createSession(request, ris.getUsername(), ris.getID(), null);//i ruoli vengono aggiunti in seguito dall'admin
+					}else{
+						throw new Exception("inserimento utente nel DB non avvenuto correttamente!");
+					}
+					
+					/*homepage dopo login*/
+					response.sendRedirect("Visualizza?richiesta=login");
+				}				
 				
 			}
 			
-			/*chiama il template per il rendering corretto*/
-			TemplateResult tr = new TemplateResult(getServletContext());
-			tr.activate(html, template_data, response);
+			
 		
         } catch (Exception e) {
 			FailureResult res = new FailureResult(getServletContext());

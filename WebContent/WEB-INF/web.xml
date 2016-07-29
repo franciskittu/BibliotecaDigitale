@@ -9,9 +9,26 @@
     <servlet-name>Registrazione</servlet-name>
     <servlet-class>it.biblio.servlet.Registrazione</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>Visualizza</servlet-name>
+    <servlet-class>it.biblio.servlet.Visualizza</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>Logout</servlet-name>
+    <servlet-class>it.biblio.servlet.Logout</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>Registrazione</servlet-name>
     <url-pattern>/Registrazione</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Visualizza</servlet-name>
+    <url-pattern>/Visualizza</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Logout</servlet-name>
+    <url-pattern>/Logout</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>EsempioDS</servlet-name>
@@ -55,6 +72,6 @@
     <res-sharing-scope>Shareable</res-sharing-scope>
   </resource-ref>
   <welcome-file-list>
-    <welcome-file>EsempioDS</welcome-file>
+    <welcome-file>Visualizza</welcome-file>
   </welcome-file-list>
 </web-app>

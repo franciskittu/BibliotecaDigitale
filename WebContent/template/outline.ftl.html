@@ -15,7 +15,7 @@
     <link href="template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Theme CSS -->
-    <link href="template/css/freelancer.min.css" rel="stylesheet">
+    <link href="template/css/freelancer.css" rel="stylesheet">
 
     <!-- Custom Fonts -->
     <link href="template/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
@@ -48,10 +48,26 @@
                     <li class="page-scroll">
                         <a href="#ricerca">Ricerca</a>
                     </li>                    
-                    <li class="page-scroll">
-                        <a href="#registrazione">Registrazione</a>
-                    </li>
+                    <#if loggato??>
+                    	<#if acquisitore?? && acquisitore>
+                    		<li class="page-scroll">
+                        		<a href="#uploadImmagine">Upload Immagine</a>
+                    		</li>
+                    	</#if>
+                    <#else>
+                    	<li class="page-scroll">
+                        	<a href="#registrazione">Registrazione</a>
+                    	</li>
+                    </#if>
                 </ul>
+                <#if loggato??>
+                <form action="Logout" class="form-inline">
+                	<div class="form-group">
+                	<label>Ciao ${nomeutente!"PICCHIO"}</label>
+                	</div>
+                	<input class="btn btn-success" type="submit" value="Logout" />
+                </form>
+                <#else>
                 <form action="Login" class="form-inline">
                             <div class="form-group">
                                 <input class="form-control" type="text" name="username" placeholder="Username" />
@@ -61,6 +77,7 @@
                             </div>
                                 <input class="btn btn-success" type="submit" value="Login" />
                 </form>
+                </#if>
 
             </div>
             
@@ -79,130 +96,23 @@
                         <span class="name">UNIVAQ</span>
                         <hr class="star-light">
                         <span class="skills">BIBLIOTECH</span>
-                        <br/><#include content_tpl>
+                        <br/>
                     </div>
                 </div>
             </div>
         </div>
     </header>
-    <!-- Ricerca -->
-    <section id="ricerca">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>RICERCA LIBRO</h2>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    
-                    <form name="ricerca" id="ricerca" method="POST" novalidate action="ricerca">
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Titolo</label>
-                                <input type="text" class="form-control" placeholder="Titolo" id="titolo" name="titolo">
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>ISBN</label>
-                                <input type="text" class="form-control" placeholder="ISBN" id="isbn" name="isbn">
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Autore</label>
-                                <input type="text" class="form-control" placeholder="Autore" id="autore" name="autore">
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Editore</label>
-                                <input type="text" class="form-control" placeholder="Editore" id="editore" name="editore">
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Anno di pubblicazione</label>
-                                <input type="text" class="form-control" placeholder="Anno di pubblicazione" id="annoPubbliazione" name="annuPubblicazione">
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Parola chiave</label>
-                                <input type="text" class="form-control" placeholder="Parola chiave" id="parolaChiave" name="parolaChiave">
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id=registrazione>
-   
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>REGISTRATI</h2>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-lg-8 col-lg-offset-2">
-                    
-                    <form name="sentMessage" id="contactForm" method="POST" novalidate action="Registrazione">
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Nome</label>
-                                <input type="text" class="form-control" placeholder="Nome" id="nome" name="nome" required data-validation-required-message="Per favore inserisci il nome.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                         <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Cognome</label>
-                                <input type="text" class="form-control" placeholder="Cognome" name="cognome" id="cognome" required data-validation-required-message="Per favore inserisci il cognome.">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Email</label>
-                                <input type="email" class="form-control" placeholder="Email" id="email" name="email" required data-validation-required-message="Per favore inserisci un indirizzo email">
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls has-success">
-                                <label>Username</label>
-                                <input type="text" class="form-control" name="username" placeholder="Username" id="username" required data-validation-required-message="Per favore inserisci uno username"/><div id="usernamecheck"></div>
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>Password</label>
-                                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required data-validation-required-message="Per favore inserisci la password"></input>
-                                <p class="help-block text-danger"></p>
-                            </div>
-                        </div>
-                        <br>
-                        <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Send</button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-  
-    </section>
+<!-- Include sezione ricerca -->   
+    <#include ricerca_tpl>
     
+    <#if loggato??>
+    	<#if acquisitore?? && acquisitore>
+    		<#include upload_immagine>
+    	</#if>
+    <#else>
+<!-- Include sezione registrazione -->
+    <#include registrazione_tpl>
+    </#if>
 
     
 
@@ -232,31 +142,28 @@
     <script src="template/js/freelancer.min.js"></script>
      <script type="text/javascript">
         
-        
-            $("#username").keypress(function(){
+        function controllausername(obj){
+            //$("#username").keypress(function(){
             $.ajax({
             url: 'Registrazione',
             type: 'GET',
-            data: 'usernameAjax='+$("#username")[0].value,
+            data: 'usernameAjax='+obj.value,
                 success: function(data) {
                             if (eval(data.risultato)){
                                 console.log("0");
                                 document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div>";
                                 
                             }
-                            else if ($("#username")[0].value==" "||""){
-                                console.log("1");
-                                $('#status').remove();
-                            }
-
+                            
                             else {
-                                console.log("1");
+                                console.log("2");
+                                $("#status").remove();
                                 document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                                 
                             }
                 }
             });
-            });
+            };
     </script>
 </body>
 

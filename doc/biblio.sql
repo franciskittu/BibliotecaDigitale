@@ -70,7 +70,9 @@ ALTER SEQUENCE autore_id_seq OWNED BY autore.id;
 CREATE TABLE commenta (
     progressivo integer NOT NULL,
     utente integer,
-    trascrizione integer
+    trascrizione integer,
+    titolo character varying,
+    commento character varying
 );
 
 
@@ -320,7 +322,7 @@ SELECT pg_catalog.setval('autore_id_seq', 1, false);
 -- Data for Name: commenta; Type: TABLE DATA; Schema: public; Owner: biblioadmin
 --
 
-COPY commenta (progressivo, utente, trascrizione) FROM stdin;
+COPY commenta (progressivo, utente, trascrizione, titolo, commento) FROM stdin;
 \.
 
 
@@ -336,6 +338,7 @@ SELECT pg_catalog.setval('commenta_progressivo_seq', 1, false);
 --
 
 COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata) FROM stdin;
+1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	t
 \.
 
 
@@ -343,7 +346,7 @@ COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata) FROM std
 -- Name: opera_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('opera_id_seq', 1, false);
+SELECT pg_catalog.setval('opera_id_seq', 1, true);
 
 
 --
@@ -394,6 +397,9 @@ COPY ruolo (id, nome, descrizione) FROM stdin;
 --
 
 COPY utente (id, username, password, nome, cognome, email) FROM stdin;
+15	franciskittu	-9-26-111121111221650313779-91-93-102-21-105-1719-39-104	Francesco	Proietti	franciskittu@gmail.com
+16	marcolino	-112-31477370-80114-96-92-102-20-37-581226874-67-70125	Marco	D\\'Ettorre	marcodettorre88@gmail.com
+17	dandi	-120-17102624359-45-118-5772304451-88-114-1007604310	D\\'aloisio	Andrea	dandi@yahoo.it
 \.
 
 
@@ -401,7 +407,7 @@ COPY utente (id, username, password, nome, cognome, email) FROM stdin;
 -- Name: utente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('utente_id_seq', 1, false);
+SELECT pg_catalog.setval('utente_id_seq', 17, true);
 
 
 --

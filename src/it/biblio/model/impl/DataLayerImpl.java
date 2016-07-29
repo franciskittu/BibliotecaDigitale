@@ -20,7 +20,7 @@ import it.biblio.model.Utente;
 public class DataLayerImpl implements DataLayer {
 
 	private final PreparedStatement aUtente, gUtente,gUtenteUsername;
-	private final PreparedStatement aRuolo, gRuolo;
+	private final PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente;
 	private final PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
 	private final PreparedStatement gOpera, aOpera, aggiornaOpera;
 	private final PreparedStatement gPagina, aPagina;
@@ -34,6 +34,8 @@ public class DataLayerImpl implements DataLayer {
 		gUtenteUsername = c.prepareStatement("SELECT * FROM Utente WHERE username = ?");
 		aRuolo = c.prepareStatement("INSERT INTO Ruolo(nome, descrizione) VALUES (?,?) RETURNING progressivo");
 		gRuolo = c.prepareStatement("SELECT * FROM Ruolo WHERE id = ?");
+		gRuoloNome = c.prepareStatement("SELECT * FROM Ruolo WHERE nome = ?");
+		gRuoliUtente = c.prepareStatement("SELECT Ruolo.* FROM Ruolo,Utente,Privilegi WHERE username = ? AND Utente.id = Privilegi.utente AND Privilegi.ruolo = Ruolo.id");
 		gPrivilegi = c.prepareStatement("SELECT * FROM Privilegi WHERE id = ?");
 		aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
 		rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
@@ -423,6 +425,50 @@ public class DataLayerImpl implements DataLayer {
 			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
 		}
 		return null;
+	}
+
+	@Override
+	public Ruolo getRuoloByNome(String nome) {
+		Ruolo ris = null;
+		ResultSet rs = null;
+		try{
+			gRuoloNome.setString(1, nome);
+			rs = gRuoloNome.executeQuery();
+			if(rs.next()){
+				ris = new RuoloImpl(this, rs);
+			}
+		} catch(SQLException ex){
+			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}finally{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public List<Ruolo> getListaRuoliUtente(Utente U) {
+		List<Ruolo> ris = new ArrayList<Ruolo>();
+		ResultSet rs = null;
+		try{
+			this.gRuoliUtente.setString(1, U.getUsername());
+			rs = gRuoliUtente.executeQuery();
+			while(rs.next()){
+				ris.add(new RuoloImpl(this,rs));
+			}
+		}catch(SQLException ex){
+			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}finally{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+		return ris;
 	}
 
 }

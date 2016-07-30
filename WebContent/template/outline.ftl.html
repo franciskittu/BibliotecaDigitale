@@ -105,6 +105,9 @@
 <!-- Include sezione ricerca -->   
     <#include ricerca_tpl>
     
+    <#if ricerca??>
+    	<#include listaopere_tpl>
+    </#if>
     <#if loggato??>
     	<#if acquisitore?? && acquisitore>
     		<#include upload_immagine>
@@ -113,7 +116,6 @@
 <!-- Include sezione registrazione -->
     <#include registrazione_tpl>
     </#if>
-
     
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->

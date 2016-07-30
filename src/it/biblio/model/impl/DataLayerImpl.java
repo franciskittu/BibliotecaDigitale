@@ -47,6 +47,7 @@ public class DataLayerImpl implements DataLayer {
 				+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?,?) RETURNING ID");
 		gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 		aCommenta = c.prepareStatement("");
+		gOpereByQuery = c.createStatement();
 		
 	}
 

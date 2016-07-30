@@ -17,10 +17,17 @@
     <servlet-name>Logout</servlet-name>
     <servlet-class>it.biblio.servlet.Logout</servlet-class>
   </servlet>
-  
+  <servlet>
+    <servlet-name>Ricerca</servlet-name>
+    <servlet-class>it.biblio.servlet.Ricerca</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>Registrazione</servlet-name>
     <url-pattern>/Registrazione</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>Ricerca</servlet-name>
+    <url-pattern>/Ricerca</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>Visualizza</servlet-name>

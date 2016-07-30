@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     
-                    <form name="ricerca" id="ricerca" method="POST" novalidate action="ricerca">
+                    <form name="ricerca" id="ricerca" method="GET" novalidate action="Ricerca">
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Titolo</label>
@@ -32,7 +32,30 @@
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Anno di pubblicazione</label>
-                                <input type="text" class="form-control" placeholder="Anno di pubblicazione" id="annoPubbliazione" name="annuPubblicazione">
+                                <input type="text" class="form-control" placeholder="Anno di pubblicazione" id="annoPubbliazione" name="anno">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Lingua</label>
+                                <input type="text" class="form-control" placeholder="Lingua" id="Lingua" name="lingua">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>pubblicata</label>
+                                <#if revisore_acquisizioni?? || revisore_trascrizioni?? || trascrittore?? || admin??>
+                                <input type="checkbox" class="form-control" id="pubblicata" name="pubblicata" checked="checked">
+                                <#else>
+                                <input type="hidden" class="form-control" id="pubblicata" name="pubblicata" value="true">
+                            	</#if>
+                            </div>
+                        </div>
+                         <br>
+                        <div id="success"></div>
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <button type="submit" class="btn btn-success btn-lg">Invia</button>
                             </div>
                         </div>
                     </form>

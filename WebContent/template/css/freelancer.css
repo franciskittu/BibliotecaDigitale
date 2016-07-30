@@ -94,10 +94,10 @@ header .intro-text .skills {
 .img_small{
   width:50px;
 }
-.list{
-  background-color: #18BC9C;
-  border-color: #18BC9C;
+a.list-group-item:hover{
+    background-color: #18BC9C;
 }
+
 @media (min-width: 768px) {
   header .container {
     padding-top: 200px;

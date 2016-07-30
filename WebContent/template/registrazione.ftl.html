@@ -1,0 +1,62 @@
+<!-- Sezione registrazione -->
+    <section id=registrazione>
+   
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>REGISTRATI</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    
+                    <form name="sentMessage" id="contactForm" method="POST" novalidate action="Registrazione">
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Nome</label>
+                                <input type="text" class="form-control" placeholder="Nome" id="nome" name="nome" required data-validation-required-message="Per favore inserisci il nome.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                         <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Cognome</label>
+                                <input type="text" class="form-control" placeholder="Cognome" name="cognome" id="cognome" required data-validation-required-message="Per favore inserisci il cognome.">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Email</label>
+                                <input type="email" class="form-control" placeholder="Email" id="email" name="email" required data-validation-required-message="Per favore inserisci un indirizzo email">
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Username</label>
+                                <input onblur="controllausername(this)" type="text" class="form-control" name="username" placeholder="Username" id="username" required data-validation-required-message="Per favore inserisci uno username"/><div id="usernamecheck"></div>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Password</label>
+                                <input type="password" class="form-control" placeholder="Password" name="password" id="password" required data-validation-required-message="Per favore inserisci la password"></input>
+                                <p class="help-block text-danger"></p>
+                            </div>
+                        </div>
+                        <br>
+                        <div id="success"></div>
+                        <div class="row">
+                            <div class="form-group col-xs-12">
+                                <button type="submit" class="btn btn-success btn-lg">Send</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+  
+    </section>

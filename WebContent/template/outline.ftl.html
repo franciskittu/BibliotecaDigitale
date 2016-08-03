@@ -27,103 +27,16 @@
 </head>
 
 <body id="page-top" class="index">
-
-    <!-- Navigation -->
-    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header page-scroll">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
-                </button>
-                <!--<a class="navbar-brand" href="#page-top">Start Bootstrap</a>-->
-            </div>
-
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="hidden">
-                        <a href="#page-top"></a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#ricerca">Ricerca</a>
-                    </li>                    
-                    <#if loggato??>
-                    	<#if acquisitore?? && acquisitore>
-                    		<li class="page-scroll">
-                        		<a href="#uploadImmagine">Upload Immagine</a>
-                    		</li>
-                    	</#if>
-                    <#else>
-                    	<li class="page-scroll">
-                        	<a href="#registrazione">Registrazione</a>
-                    	</li>
-                    </#if>
-                </ul>
-                <#if loggato??>
-                <form action="Logout" class="form-inline">
-                	<div class="form-group">
-                	<label>Ciao ${nomeutente!"PICCHIO"}</label>
-                	</div>
-                	<input class="btn btn-success" type="submit" value="Logout" />
-                </form>
-                <#else>
-                <form action="Login" class="form-inline">
-                            <div class="form-group">
-                                <input class="form-control" type="text" name="username" placeholder="Username" />
-                            </div>
-                            <div class="form-group">
-                                <input class="form-control" placeholder="Password" name="password" type="password" />
-                            </div>
-                                <input class="btn btn-success" type="submit" value="Login" />
-                </form>
-                </#if>
-
-            </div>
-            
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container-fluid -->
-    </nav>
-
-    <!-- Header -->
-    <header>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <img class="img-responsive" src="template/img/univaq.jpg" alt="">
-                    <div class="intro-text">
-                        <span class="name">UNIVAQ</span>
-                        <hr class="star-light">
-                        <span class="skills">BIBLIOTECH</span>
-                        <br/>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-<!-- Include template freemarker in base al tipo di utente -->   
-    <#include ricerca_tpl>
-    
-    <#if ricerca?? && ricerca>
-    	<#include listaopere_tpl>
-    </#if>
-    <#if loggato?? && loggato>
-    	<#if acquisitore?? && acquisitore>
-    		<#include acquisitore_tpl>
-        <#elseif trascrittore?? && trascrittore>
-            <#include trascrittore_tpl>
-        <#elseif admin?? && admin>
-            <#include admin_tpl>
-        <#elseif revisore_acquisizioni?? && revisore_acquisizioni>
-            <#include revisore_acquisizioni_tpl>
-        <#elseif revisore_trascrizioni?? && revisore_trascrizioni>
-            <#include revisore_trascrizioni_tpl>
-    	</#if>
-    <#else>
-<!-- Include sezione registrazione se non loggato -->
-    <#include registrazione_tpl>
-    </#if>
+ 
+ 	<#if loggato??>
+ 		<#if acquisitore?? && acquisitore>
+ 			<#include "acquisitore.ftl.html">
+ 		<#elseif trascrittore?? && trascrittore>
+            <#include "trascrittore.ftl.html">
+        </#if>
+ 	<#else>
+ 		<#include "no_loggato.ftl.html">
+ 	</#if>   
     
 
     <!-- Scroll to Top Button (Only visible on small and extra-small screen sizes) -->

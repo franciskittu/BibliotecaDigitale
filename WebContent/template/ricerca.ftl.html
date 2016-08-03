@@ -41,16 +41,16 @@
                                 <input type="text" class="form-control" placeholder="Lingua" id="Lingua" name="lingua">
                             </div>
                         </div>
-                        <div class="row control-group">
-                            <div class="form-group col-xs-12 floating-label-form-group controls">
-                                <label>pubblicata</label>
-                                <#if revisore_acquisizioni?? || revisore_trascrizioni?? || trascrittore?? || admin??>
-                                <input type="checkbox" class="form-control" id="pubblicata" name="pubblicata" checked="checked">
-                                <#else>
-                                <input type="hidden" class="form-control" id="pubblicata" name="pubblicata" value="true">
-                            	</#if>
-                            </div>
-                        </div>
+                        <#if (revisore_acquisizioni?? && revisore_acquisizioni) || (revisore_trascrizioni?? && revisore_trascrizioni) || (trascrittore?? && trascrittore)  || (admin?? && admin)>
+	                         <div class="row control-group">
+	                     		<div class="form-group col-xs-12 floating-label-form-group controls">
+	                         		<label>pubblicata</label>
+	                         		<input type="checkbox" class="form-control" id="pubblicata" name="pubblicata" checked="checked">
+	                         </div>
+                         </div>
+                         <#else>
+                         <input type="hidden" class="form-control" id="pubblicata" name="pubblicata" value="true">
+                     	</#if>
                          <br>
                         <div id="success"></div>
                         <div class="row">

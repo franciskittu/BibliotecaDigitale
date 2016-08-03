@@ -98,6 +98,14 @@ a.list-group-item:hover{
     background-color: #18BC9C;
 }
 
+.tabella{
+  background: #2C3E50;
+  color:white;
+}
+.riga_tabella:hover{
+  background: #18BC9C;
+}
+
 @media (min-width: 768px) {
   header .container {
     padding-top: 200px;

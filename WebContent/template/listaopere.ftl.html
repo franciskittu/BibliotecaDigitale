@@ -8,7 +8,22 @@
             </div>
                     <div class="list-group">
                         <#list opere as opera>
-                        	<a href="#" class="list-group-item">${opera.titolo}</a>
+                        <table class="table ">
+							  <thead>
+							    <tr class="tabella">
+							      <th>#</th>
+							      <th>Titolo opera</th>
+							      <th>Descrizione opera</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+								  	<tr class="riga_tabella" data>
+								      <th scope="row">1</th>
+								      <td>${opera.titolo}</td>
+								      <td>${opera.descrizione}</td>
+								    </tr>
+							  </tbody>
+							</table>
   						</#list>
                         
                     </div>

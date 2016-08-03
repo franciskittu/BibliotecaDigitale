@@ -102,18 +102,26 @@
             </div>
         </div>
     </header>
-<!-- Include sezione ricerca -->   
+<!-- Include template freemarker in base al tipo di utente -->   
     <#include ricerca_tpl>
     
-    <#if ricerca??>
+    <#if ricerca?? && ricerca>
     	<#include listaopere_tpl>
     </#if>
-    <#if loggato??>
+    <#if loggato?? && loggato>
     	<#if acquisitore?? && acquisitore>
-    		<#include upload_immagine>
+    		<#include acquisitore_tpl>
+        <#elseif trascrittore?? && trascrittore>
+            <#include trascrittore_tpl>
+        <#elseif admin?? && admin>
+            <#include admin_tpl>
+        <#elseif revisore_acquisizioni?? && revisore_acquisizioni>
+            <#include revisore_acquisizioni_tpl>
+        <#elseif revisore_trascrizioni?? && revisore_trascrizioni>
+            <#include revisore_trascrizioni_tpl>
     	</#if>
     <#else>
-<!-- Include sezione registrazione -->
+<!-- Include sezione registrazione se non loggato -->
     <#include registrazione_tpl>
     </#if>
     
@@ -124,8 +132,6 @@
             <i class="fa fa-chevron-up"></i>
         </a>
     </div>
-
-    
 
     <!-- jQuery -->
     <script src="template/vendor/jquery/jquery.min.js"></script>
@@ -142,32 +148,7 @@
 
     <!-- Theme JavaScript -->
     <script src="template/js/freelancer.js"></script>
-     <script type="text/javascript">
-        
-        function controllausername(obj){
-            //$("#username").keypress(function(){
-            $.ajax({
-            url: 'Registrazione',
-            type: 'POST',
-            data: 'usernameAjax='+obj.value,
-                success: function(data) {
-                			console.log((data));
-                            if (eval(data)){
-                                console.log("0");
-                                document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div>";
-                                
-                            }
-                            
-                            else {
-                                console.log("2");
-                                $("#status").remove();
-                                document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
-                                
-                            }
-                }
-            });
-            };
-    </script>
+    
 </body>
 
 </html>

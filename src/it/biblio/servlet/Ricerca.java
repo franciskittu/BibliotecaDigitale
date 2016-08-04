@@ -53,7 +53,7 @@ public class Ricerca extends HttpServlet {
 			res.activate(e.getMessage(), request, response);
 		}
 		*/
-			response.sendRedirect("Visualizza?richiesta=ricerca&anno="+anno+"&editore="+editore+"&autore="+autore+"&lingua="+lingua+"&titolo="+titolo+"&pubblicata="+pubblicata);
+			response.sendRedirect("Visualizza?richiesta=ricerca&anno="+anno+"&editore="+editore+"&autore="+autore+"&lingua="+lingua+"&titolo="+titolo+"&pubblicata="+pubblicata+"#listaopere");
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on

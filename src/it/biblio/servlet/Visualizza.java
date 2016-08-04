@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -23,8 +24,40 @@ import it.biblio.utility.SecurityLayer;
 
 public class Visualizza extends HttpServlet {
 
+	@Resource(name = "jdbc/bibliodb") //richiamo alla resource-ref del deployment descriptor
+	private DataSource ds;
+	
+	/**
+	 * Funzione che analizza la sessione per determinare le variabili dei ruoli nei template
+	 * 
+	 * @param request servlet request
+	 * @param template_data modello dati template
+	 * @param s sessione
+	 */
+	private void inizializzaRuoli(HttpServletRequest request, Map<String, Object> template_data, HttpSession s){
+		if(s!=null){
+			List<String> ruoli = (List<String>) s.getAttribute("ruoli");
+			if (ruoli != null) {
+				template_data.put("acquisitore", ruoli.contains("acquisitore"));
+				template_data.put("trascrittore", ruoli.contains("trascrittore"));
+				template_data.put("admin", ruoli.contains("admin"));
+				template_data.put("revisore_acquisizioni", ruoli.contains("revisore acquisizioni"));
+				template_data.put("revisore_trascrizioni", ruoli.contains("revisore trascrizioni"));
+				template_data.put("nomutente", s.getAttribute("username"));
+			}
+			template_data.put("loggato", true);
+		}else{
+			template_data.put("acquisitore", false);
+			template_data.put("trascrittore", false);
+			template_data.put("admin", false);
+			template_data.put("revisore_acquisizioni", false);
+			template_data.put("revisore_trascrizioni", false);
+		}
+	}
+	
 	private void gestisciRicerca(HttpServletRequest request, DataLayerImpl datalayer,
 			Map<String, Object> template_data) {
+		
 		String anno = request.getParameter("anno");
 		String editore = request.getParameter("editore");
 		String autore = request.getParameter("autore");
@@ -44,11 +77,11 @@ public class Visualizza extends HttpServlet {
 		template_data.put("opere", opere);
 	}
 
+	
 	private void gestisciLogin(HttpServletRequest request, Map<String, Object> template_data, HttpSession s) {
 		if (request.getParameter("errore") != null) {
 			if (request.getParameter("errore").equals("login")) {
-				template_data.put("errore", "login");// da concordare con il
-														// template freemarker
+				template_data.put("errore", "login");// da concordare con il template freemarker
 			}
 		} else {
 
@@ -69,37 +102,39 @@ public class Visualizza extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
+		/**
+		 * Sessione utente
+		 */
 		HttpSession s = SecurityLayer.checkSession(request);
 
-		DataSource ds = (DataSource) getServletContext().getAttribute("datasource");
 
+		/**
+		 * Connessione al db
+		 */
 		Connection connection = ds.getConnection();
+		/**
+		 * Oggetto DAO
+		 */
 		DataLayerImpl datalayer = new DataLayerImpl(connection);
 
+		/**
+		 * Mappa modello template
+		 */
 		Map<String, Object> template_data = new HashMap<String, Object>();
+		
+		inizializzaRuoli(request,template_data,s);
+		
 		if (!request.getParameterNames().hasMoreElements()) {
-			template_data.put("ricerca_tpl", "ricerca.ftl.html");
-			template_data.put("registrazione_tpl", "registrazione.ftl.html");
 		} else if (request.getParameter("richiesta").equals("login")) {
 			gestisciLogin(request, template_data, s);
-			template_data.put("ricerca_tpl", "ricerca.ftl.html");
 		} else if (request.getParameter("richiesta").equals("ricerca")) {
 			gestisciRicerca(request, datalayer, template_data);
-			template_data.put("ricerca_tpl", "ricerca.ftl.html");
 			template_data.put("ricerca", true);
-			template_data.put("listaopere_tpl", "listaopere.ftl.html");
-			if (s != null) {
-				gestisciLogin(request, template_data, s);
-			} else {
-				template_data.put("acquisitore", false);
-				template_data.put("trascrittore", false);
-				template_data.put("admin", false);
-				template_data.put("revisore_acquisizioni", false);
-				template_data.put("revisore_trascrizioni", false);
-				template_data.put("registrazione_tpl", "registrazione.ftl.html");
-			}
 		}
 
+		/**
+		 * Stream output
+		 */
 		TemplateResult tr = new TemplateResult(getServletContext());
 		tr.activate("", template_data, response);
 	}

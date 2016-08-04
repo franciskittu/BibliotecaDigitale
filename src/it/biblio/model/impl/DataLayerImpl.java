@@ -293,10 +293,10 @@ public class DataLayerImpl implements DataLayer {
 				query = query + " AND id = "+O.getID();
 			}
 			if(!O.getAnno().equals("")){
-				query = query + " AND anno = "+O.getAnno();
+				query = query + " AND anno = '"+O.getAnno()+"'";
 			}
 			if(!O.getLingua().equals("")){
-				query = query + " AND lingua = "+O.getLingua();
+				query = query + " AND lingua = '"+O.getLingua()+"'";
 			}
 			if(!O.getEditore().equals("")){
 				query = query + " AND editore LIKE '%"+O.getEditore()+"%'";

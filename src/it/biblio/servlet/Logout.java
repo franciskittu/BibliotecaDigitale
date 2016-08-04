@@ -8,6 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import it.biblio.utility.SecurityLayer;
 
+/**
+ * Con questa server si effettua il logout invalidando la sessione esistente.
+ * 
+ * @author francesco
+ *
+ */
 public class Logout extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)

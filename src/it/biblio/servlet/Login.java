@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -29,18 +30,20 @@ import it.biblio.utility.SecurityLayer;
 @WebServlet(description = "Verifica credenziali e reindirizzamento alla homepage utente", urlPatterns = { "/Login" })
 public class Login extends HttpServlet {
 
+
+	 @Resource(name = "jdbc/bibliodb") //reference to the resource-ref in the deployment descriptor
+	 private DataSource ds;
+	 
+	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		/**
-		 * parametro di contesto per l'accesso al DB
-		 */
-		DataSource ds = (DataSource) getServletContext().getAttribute("datasource");
 
 		try {
 			/**
 			 * ottenimento connessione dal pool di connessioni
 			 */
 			Connection connection = ds.getConnection();
+			
 			/**
 			 * DAO per effettuare operazioni sul DB
 			 */

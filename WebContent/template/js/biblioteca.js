@@ -25,13 +25,12 @@ function controllausername(obj){
             
             
             function controllaNumeroPagina(obj){
-                //$("#username").keypress(function(){
-            	console.log("sono entrato");
-            	var id = $("#opera").value;
+            	var id = document.getElementById("opera").value;
                 $.ajax({
                 url: 'UploadImmagine',
                 type: 'POST',
-                data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
+                data : {numeroAJAX:obj.value, operaAJAX:id },
+                //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
                     success: function(data) {
                                 console.log((data));
                                 if (eval(data)){

@@ -49,12 +49,12 @@
 					        <#if (opere_non_pubblicate?size > 0)>
 								<select name="opera" value="">
 								<#list opere_non_pubblicate as opera>
-									<option name="opera" value="${opera.ID}">${opera.titolo} - ${opera.editore}</option>
+									<option id="opera" name="opera" value="${opera.ID}">${opera.titolo} - ${opera.editore}</option>
 								</#list>
 								</select>
 							</#if>	
 							Numero di pagina inserita: 
-							<input type="text" name="numero_pagina"/><br/>
+							<input onBlur="controllaNumeroPagina" type="text" name="numero_pagina"/><br/>
 					        Scegli file:
 					        <input type="file" name="fileToUpload" id=" fileToUpload">
 					        <input type="submit" value="Upload Image" name="submit">
@@ -65,7 +65,7 @@
 				</div>
 			</div>
 		</div>
-</section>
+</section> 
 <#include "ricerca.ftl.html">
 <#include "listaopere.ftl.html">
 

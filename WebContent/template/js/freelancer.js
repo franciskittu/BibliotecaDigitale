@@ -22,6 +22,34 @@ function controllausername(obj){
                 }
             });
             };
+            
+            
+            function controllaNumeroPagina(obj){
+                //$("#username").keypress(function(){
+            	console.log("sono entrato");
+            	var id = $.("#opera").value;
+                $.ajax({
+                url: 'UploadImmagine',
+                type: 'POST',
+                data: 'numeroAJAX='+obj.value+'operaAJAX='id,
+                    success: function(data) {
+                                console.log((data));
+                                if (eval(data)){
+                                    
+                                    document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Username gia' presente, inserirne un altro</li></ul></p>";
+                                    
+                                }
+                                
+                                else {
+                                    
+                                    $("#status").remove();
+                                    document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
+                                    
+                                }
+                    }
+                });
+                };            
+            
 (function($) {
     "use strict"; // Start of use strict
 

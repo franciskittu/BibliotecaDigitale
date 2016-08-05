@@ -43,6 +43,8 @@ public interface DataLayer {
 	
 	List<Opera> getOpereByQuery(Opera P);
 	
+	List<Opera> getOpereInTrascrizioneByUtente(Utente U);
+	
 	/*Operazioni Pagina*/
 	
 	Pagina creaPagina();

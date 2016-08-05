@@ -8,6 +8,7 @@
                 </div>
             </div>
                     <div class="list-group">
+                    <#if (opere?size > 0)>
                         <#list opere as opera>
                         <table class="table ">
 							  <thead>
@@ -28,7 +29,9 @@
 							  </tbody>
 							</table>
   						</#list>
-                        
+                    <#else>
+                    LA RICERCA NON HA PRODOTTO RISULTATI.
+                    </#if>
                     </div>
         </div>
     </section>

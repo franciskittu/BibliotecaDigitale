@@ -11,8 +11,12 @@
         url="jdbc:postgresql://localhost/bibliotech"
         username="biblioadmin"
         password="biblioadmin"
-        maxActive="50"
-        maxIdle="5"
+        initialSize="5"
+        maxActive="500"
+        maxIdle="50"
+        minIdle="10"
         maxWait="10000"
+        timeBetweenEvictionRunsMillis = "34000"
+        minEvictableIdleTimeMillis = "55000"
     />
 </Context>

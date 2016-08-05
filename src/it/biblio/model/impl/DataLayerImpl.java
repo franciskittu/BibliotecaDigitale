@@ -22,7 +22,7 @@ public class DataLayerImpl implements DataLayer {
 	private final PreparedStatement aUtente, gUtente,gUtenteUsername;
 	private final PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente;
 	private final PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
-	private final PreparedStatement gOpera, aOpera, aggiornaOpera;
+	private final PreparedStatement gOpera, aOpera, aggiornaOpera,gOpereInTrascrizioneByUtente;
 	private final PreparedStatement gPagina, aPagina;
 	private final PreparedStatement gCommenta, aCommenta;
 	
@@ -48,6 +48,7 @@ public class DataLayerImpl implements DataLayer {
 		gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 		aCommenta = c.prepareStatement("");
 		gOpereByQuery = c.createStatement();
+		gOpereInTrascrizioneByUtente = c.prepareStatement("SELECT DISTINCT Opera.* FROM Opera,Pagina WHERE Pagina.utente= ? AND Opera.id = Pagina.opera");
 		
 	}
 
@@ -282,6 +283,7 @@ public class DataLayerImpl implements DataLayer {
 		return null;
 	}
 
+	
 	@Override
 	public List<Opera> getOpereByQuery(Opera O) {
 		Opera OI = (OperaImpl) O; 
@@ -459,6 +461,28 @@ public class DataLayerImpl implements DataLayer {
 			rs = gRuoliUtente.executeQuery();
 			while(rs.next()){
 				ris.add(new RuoloImpl(this,rs));
+			}
+		}catch(SQLException ex){
+			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);
+		}finally{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, e);
+			}
+		}
+		return ris;
+	}
+
+	@Override
+	public List<Opera> getOpereInTrascrizioneByUtente(Utente U) {
+		List<Opera> ris = new ArrayList<Opera>();
+		ResultSet rs = null;
+		try{
+			this.gOpereInTrascrizioneByUtente.setLong(1, U.getID());
+			this.gOpereInTrascrizioneByUtente.executeQuery();
+			while(rs.next()){
+				ris.add(new OperaImpl(this,rs));
 			}
 		}catch(SQLException ex){
 			java.util.logging.Logger.getLogger(DataLayerImpl.class.getName()).log(Level.SEVERE, null, ex);

@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>UNIVAQ</title>
+    <title>UNIVAQ-BIBLIOTECH</title>
 
     <!-- Bootstrap Core CSS -->
     <link href="template/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -33,6 +33,8 @@
  			<#include "acquisitore.ftl.html">
  		<#elseif trascrittore?? && trascrittore>
             <#include "trascrittore.ftl.html">
+        <#else>
+        	<#include "utente_normale.ftl.html">
         </#if>
  	<#else>
  		<#include "no_loggato.ftl.html">

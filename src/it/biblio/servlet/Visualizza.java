@@ -67,11 +67,11 @@ public class Visualizza extends HttpServlet {
 
 		List<Opera> opere = new ArrayList<Opera>();
 		Opera O = datalayer.creaOpera();
-		O.setAnno(anno);
-		O.setEditore(editore);
-		O.setTitolo(titolo);
+		O.setAnno(SecurityLayer.addSlashes(anno));
+		O.setEditore(SecurityLayer.addSlashes(editore));
+		O.setTitolo(SecurityLayer.addSlashes(titolo));
 		O.setPubblicata((pubblicata.equals("true")) ? true : false);
-		O.setLingua(lingua);
+		O.setLingua(SecurityLayer.addSlashes(lingua));
 		opere = datalayer.getOpereByQuery(O);
 
 		template_data.put("opere", opere);
@@ -131,12 +131,26 @@ public class Visualizza extends HttpServlet {
 			gestisciRicerca(request, datalayer, template_data);
 			template_data.put("ricerca", true);
 		}
+		
+		if(template_data.containsKey("acquisitore") && ((Boolean) template_data.get("acquisitore")) == true){
+			Opera O = datalayer.creaOpera();
+			O.setPubblicata(false);
+			List<Opera> opere = datalayer.getOpereByQuery(O);
+			template_data.put("opere_non_pubblicate", opere);
+		}else if(template_data.containsKey("acquisitore") && ((Boolean)template_data.get("trascrittore")) == true){
+			Utente U = datalayer.getUtenteByUsername((String) s.getAttribute("username"));
+			List<Opera> opere = datalayer.getOpereInTrascrizioneByUtente(U);
+			template_data.put("opere_in_trascrizione",opere);
+		}
 
+		ds.getConnection().close();
+		
 		/**
 		 * Stream output
 		 */
 		TemplateResult tr = new TemplateResult(getServletContext());
 		tr.activate("", template_data, response);
+		
 	}
 
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on

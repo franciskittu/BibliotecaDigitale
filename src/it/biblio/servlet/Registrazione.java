@@ -2,9 +2,11 @@ package it.biblio.servlet;
 
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +21,10 @@ import it.biblio.model.impl.DataLayerImpl;
 import it.biblio.utility.SecurityLayer;
 
 public class Registrazione extends HttpServlet {
+	
+	
+	@Resource(name = "jdbc/bibliodb") //richiamo alla resource-ref del deployment descriptor
+	private DataSource ds;
 	
 	/**
 	 * Metodo per il controllo della correttezza dei parametri
@@ -48,9 +54,8 @@ public class Registrazione extends HttpServlet {
 	}
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException {
 		
-		DataSource ds = (DataSource) getServletContext().getAttribute("datasource");
 		HttpSession s;
 		try {
         	Connection connection = ds.getConnection();
@@ -106,6 +111,8 @@ public class Registrazione extends HttpServlet {
         } catch (Exception e) {
 			FailureResult res = new FailureResult(getServletContext());
             res.activate(e.getMessage(), request, response);
+		}finally{
+			ds.getConnection().close();
 		}
         
 	}
@@ -122,7 +129,12 @@ public class Registrazione extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+			processRequest(request, response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
     /**
@@ -136,7 +148,12 @@ public class Registrazione extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+			processRequest(request, response);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
 
 }

@@ -42,10 +42,6 @@
     <url-pattern>/EsempioDS</url-pattern>
   </servlet-mapping>
   <context-param>
-    <param-name>data.source</param-name>
-    <param-value>java:comp/env/jdbc/bibliodb</param-value>
-  </context-param>
-  <context-param>
     <param-name>view.template_directory</param-name>
     <param-value>template</param-value>
   </context-param>

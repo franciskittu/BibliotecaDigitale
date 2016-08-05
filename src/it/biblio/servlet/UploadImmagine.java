@@ -1,21 +1,35 @@
 package it.biblio.servlet;
 
 import java.io.*;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.Calendar;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.sql.DataSource;
+
+import it.biblio.model.Pagina;
+import it.biblio.model.impl.DataLayerImpl;
 
 /**
  * Servlet implementation class Upload
  */
-@WebServlet(description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/Upload" })
+@WebServlet(description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
+@MultipartConfig
 public class UploadImmagine extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
+	@Resource(name = "jdbc/bibliodb")
+	private DataSource ds;
+	
 	private String getFileName(final Part part) {
 	    final String partHeader = part.getHeader("content-disposition");
 	    
@@ -29,14 +43,25 @@ public class UploadImmagine extends HttpServlet {
 	}
 	
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException{
-		final long id_opera = Long.getLong(request.getParameter("id_opera"));
+		final long id_opera = Long.getLong(request.getParameter("opera"));
 		final Part filePart = request.getPart("fileToUpload");
 		final String nomeFile = getFileName(filePart);
-		final String path = "/tmp";
+		final String path = getServletContext().getContextPath()+File.separator+"immagini-opere";
+		final String numero = (String) request.getParameter("numero_pagina");
+		
 		
 		OutputStream out = null;
 		InputStream in = null;
 		try{
+			/**
+			 * Connessione al db
+			 */
+			Connection connection = ds.getConnection();
+			/**
+			 * Oggetto DAO
+			 */
+			DataLayerImpl datalayer = new DataLayerImpl(connection);
+			
 			out = new FileOutputStream(new File(path+File.separator+nomeFile));
 			in = filePart.getInputStream();
 			
@@ -47,8 +72,16 @@ public class UploadImmagine extends HttpServlet {
 				out.write(bytes,0,read);
 			}
 			
+			Pagina P = datalayer.creaPagina();
+			P.setOpera(datalayer.getOpera(id_opera));
+			P.setPathImmagine(path+File.separator+nomeFile);
+			P.setUploadImmagine(new Timestamp(Calendar.getInstance().getTime().getTime()));
+			P.setNumero(numero);
+			datalayer.aggiungiPagina(P);
 		}catch(FileNotFoundException ex){
 			//failure
+		}catch(SQLException ex){
+			//
 		}finally{
 			if(out!=null){
 				out.close();
@@ -56,6 +89,8 @@ public class UploadImmagine extends HttpServlet {
 			if(in!=null){
 				in.close();
 			}
+			
+			response.sendRedirect("Visualizza?richiesta=upload");
 		}
 		
 	}
@@ -79,8 +114,7 @@ public class UploadImmagine extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		processRequest(request,response);
 	}
 
 	/**

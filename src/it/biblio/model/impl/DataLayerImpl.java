@@ -23,7 +23,7 @@ public class DataLayerImpl implements DataLayer {
 	private final PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente;
 	private final PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
 	private final PreparedStatement gOpera, aOpera, aggiornaOpera,gOpereInTrascrizioneByUtente;
-	private final PreparedStatement gPagina, aPagina;
+	private final PreparedStatement gPagina, aPagina, gPagineOpera;
 	private final PreparedStatement gCommenta, aCommenta;
 	
 	private Statement gOpereByQuery;
@@ -49,7 +49,7 @@ public class DataLayerImpl implements DataLayer {
 		aCommenta = c.prepareStatement("");
 		gOpereByQuery = c.createStatement();
 		gOpereInTrascrizioneByUtente = c.prepareStatement("SELECT DISTINCT Opera.* FROM Opera,Pagina WHERE Pagina.utente= ? AND Opera.id = Pagina.opera");
-		
+		gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ?");
 	}
 
 	@Override
@@ -494,6 +494,30 @@ public class DataLayerImpl implements DataLayer {
 			}
 		}
 		return ris;
+	}
+
+	@Override
+	public List<Pagina> getPagineOpera(long id_opera) {
+		List<Pagina> ris = new ArrayList<Pagina>();
+		ResultSet rs = null;
+		try{
+			this.gPagineOpera.setLong(1, id_opera);
+			this.gPagineOpera.executeQuery();
+			while(rs.next()){
+				ris.add(new PaginaImpl(this,rs));
+			}
+		}catch(SQLException ex){
+			//
+		}finally{
+			try {
+				rs.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		}
+		return null;
 	}
 
 }

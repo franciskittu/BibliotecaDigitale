@@ -53,6 +53,8 @@ public interface DataLayer {
 	
 	Pagina aggiungiPagina(Pagina P);
 	
+	List<Pagina> getPagineOpera(long id_opera);
+	
 	/*Operazioni Commenta*/
 	
 	Commenta creaCommenta();

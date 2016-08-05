@@ -54,13 +54,13 @@
 								</select>
 							</#if>	
 							Numero di pagina inserita: 
-							<input onBlur="controllaNumeroPagina" type="text" name="numero_pagina"/><br/>
+							<input onBlur="controllaNumeroPagina(this)" type="text" name="numero_pagina"/><br/>
 					        Scegli file:
 					        <input type="file" name="fileToUpload" id=" fileToUpload">
 					        <input type="submit" value="Upload Image" name="submit">
 					        <#if upload_ok?? && upload_ok>
-					        	Upload avvenuto correttamente ;)
-					        <#/if>
+					        	Upload avvenuto correttamente 
+					        </#if>
 					</form>
 				</div>
 			</div>

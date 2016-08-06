@@ -69,7 +69,7 @@ public class Registrazione extends HttpServlet {
 				template_data.put("risultato", ris);
 				/*chiama il template per l'oggetto JSON*/
 				TemplateResult tr = new TemplateResult(getServletContext());
-				tr.activate("controlloRegistrazione.ftl.json", template_data, response);
+				tr.activate("controlloAjax.ftl.json", template_data, response);
 			}
 			/*gestione richiesta registrazione*/
 			else {

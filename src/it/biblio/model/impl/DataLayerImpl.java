@@ -44,7 +44,7 @@ public class DataLayerImpl implements DataLayer {
 		aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, pubblicata = ?");
 		gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 		aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
-				+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?,?) RETURNING ID");
+				+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
 		gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 		aCommenta = c.prepareStatement("");
 		gOpereByQuery = c.createStatement();
@@ -502,7 +502,7 @@ public class DataLayerImpl implements DataLayer {
 		ResultSet rs = null;
 		try{
 			this.gPagineOpera.setLong(1, id_opera);
-			this.gPagineOpera.executeQuery();
+			rs = this.gPagineOpera.executeQuery();
 			while(rs.next()){
 				ris.add(new PaginaImpl(this,rs));
 			}

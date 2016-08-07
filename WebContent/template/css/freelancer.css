@@ -106,6 +106,10 @@ a.list-group-item:hover{
   background: #18BC9C;
 }
 
+.label-nav{
+	color:white;	
+}
+
 @media (min-width: 768px) {
   header .container {
     padding-top: 200px;

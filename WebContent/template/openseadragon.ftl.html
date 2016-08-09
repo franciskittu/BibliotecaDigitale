@@ -2,7 +2,10 @@
 <script type="text/javascript">
     var viewer = OpenSeadragon({
         id: "openseadragon1",
-        prefixUrl: "/openseadragon/images/",
-        tileSources: "/path/to/my/image.dzi"
+        prefixUrl: "template/js/openseadragon/images/",
+        tileSources: {
+            type: "image",
+            url:  "template/img/download.jpg"
+        }
     });
 </script>

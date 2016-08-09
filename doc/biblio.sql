@@ -110,7 +110,10 @@ CREATE TABLE opera (
     anno character(4) NOT NULL,
     editore character varying,
     descrizione character varying,
-    pubblicata boolean
+    pubblicata boolean,
+    num_pagine integer,
+    trascrittore integer,
+    acquisitore integer
 );
 
 
@@ -145,12 +148,12 @@ CREATE TABLE pagina (
     id integer NOT NULL,
     numero character varying NOT NULL,
     path_immagine character varying,
-    upload_immagine timestamp without time zone,
-    immagine_validata boolean,
-    path_trascrizione character varying,
-    ultima_modifica_trascrizione timestamp without time zone,
+    opera integer,
     trascrizione_validata boolean,
-    opera integer
+    upload_immagine timestamp without time zone,
+    ultima_modifica_trascrizione timestamp without time zone,
+    path_trascrizione character varying,
+    immagine_validata boolean
 );
 
 
@@ -337,8 +340,9 @@ SELECT pg_catalog.setval('commenta_progressivo_seq', 1, false);
 -- Data for Name: opera; Type: TABLE DATA; Schema: public; Owner: biblioadmin
 --
 
-COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata) FROM stdin;
-1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	t
+COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata, num_pagine, trascrittore, acquisitore) FROM stdin;
+1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	t	5	\N	\N
+2	titolo	mambo	2000	rizzoli	descr	f	10	\N	20
 \.
 
 
@@ -346,14 +350,15 @@ COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata) FROM std
 -- Name: opera_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('opera_id_seq', 1, true);
+SELECT pg_catalog.setval('opera_id_seq', 2, true);
 
 
 --
 -- Data for Name: pagina; Type: TABLE DATA; Schema: public; Owner: biblioadmin
 --
 
-COPY pagina (id, numero, path_immagine, upload_immagine, immagine_validata, path_trascrizione, ultima_modifica_trascrizione, trascrizione_validata, opera) FROM stdin;
+COPY pagina (id, numero, path_immagine, opera, trascrizione_validata, upload_immagine, ultima_modifica_trascrizione, path_trascrizione, immagine_validata) FROM stdin;
+4	1	/BiblioTech/immagini-opere/il_tesoretto_1.jpg	2	f	2016-08-09 12:48:43.287	\N		f
 \.
 
 
@@ -361,7 +366,7 @@ COPY pagina (id, numero, path_immagine, upload_immagine, immagine_validata, path
 -- Name: pagina_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('pagina_id_seq', 1, false);
+SELECT pg_catalog.setval('pagina_id_seq', 4, true);
 
 
 --
@@ -369,6 +374,9 @@ SELECT pg_catalog.setval('pagina_id_seq', 1, false);
 --
 
 COPY privilegi (progressivo, utente, ruolo) FROM stdin;
+1	15	1
+3	20	2
+4	25	3
 \.
 
 
@@ -376,7 +384,7 @@ COPY privilegi (progressivo, utente, ruolo) FROM stdin;
 -- Name: privilegi_progressivo_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('privilegi_progressivo_seq', 1, false);
+SELECT pg_catalog.setval('privilegi_progressivo_seq', 4, true);
 
 
 --
@@ -399,7 +407,8 @@ COPY ruolo (id, nome, descrizione) FROM stdin;
 COPY utente (id, username, password, nome, cognome, email) FROM stdin;
 15	franciskittu	-9-26-111121111221650313779-91-93-102-21-105-1719-39-104	Francesco	Proietti	franciskittu@gmail.com
 16	marcolino	-112-31477370-80114-96-92-102-20-37-581226874-67-70125	Marco	D\\'Ettorre	marcodettorre88@gmail.com
-17	dandi	-120-17102624359-45-118-5772304451-88-114-1007604310	D\\'aloisio	Andrea	dandi@yahoo.it
+20	marco	1114-8352-87-2760115-103-88-125-3026-3677-112-30-34-9339	marco	marco	marcodettorre88@gmail.com
+25	giutom	6239127-113-10411618-6-193-7717-66-10234-8254104-52	Giuseppe	Tomei	giutom88@gmail.com
 \.
 
 
@@ -407,7 +416,7 @@ COPY utente (id, username, password, nome, cognome, email) FROM stdin;
 -- Name: utente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('utente_id_seq', 17, true);
+SELECT pg_catalog.setval('utente_id_seq', 25, true);
 
 
 --
@@ -475,14 +484,6 @@ ALTER TABLE ONLY utente
 
 
 --
--- Name: commenta_trascrizione_fkey; Type: FK CONSTRAINT; Schema: public; Owner: biblioadmin
---
-
-ALTER TABLE ONLY commenta
-    ADD CONSTRAINT commenta_trascrizione_fkey FOREIGN KEY (trascrizione) REFERENCES pagina(id);
-
-
---
 -- Name: commenta_utente_fkey; Type: FK CONSTRAINT; Schema: public; Owner: biblioadmin
 --
 
@@ -491,11 +492,27 @@ ALTER TABLE ONLY commenta
 
 
 --
+-- Name: opera_acquisitore_fkey; Type: FK CONSTRAINT; Schema: public; Owner: biblioadmin
+--
+
+ALTER TABLE ONLY opera
+    ADD CONSTRAINT opera_acquisitore_fkey FOREIGN KEY (acquisitore) REFERENCES utente(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: opera_trascrittore_fkey; Type: FK CONSTRAINT; Schema: public; Owner: biblioadmin
+--
+
+ALTER TABLE ONLY opera
+    ADD CONSTRAINT opera_trascrittore_fkey FOREIGN KEY (trascrittore) REFERENCES utente(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: pagina_opera_fkey; Type: FK CONSTRAINT; Schema: public; Owner: biblioadmin
 --
 
 ALTER TABLE ONLY pagina
-    ADD CONSTRAINT pagina_opera_fkey FOREIGN KEY (opera) REFERENCES opera(id);
+    ADD CONSTRAINT pagina_opera_fkey FOREIGN KEY (opera) REFERENCES opera(id) ON DELETE CASCADE;
 
 
 --

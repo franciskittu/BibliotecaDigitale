@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 import it.biblio.model.Opera;
 import it.biblio.model.Pagina;
+import it.biblio.model.Utente;
 
 /**
  * Implementazionde del Plain Old Java Object relativo all'interfaccia Pagina
@@ -20,6 +21,7 @@ public class PaginaImpl implements Pagina {
 	private Boolean immagine_validata, trascrizione_validata;
 	private Timestamp upload_immagine, ultima_modifica_trascrizione;
 	private Opera opera;
+	
 	/**
 	 * Oggetto DAO per l'accesso al DB.
 	 */
@@ -154,5 +156,6 @@ public class PaginaImpl implements Pagina {
 		this.opera = O;
 
 	}
+
 
 }

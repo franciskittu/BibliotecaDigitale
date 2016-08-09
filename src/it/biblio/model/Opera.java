@@ -30,5 +30,10 @@ public interface Opera {
 	Boolean getPubblicata();
 	void setPubblicata(Boolean b);
 	
+	Utente getTrascrittore();
+	void setTrascrittore(Utente T);
+	
+	Utente getAcquisitore();
+	void setAcquisitore(Utente A);
 	
 }

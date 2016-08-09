@@ -4,12 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import it.biblio.model.Opera;
+import it.biblio.model.Utente;
 
 public class OperaImpl implements Opera{
 
-	private long ID;
+	private long ID, id_trascrittore, id_acquisitore;
 	private Boolean pubblicata;
 	private String titolo,descrizione, lingua, anno, editore;
+	private Utente trascrittore, acquisitore;
 	
 	/**
 	 * Oggetto DAO per l'accesso al DB.
@@ -23,7 +25,7 @@ public class OperaImpl implements Opera{
 	public OperaImpl(DataLayerImpl datalayer){
 		titolo = descrizione = editore = lingua = anno = "";
 		pubblicata = false;
-		ID = 0;
+		ID = id_acquisitore= id_trascrittore = 0;
 		this.datalayer = datalayer;
 	}
 	
@@ -42,6 +44,8 @@ public class OperaImpl implements Opera{
 		editore = dati.getString("editore");
 		lingua = dati.getString("lingua");
 		anno = dati.getString("anno");
+		id_trascrittore = dati.getLong("trascrittore");
+		id_acquisitore = dati.getLong("acquisitore");
 		this.datalayer = datalayer;
 	}
 	
@@ -111,6 +115,34 @@ public class OperaImpl implements Opera{
 	@Override
 	public void setPubblicata(Boolean b) {
 		this.pubblicata = b;
+	}
+	
+	@Override
+	public Utente getTrascrittore() {
+		if(this.trascrittore == null){
+			this.trascrittore = datalayer.getUtente(this.id_trascrittore);
+		}
+		return this.trascrittore;
+	}
+
+	@Override
+	public void setTrascrittore(Utente T) {
+		this.trascrittore = T;
+		
+	}
+
+	@Override
+	public Utente getAcquisitore() {
+		if(this.acquisitore == null){
+			this.acquisitore = datalayer.getUtente(this.id_acquisitore);
+		}
+		return this.acquisitore;
+	}
+
+	@Override
+	public void setAcquisitore(Utente A) {
+		this.acquisitore = A;
+		
 	}
 
 }

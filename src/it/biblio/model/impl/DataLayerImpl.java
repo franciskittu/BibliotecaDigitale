@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -40,8 +41,8 @@ public class DataLayerImpl implements DataLayer {
 		aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
 		rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
 		gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
-		aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,pubblicata) VALUES(?,?,?,?,?,?) RETURNING ID");
-		aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, pubblicata = ?");
+		aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,pubblicata, acquisitore, trascrittore) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
+		aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, pubblicata = ?, acquisitore = ?, trascrittore = ? WHERE id = ?");
 		gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 		aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 				+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
@@ -273,6 +274,8 @@ public class DataLayerImpl implements DataLayer {
 			aOpera.setString(4, OI.getEditore());
 			aOpera.setString(5, OI.getDescrizione());
 			aOpera.setBoolean(6, OI.getPubblicata());
+			aOpera.setLong(7, (OI.getAcquisitore() != null) ? OI.getAcquisitore().getID() : null);
+			aOpera.setLong(8, (OI.getTrascrittore() != null) ? OI.getTrascrittore().getID() : null);
 			chiave = aOpera.executeQuery();
 			if(chiave.next()){
 				return getOpera(chiave.getLong("ID"));
@@ -421,6 +424,17 @@ public class DataLayerImpl implements DataLayer {
 			aggiornaOpera.setString(4, O.getEditore());
 			aggiornaOpera.setString(5, O.getDescrizione());
 			aggiornaOpera.setBoolean(6, O.getPubblicata());
+			if(O.getAcquisitore() != null){
+				aggiornaOpera.setLong(7,O.getAcquisitore().getID());
+			}else{
+				aggiornaOpera.setNull(7,Types.INTEGER);
+			}
+			if(O.getTrascrittore() != null){
+				aggiornaOpera.setLong(8, O.getTrascrittore().getID());
+			}else{
+				aggiornaOpera.setNull(8, Types.INTEGER);
+			}
+			aggiornaOpera.setLong(9, O.getID());
 			if(aggiornaOpera.executeUpdate() == 1){
 				return getOpera(O.getID());
 			}
@@ -480,7 +494,7 @@ public class DataLayerImpl implements DataLayer {
 		ResultSet rs = null;
 		try{
 			this.gOpereInTrascrizioneByUtente.setLong(1, U.getID());
-			this.gOpereInTrascrizioneByUtente.executeQuery();
+			rs = this.gOpereInTrascrizioneByUtente.executeQuery();
 			while(rs.next()){
 				ris.add(new OperaImpl(this,rs));
 			}

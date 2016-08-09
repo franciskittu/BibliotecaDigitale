@@ -34,16 +34,16 @@ public class Visualizza extends HttpServlet {
 	 * @param template_data modello dati template
 	 * @param s sessione
 	 */
-	private void inizializzaRuoli(HttpServletRequest request, Map<String, Object> template_data, HttpSession s){
-		if(s!=null){
-			List<String> ruoli = (List<String>) s.getAttribute("ruoli");
+	private void inizializzaRuoli(HttpServletRequest request, Map<String, Object> template_data){
+		if((Boolean)request.getAttribute("loggato") == true){
+			List<String> ruoli = (List<String>) request.getAttribute("ruoli");
 			if (ruoli != null) {
 				template_data.put("acquisitore", ruoli.contains("acquisitore"));
 				template_data.put("trascrittore", ruoli.contains("trascrittore"));
 				template_data.put("admin", ruoli.contains("admin"));
 				template_data.put("revisore_acquisizioni", ruoli.contains("revisore acquisizioni"));
 				template_data.put("revisore_trascrizioni", ruoli.contains("revisore trascrizioni"));
-				template_data.put("nomutente", s.getAttribute("username"));
+				template_data.put("nomutente", request.getAttribute("username"));
 			}
 			template_data.put("loggato", true);
 		}else{
@@ -78,21 +78,21 @@ public class Visualizza extends HttpServlet {
 	}
 
 	
-	private void gestisciLogin(HttpServletRequest request, Map<String, Object> template_data, HttpSession s) {
+	private void gestisciLogin(HttpServletRequest request, Map<String, Object> template_data) {
 		if (request.getParameter("errore") != null) {
 			if (request.getParameter("errore").equals("login")) {
 				template_data.put("errore", "login");// da concordare con il template freemarker
 			}
 		} else {
 
-			List<String> ruoli = (List<String>) s.getAttribute("ruoli");
+			List<String> ruoli = (List<String>) request.getAttribute("ruoli");
 			if (ruoli != null) {
 				template_data.put("acquisitore", ruoli.contains("acquisitore"));
 				template_data.put("trascrittore", ruoli.contains("trascrittore"));
 				template_data.put("admin", ruoli.contains("admin"));
 				template_data.put("revisore_acquisizioni", ruoli.contains("revisore acquisizioni"));
 				template_data.put("revisore_trascrizioni", ruoli.contains("revisore trascrizioni"));
-				template_data.put("nomutente", s.getAttribute("username"));
+				template_data.put("nomutente", request.getAttribute("username"));
 			}
 
 			template_data.put("loggato", true);
@@ -102,11 +102,6 @@ public class Visualizza extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException, SQLException {
-		/**
-		 * Sessione utente
-		 */
-		HttpSession s = SecurityLayer.checkSession(request);
-
 
 		/**
 		 * Connessione al db
@@ -122,11 +117,11 @@ public class Visualizza extends HttpServlet {
 		 */
 		Map<String, Object> template_data = new HashMap<String, Object>();
 		
-		inizializzaRuoli(request,template_data,s);
+		inizializzaRuoli(request,template_data);
 		
 		if (!request.getParameterNames().hasMoreElements()) {
 		} else if (request.getParameter("richiesta").equals("login")) {
-			gestisciLogin(request, template_data, s);
+			gestisciLogin(request, template_data);
 		} else if (request.getParameter("richiesta").equals("ricerca")) {
 			gestisciRicerca(request, datalayer, template_data);
 			template_data.put("ricerca", true);
@@ -137,13 +132,15 @@ public class Visualizza extends HttpServlet {
 			O.setPubblicata(false);
 			List<Opera> opere = datalayer.getOpereByQuery(O);
 			template_data.put("opere_non_pubblicate", opere);
-		}else if(template_data.containsKey("acquisitore") && ((Boolean)template_data.get("trascrittore")) == true){
-			Utente U = datalayer.getUtenteByUsername((String) s.getAttribute("username"));
+		}else if(template_data.containsKey("trascrittore") && ((Boolean)template_data.get("trascrittore")) == true){
+			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("username"));
 			List<Opera> opere = datalayer.getOpereInTrascrizioneByUtente(U);
 			template_data.put("opere_in_trascrizione",opere);
 		}
 
-		ds.getConnection().close();
+		if((Boolean)template_data.get("loggato")){
+			template_data.put("nomeutente", (String) request.getAttribute("username"));
+		}
 		
 		/**
 		 * Stream output

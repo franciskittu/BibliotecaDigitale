@@ -1,28 +1,21 @@
 package it.biblio.servlet;
 
 import java.io.*;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.*;
+import java.util.*;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
+import javax.servlet.annotation.*;
+import javax.servlet.http.*;
 import javax.sql.DataSource;
 
+import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.TemplateResult;
+import it.biblio.model.Opera;
 import it.biblio.model.Pagina;
 import it.biblio.model.impl.DataLayerImpl;
-
+import it.biblio.utility.*;
 
 @WebServlet(description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
 @MultipartConfig
@@ -53,7 +46,7 @@ public class UploadImmagine extends HttpServlet {
 	 */
 	private String checkNumeroPagina(DataLayerImpl datalayer, String numero, long opera) {
 		List<Pagina> pagine = datalayer.getPagineOpera(opera);
-		if(pagine != null){
+		if (pagine != null) {
 			for (Pagina pagina : pagine) {
 				if (pagina.getNumero().equals(numero)) {
 					return "false";
@@ -63,11 +56,11 @@ public class UploadImmagine extends HttpServlet {
 		return "true";
 	}
 
-	private void gestisciUpload(DataLayerImpl datalayer, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+	private void gestisciUpload(DataLayerImpl datalayer, HttpServletRequest request, HttpServletResponse response) throws ErroreBiblioteca, IOException, ServletException {
 		final long id_opera = Long.parseLong(request.getParameter("opera"));
 		final Part filePart = request.getPart("fileToUpload");
 		final String nomeFile = getFileName(filePart);
-		final String path = getServletContext().getRealPath(File.separator)+"immagini-opere";
+		final String path = getServletContext().getRealPath(File.separator) + "immagini-opere";
 		final String numero = (String) request.getParameter("numero_pagina");
 
 		OutputStream out = null;
@@ -84,15 +77,22 @@ public class UploadImmagine extends HttpServlet {
 				out.write(bytes, 0, read);
 			}
 
+			Opera O = datalayer.getOpera(id_opera);
+			// se l'opera non ha ancora un acquisitore l'utente attuale gli sarà
+			// attribuito
+			if (O.getAcquisitore() == null) {
+				O.setAcquisitore(datalayer.getUtente((Long)request.getAttribute("userid")));
+				O = datalayer.aggiornaOpera(O);
+			}
 			Pagina P = datalayer.creaPagina();
-			P.setOpera(datalayer.getOpera(id_opera));
-			P.setPathImmagine(path + File.separator + nomeFile);
+			P.setOpera(O);
+			P.setPathImmagine(getServletContext().getContextPath() + File.separator +"immagini-opere" + File.separator + nomeFile);
 			P.setUploadImmagine(new Timestamp(Calendar.getInstance().getTime().getTime()));
 			P.setNumero(numero);
 			datalayer.aggiungiPagina(P);
 
 		} catch (Exception ex) {
-			System.out.println(ex.getMessage());
+			throw new ErroreBiblioteca(ex.getMessage());
 		} finally {
 			if (out != null) {
 				out.close();
@@ -101,28 +101,28 @@ public class UploadImmagine extends HttpServlet {
 				in.close();
 			}
 
-			response.sendRedirect("Visualizza?richiesta=upload");
 		}
+		response.sendRedirect("Visualizza?richiesta=upload");
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
 		try {
-		/**
-		 * Connessione al db
-		 */
-		Connection connection = ds.getConnection();
-		/**
-		 * Oggetto DAO
-		 */
-		DataLayerImpl datalayer = new DataLayerImpl(connection);
+			/**
+			 * Connessione al db
+			 */
+			Connection connection = ds.getConnection();
+			/**
+			 * Oggetto DAO
+			 */
+			DataLayerImpl datalayer = new DataLayerImpl(connection);
 
 			if (request.getParameter("numeroAJAX") != null) {
 				Map template_data = new HashMap();
 				String pagina = request.getParameter("numeroAJAX");
 				String opera = request.getParameter("operaAJAX");
-				String ris = checkNumeroPagina(datalayer, pagina ,Long.parseLong(opera));
+				String ris = checkNumeroPagina(datalayer, pagina, Long.parseLong(opera));
 				template_data.put("outline_tpl", "");
 				template_data.put("risultato", ris);
 				/* chiama il template per l'oggetto JSON */
@@ -132,8 +132,11 @@ public class UploadImmagine extends HttpServlet {
 				gestisciUpload(datalayer, request, response);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			FailureResult res = new FailureResult(getServletContext());
+			res.activate(e.getMessage(), request, response);
+		} catch (ErroreBiblioteca e) {
+			FailureResult res = new FailureResult(getServletContext());
+			res.activate(e.getMessage(), request, response);
 		}
 
 	}

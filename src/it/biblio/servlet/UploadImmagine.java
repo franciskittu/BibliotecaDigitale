@@ -1,6 +1,8 @@
 package it.biblio.servlet;
 
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.*;
 
@@ -63,10 +65,17 @@ public class UploadImmagine extends HttpServlet {
 		final String path = getServletContext().getRealPath(File.separator) + "immagini-opere";
 		final String numero = (String) request.getParameter("numero_pagina");
 
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-1");
+		} catch (NoSuchAlgorithmException e) {
+			throw new ErroreBiblioteca("Algoritmo per il message digest non valido!");
+		}
 		OutputStream out = null;
 		InputStream in = null;
 		try {
 
+			String sdigest = "";
 			out = new FileOutputStream(new File(path + File.separator + nomeFile));
 			in = filePart.getInputStream();
 
@@ -75,7 +84,19 @@ public class UploadImmagine extends HttpServlet {
 
 			while ((read = in.read(bytes)) != -1) {
 				out.write(bytes, 0, read);
+				md.update(bytes, 0, read);
 			}
+			
+			//covertiamo il digest in una stringa
+	        byte[] digest = md.digest();
+	        for (byte b : digest) {
+	            sdigest += String.valueOf(b);
+	        }
+	        
+	        if(sdigest.equals("")){
+	        	throw new ErroreBiblioteca("message digest non calcolato correttamente");
+	        }
+	        
 
 			Opera O = datalayer.getOpera(id_opera);
 			// se l'opera non ha ancora un acquisitore l'utente attuale gli sarà
@@ -86,7 +107,7 @@ public class UploadImmagine extends HttpServlet {
 			}
 			Pagina P = datalayer.creaPagina();
 			P.setOpera(O);
-			P.setPathImmagine(getServletContext().getContextPath() + File.separator +"immagini-opere" + File.separator + nomeFile);
+			P.setPathImmagine(getServletContext().getContextPath().substring(1) + File.separator +"immagini-opere" + File.separator + nomeFile);
 			P.setUploadImmagine(new Timestamp(Calendar.getInstance().getTime().getTime()));
 			P.setNumero(numero);
 			datalayer.aggiungiPagina(P);
@@ -108,6 +129,7 @@ public class UploadImmagine extends HttpServlet {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
 
+		
 		try {
 			/**
 			 * Connessione al db
@@ -130,6 +152,7 @@ public class UploadImmagine extends HttpServlet {
 				tr.activate("controlloAjax.ftl.json", template_data, response);
 			} else {
 				gestisciUpload(datalayer, request, response);
+				//new Visualizza(ds).processRequest(request, response);
 			}
 		} catch (SQLException e) {
 			FailureResult res = new FailureResult(getServletContext());
@@ -139,6 +162,7 @@ public class UploadImmagine extends HttpServlet {
 			res.activate(e.getMessage(), request, response);
 		}
 
+		
 	}
 
 	/**

@@ -28,6 +28,18 @@ public class Visualizza extends HttpServlet {
 	private DataSource ds;
 	
 	/**
+	 * @see HttpServlet#HttpServlet()
+	 */
+	public Visualizza(){
+		super();
+	}
+	
+	public Visualizza(DataSource ds){
+		this.ds = ds;
+	}
+	
+	
+	/**
 	 * Funzione che analizza la sessione per determinare le variabili dei ruoli nei template
 	 * 
 	 * @param request servlet request
@@ -46,6 +58,7 @@ public class Visualizza extends HttpServlet {
 				template_data.put("nomutente", request.getAttribute("username"));
 			}
 			template_data.put("loggato", true);
+			template_data.put("nomeutente", (String) request.getAttribute("username"));
 		}else{
 			template_data.put("acquisitore", false);
 			template_data.put("trascrittore", false);
@@ -137,11 +150,8 @@ public class Visualizza extends HttpServlet {
 			List<Opera> opere = datalayer.getOpereInTrascrizioneByUtente(U);
 			template_data.put("opere_in_trascrizione",opere);
 		}
-
-		if((Boolean)template_data.get("loggato")){
-			template_data.put("nomeutente", (String) request.getAttribute("username"));
-		}
 		
+		connection.close();
 		/**
 		 * Stream output
 		 */

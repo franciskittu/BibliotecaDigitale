@@ -67,17 +67,7 @@
     <!-- Openseadragon viewer image hight resolution -->
     <script src="template/js/openseadragon/openseadragon.js"></script>
 
-		<div id="openseadragon1" style="width: 800px; height: 600px;"></div>
-		<script type="text/javascript">
-		    var viewer = OpenSeadragon({
-		        id: "openseadragon1",
-		        prefixUrl: "template/js/openseadragon/images/",
-		        tileSources: {
-		            type: "image",
-		            url:  "template/img/download.jpg"
-		        }
-    });
-</script>
+<#include "openseadragon.ftl.html">
     
 </body>
 

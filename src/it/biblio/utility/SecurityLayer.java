@@ -202,6 +202,7 @@ public class SecurityLayer {
         return sha1;
     }
     
+    
     //questa funzione genera una nuova password random, utile per gli utenti
     //che le dimenticano e per il primo accesso
     public static String randPassword(String s, int lunghezza){

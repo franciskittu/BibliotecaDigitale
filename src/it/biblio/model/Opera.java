@@ -36,4 +36,6 @@ public interface Opera {
 	Utente getAcquisitore();
 	void setAcquisitore(Utente A);
 	
+	Integer getNumeroPagine();
+	void setNumeroPagine(Integer numero_pagine);
 }

@@ -147,8 +147,14 @@ public class Visualizza extends HttpServlet {
 			template_data.put("opere_non_pubblicate", opere);
 		}else if(template_data.containsKey("trascrittore") && ((Boolean)template_data.get("trascrittore")) == true){
 			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("username"));
-			List<Opera> opere = datalayer.getOpereInTrascrizioneByUtente(U);
+			Opera O = datalayer.creaOpera();
+			O.setPubblicata(false);
+			O.setTrascrittore(U);
+			List<Opera> opere = datalayer.getOpereByQuery(O);
 			template_data.put("opere_in_trascrizione",opere);
+			
+			opere = datalayer.getOpereDaTrascrivere();
+			template_data.put("opere_da_trascrivere", opere);
 		}
 		
 		connection.close();

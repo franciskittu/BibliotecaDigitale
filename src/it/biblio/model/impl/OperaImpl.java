@@ -9,6 +9,7 @@ import it.biblio.model.Utente;
 public class OperaImpl implements Opera{
 
 	private long ID, id_trascrittore, id_acquisitore;
+	private Integer numeropagine;
 	private Boolean pubblicata;
 	private String titolo,descrizione, lingua, anno, editore;
 	private Utente trascrittore, acquisitore;
@@ -25,7 +26,7 @@ public class OperaImpl implements Opera{
 	public OperaImpl(DataLayerImpl datalayer){
 		titolo = descrizione = editore = lingua = anno = "";
 		pubblicata = false;
-		ID = id_acquisitore= id_trascrittore = 0;
+		ID = id_acquisitore= id_trascrittore = numeropagine = 0;
 		this.datalayer = datalayer;
 	}
 	
@@ -46,6 +47,7 @@ public class OperaImpl implements Opera{
 		anno = dati.getString("anno");
 		id_trascrittore = dati.getLong("trascrittore");
 		id_acquisitore = dati.getLong("acquisitore");
+		numeropagine = dati.getInt("numero_pagine");
 		this.datalayer = datalayer;
 	}
 	
@@ -142,6 +144,17 @@ public class OperaImpl implements Opera{
 	@Override
 	public void setAcquisitore(Utente A) {
 		this.acquisitore = A;
+		
+	}
+
+	@Override
+	public Integer getNumeroPagine() {
+		return this.numeropagine;
+	}
+
+	@Override
+	public void setNumeroPagine(Integer numeropagine) {
+		this.numeropagine = numeropagine;
 		
 	}
 

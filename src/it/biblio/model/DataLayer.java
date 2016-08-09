@@ -43,7 +43,7 @@ public interface DataLayer {
 	
 	List<Opera> getOpereByQuery(Opera P);
 	
-	List<Opera> getOpereInTrascrizioneByUtente(Utente U);
+	List<Opera> getOpereDaTrascrivere();
 	
 	/*Operazioni Pagina*/
 	

@@ -15,17 +15,14 @@
                         <a href="#page-top"></a>
                     </li>
                    	<li class="page-scroll">
-                       	<a href="lista_opere_in_trascrizione">In trascrizione</a>
-                   	</li>
-                  	<li class="page-scroll">
-                       	<a href="#registrazione">Registrazione</a>
+                       	<a href="#lista_opere_in_trascrizione">In trascrizione</a>
                    	</li>
                     <li class="page-scroll">
                         <a href="#lista_opere_da_trascrivere">Da trascrivere</a>
                     </li>
                     <li class="page-scroll">
-                        <a href="#lista_opere_da_trascrivere">Da trascrivere</a>
-                    </li>   
+                       	<a href="#ricerca">Ricerca</a>
+                   	</li>  
                 </ul>
                 
                 <form action="Logout" class="form-inline">
@@ -53,7 +50,6 @@
             </div>
                     <div class="list-group">
                     	<#if (opere_in_trascrizione?size > 0)>
-                        <#list opere_in_trascrizione as opera>
                         <table class="table ">
 							  <thead>
 							    <tr class="tabella">
@@ -64,14 +60,18 @@
 							    </tr>
 							  </thead>
 							  <tbody>
+                        <#list opere_in_trascrizione as opera>
+                        
+							  
 								  	<tr class="riga_tabella" data>
 								      <th scope="row">1</th>
 								      <td>${opera.titolo}</td>
 								      <td>${opera.descrizione}</td>
 								    </tr>
-							  </tbody>
-							</table>
+							  
   						</#list>
+  							</tbody>
+								</table>
                         </#if>
                     </div>
         </div>
@@ -89,33 +89,34 @@
             </div>
                     <div class="list-group">
                     	<#if (opere_da_trascrivere?size > 0)>
-                        <#list opere_da_trascrivere as opera>
                         <table class="table ">
 							  <thead>
 							    <tr class="tabella">
 							      <th>#</th>
 							      <th>Titolo opera</th>
 							      <th>Descrizione opera</th>
-							      <th>Numero pagine</th>
+							      
 							    </tr>
 							  </thead>
 							  <tbody>
+                        <#list opere_da_trascrivere as opera>
+							  
 								  	<tr class="riga_tabella" data>
 								      <th scope="row">1</th>
 								      <td>${opera.titolo}</td>
 								      <td>${opera.descrizione}</td>
-								      <td>${opera.numero_pagine}</td>
 								    </tr>
-							  </tbody>
-							</table>
+							  
   						</#list>
+  							</tbody>
+						</table>
   						</#if>
                         
                     </div>
         </div>
 
 </section>
-
-<#include "openseadragon.ftl.html">
 <#include "ricerca.ftl.html">
 <#include "listaopere.ftl.html">
+<#include "openseadragon.ftl.html">
+

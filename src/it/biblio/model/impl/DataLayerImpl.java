@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
+import com.sun.xml.internal.ws.org.objectweb.asm.Type;
+
 import it.biblio.model.Commenta;
 import it.biblio.model.DataLayer;
 import it.biblio.model.Opera;
@@ -23,11 +25,11 @@ public class DataLayerImpl implements DataLayer {
 	private final PreparedStatement aUtente, gUtente,gUtenteUsername;
 	private final PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente;
 	private final PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
-	private final PreparedStatement gOpera, aOpera, aggiornaOpera,gOpereInTrascrizioneByUtente;
+	private final PreparedStatement gOpera, aOpera, aggiornaOpera;
 	private final PreparedStatement gPagina, aPagina, gPagineOpera;
 	private final PreparedStatement gCommenta, aCommenta;
 	
-	private Statement gOpereByQuery;
+	private Statement gOpereByQuery,gOpereDaTrascrivere;
 	
 	public DataLayerImpl(Connection c) throws SQLException {
 		aUtente = c.prepareStatement("INSERT INTO Utente(username,password,email,nome,cognome) VALUES (?,?,?,?,?) RETURNING ID");
@@ -41,15 +43,15 @@ public class DataLayerImpl implements DataLayer {
 		aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
 		rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
 		gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
-		aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,pubblicata, acquisitore, trascrittore) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
-		aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, pubblicata = ?, acquisitore = ?, trascrittore = ? WHERE id = ?");
+		aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,pubblicata, acquisitore, trascrittore,numero_pagine) VALUES(?,?,?,?,?,?,?,?,?) RETURNING ID");
+		aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, pubblicata = ?, acquisitore = ?, trascrittore = ?, numero_pagine = ? WHERE id = ?");
 		gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 		aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 				+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
 		gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 		aCommenta = c.prepareStatement("");
 		gOpereByQuery = c.createStatement();
-		gOpereInTrascrizioneByUtente = c.prepareStatement("SELECT DISTINCT Opera.* FROM Opera,Pagina WHERE Pagina.utente= ? AND Opera.id = Pagina.opera");
+		gOpereDaTrascrivere = c.createStatement();
 		gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ?");
 	}
 
@@ -274,8 +276,17 @@ public class DataLayerImpl implements DataLayer {
 			aOpera.setString(4, OI.getEditore());
 			aOpera.setString(5, OI.getDescrizione());
 			aOpera.setBoolean(6, OI.getPubblicata());
-			aOpera.setLong(7, (OI.getAcquisitore() != null) ? OI.getAcquisitore().getID() : null);
-			aOpera.setLong(8, (OI.getTrascrittore() != null) ? OI.getTrascrittore().getID() : null);
+			if(OI.getAcquisitore() != null){
+				aOpera.setLong(7,OI.getAcquisitore().getID());
+			}else{
+				aOpera.setNull(7,Type.LONG);
+			}
+			if(OI.getTrascrittore() != null){
+				aOpera.setLong(8, OI.getTrascrittore().getID());
+			}else{
+				aOpera.setNull(8, Type.LONG);
+			}
+			aOpera.setInt(9, OI.getNumeroPagine());
 			chiave = aOpera.executeQuery();
 			if(chiave.next()){
 				return getOpera(chiave.getLong("ID"));
@@ -308,6 +319,15 @@ public class DataLayerImpl implements DataLayer {
 			}
 			if(!O.getTitolo().equals("")){
 				query = query + " AND titolo LIKE '%"+O.getTitolo()+"%'";
+			}
+			if(O.getAcquisitore() != null){
+				query = query + " AND acquisitore = "+O.getAcquisitore().getID();
+			}
+			if(O.getTrascrittore() != null){
+				query = query + " AND trascrittore = "+O.getTrascrittore().getID();
+			}
+			if(O.getNumeroPagine() != 0){
+				query = query + " AND numero_pagine = " + O.getNumeroPagine();
 			}
 			
 			rs = gOpereByQuery.executeQuery(query);
@@ -434,7 +454,8 @@ public class DataLayerImpl implements DataLayer {
 			}else{
 				aggiornaOpera.setNull(8, Types.INTEGER);
 			}
-			aggiornaOpera.setLong(9, O.getID());
+			aggiornaOpera.setInt(9, O.getNumeroPagine());
+			aggiornaOpera.setLong(10, O.getID());
 			if(aggiornaOpera.executeUpdate() == 1){
 				return getOpera(O.getID());
 			}
@@ -489,12 +510,11 @@ public class DataLayerImpl implements DataLayer {
 	}
 
 	@Override
-	public List<Opera> getOpereInTrascrizioneByUtente(Utente U) {
+	public List<Opera> getOpereDaTrascrivere() {
 		List<Opera> ris = new ArrayList<Opera>();
 		ResultSet rs = null;
 		try{
-			this.gOpereInTrascrizioneByUtente.setLong(1, U.getID());
-			rs = this.gOpereInTrascrizioneByUtente.executeQuery();
+			rs = this.gOpereDaTrascrivere.executeQuery("SELECT * FROM Opera WHERE trascrittore IS NULL ");
 			while(rs.next()){
 				ris.add(new OperaImpl(this,rs));
 			}

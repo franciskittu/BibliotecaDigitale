@@ -63,12 +63,18 @@ public class Login extends HttpServlet {
 					
 					HttpSession s = SecurityLayer.createSession(request, U.getUsername(), U.getID(), nomi_ruoli_utente);
 					response.sendRedirect("Visualizza?richiesta=login");
+					/*request.setAttribute("richiesta","login");
+					new Visualizza(ds).processRequest(request, response);*/
 					
 				} else {
 					response.sendRedirect("Visualizza?errore=login");
+					/*request.setAttribute("errore", "login");
+					new Visualizza(ds).processRequest(request, response);*/
 				}
 			} else {
 				response.sendRedirect("Visualizza?errore=login");
+				/*request.setAttribute("errore", "login");
+				new Visualizza(ds).processRequest(request, response);*/
 			}
 
 		} catch (SQLException e) {

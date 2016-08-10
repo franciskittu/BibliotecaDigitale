@@ -1,6 +1,7 @@
 package it.biblio.servlet;
 
 import java.io.*;
+import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -62,9 +63,11 @@ public class UploadImmagine extends HttpServlet {
 		final long id_opera = Long.parseLong(request.getParameter("opera"));
 		final Part filePart = request.getPart("fileToUpload");
 		final String nomeFile = getFileName(filePart);
-		final String path = getServletContext().getRealPath(File.separator) + "immagini-opere";
+		final String directory_immagini = getServletContext().getInitParameter("system.directory_immagini");
+		final String path = getServletContext().getRealPath(File.separator) + directory_immagini;
 		final String numero = (String) request.getParameter("numero_pagina");
-
+		
+		
 		MessageDigest md;
 		try {
 			md = MessageDigest.getInstance("SHA-1");
@@ -107,10 +110,12 @@ public class UploadImmagine extends HttpServlet {
 			}
 			Pagina P = datalayer.creaPagina();
 			P.setOpera(O);
-			P.setPathImmagine(getServletContext().getContextPath().substring(1) + File.separator +"immagini-opere" + File.separator + nomeFile);
+			P.setPathImmagine(directory_immagini + File.separator + nomeFile);
 			P.setUploadImmagine(new Timestamp(Calendar.getInstance().getTime().getTime()));
 			P.setNumero(numero);
-			datalayer.aggiungiPagina(P);
+			P = datalayer.aggiungiPagina(P);
+			String url = "http://["+request.getLocalAddr()+"]:"+request.getLocalPort()+getServletContext().getContextPath() + File.separator + P.getPathImmagine();
+			System.out.println(url);
 
 		} catch (Exception ex) {
 			throw new ErroreBiblioteca(ex.getMessage());

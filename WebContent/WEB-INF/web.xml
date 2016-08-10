@@ -61,6 +61,10 @@
     <param-name>view.outline_template</param-name>
     <param-value>outline.ftl.html</param-value>
   </context-param>
+  <context-param>
+  	<param-name>system.directory_immagini</param-name>
+  	<param-value>immagini-opere</param-value>
+  </context-param>
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>

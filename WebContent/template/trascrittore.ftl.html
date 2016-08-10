@@ -56,7 +56,7 @@
 							      <th>#</th>
 							      <th>Titolo opera</th>
 							      <th>Descrizione opera</th>
-							   
+							   	  <th>Numero pagine</th>
 							    </tr>
 							  </thead>
 							  <tbody>
@@ -64,9 +64,10 @@
                         
 							  
 								  	<tr class="riga_tabella" data>
-								      <th scope="row">1</th>
+								      <th scope="row">${opera.ID}</th>
 								      <td>${opera.titolo}</td>
 								      <td>${opera.descrizione}</td>
+								      <td>${opera.numeroPagine}</td>
 								    </tr>
 							  
   						</#list>
@@ -95,16 +96,17 @@
 							      <th>#</th>
 							      <th>Titolo opera</th>
 							      <th>Descrizione opera</th>
-							      
+							      <th>Numero pagine</th>
 							    </tr>
 							  </thead>
 							  <tbody>
                         <#list opere_da_trascrivere as opera>
 							  
 								  	<tr class="riga_tabella" data>
-								      <th scope="row">1</th>
+								      <th scope="row">${opera.ID}</th>
 								      <td>${opera.titolo}</td>
 								      <td>${opera.descrizione}</td>
+								      <td>${opera.numeroPagine}</td>
 								    </tr>
 							  
   						</#list>

@@ -98,7 +98,8 @@ public class Visualizza extends HttpServlet {
 			}
 		} else {
 
-			List<String> ruoli = (List<String>) request.getAttribute("ruoli");
+			inizializzaRuoli(request,template_data);
+			/*List<String> ruoli = (List<String>) request.getAttribute("ruoli");
 			if (ruoli != null) {
 				template_data.put("acquisitore", ruoli.contains("acquisitore"));
 				template_data.put("trascrittore", ruoli.contains("trascrittore"));
@@ -108,7 +109,7 @@ public class Visualizza extends HttpServlet {
 				template_data.put("nomutente", request.getAttribute("username"));
 			}
 
-			template_data.put("loggato", true);
+			template_data.put("loggato", true);*/
 
 		}
 	}
@@ -145,7 +146,8 @@ public class Visualizza extends HttpServlet {
 			O.setPubblicata(false);
 			List<Opera> opere = datalayer.getOpereByQuery(O);
 			template_data.put("opere_non_pubblicate", opere);
-		}else if(template_data.containsKey("trascrittore") && ((Boolean)template_data.get("trascrittore")) == true){
+		}
+		else if(template_data.containsKey("trascrittore") && ((Boolean)template_data.get("trascrittore")) == true){
 			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("username"));
 			Opera O = datalayer.creaOpera();
 			O.setPubblicata(false);
@@ -155,6 +157,14 @@ public class Visualizza extends HttpServlet {
 			
 			opere = datalayer.getOpereDaTrascrivere();
 			template_data.put("opere_da_trascrivere", opere);
+		}
+		else if(template_data.containsKey("revisore_acquisizioni") && ((Boolean) template_data.get("revisore_acquisizioni")) == true){
+			Opera query = datalayer.creaOpera();
+			query.setPubblicata(false);
+			List<Opera> opere = datalayer.getOpereByQuery(query);
+		}
+		else if(template_data.containsKey("revisore_trascrizioni") && ((Boolean) template_data.get("revisore_trascrizioni")) == true){
+			
 		}
 		
 		connection.close();

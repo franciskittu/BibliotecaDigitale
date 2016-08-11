@@ -1,6 +1,12 @@
 package it.biblio.framework.result;
 
 
+
+import freemarker.template.Configuration;
+import freemarker.template.ObjectWrapper;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
+import freemarker.template.TemplateExceptionHandler;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -11,24 +17,22 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import freemarker.template.Configuration;
-import freemarker.template.ObjectWrapper;
-import freemarker.template.Template;
-import freemarker.template.TemplateException;
-import freemarker.template.TemplateExceptionHandler;
-
 /**
- *
- * @author Giuseppe Della Penna
+ * Questa classe permette di generare facilmente output a partire da template
+ * Freemarker. Gestisce vari modelli di dati, passati direttamente o attraverso
+ * la request, l'uso di outline automatici, e si configura automaticamente 
+ * in base a una serie di init parameters del contesto 
+ * 
+ * @author francesco
  */
 public class TemplateResult {
 
     protected ServletContext context;
     protected Configuration cfg;
+    //protected DataModelFiller filler;
 
     public TemplateResult(ServletContext context) {
         this.context = context;
@@ -40,7 +44,7 @@ public class TemplateResult {
         //impostiamo l'encoding di default per l'input e l'output
         //set the default input and outpout encoding
         if (context.getInitParameter("view.encoding") != null) {
-            //cfg.setOutputEncoding(context.getInitParameter("view.encoding"));
+            cfg.setOutputEncoding(context.getInitParameter("view.encoding"));
             cfg.setDefaultEncoding(context.getInitParameter("view.encoding"));
         }
         //impostiamo la directory (relativa al contesto) da cui caricare i templates
@@ -62,6 +66,22 @@ public class TemplateResult {
         if (context.getInitParameter("view.date_format") != null) {
             cfg.setDateTimeFormat(context.getInitParameter("view.date_format"));
         }
+
+        //classe opzionale che permette di riempire ogni data model con dati generati dinamicamente
+        //optional class to automatically fill every data model with dynamically generated data
+        /*filler = null;
+        if (context.getInitParameter("view.model_filler") != null) {
+            try {
+                filler = (DataModelFiller) Class.forName(context.getInitParameter("view.model_filler")).newInstance();
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(TemplateResult.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(TemplateResult.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(TemplateResult.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }*/
+
         //impostiamo il gestore degli oggetti - trasformer� in hash i Java beans
         //set the object handler that allows us to "view" Java beans as hashes
         cfg.setObjectWrapper(ObjectWrapper.BEANS_WRAPPER);
@@ -75,8 +95,18 @@ public class TemplateResult {
         //inizializziamo il contenitore per i dati di deafult        
         //initialize the container for default data
         Map default_data_model = new HashMap();
+
+        //se è stata specificata una classe filler, facciamole riempire il default data model
+        //if a filler class has been specified, let it fill the default data model
+        /*if (filler != null) {
+            filler.fillDataModel(default_data_model);
+        }*/
+
+        //iniettiamo alcuni dati di default nel data model
+        //inject some default data in the data model
         default_data_model.put("compiled_on", Calendar.getInstance().getTime()); //data di compilazione del template
         default_data_model.put("outline_tpl", context.getInitParameter("view.outline_template")); //eventuale template di outline
+
         //aggiungiamo altri dati di inizializzazione presi dal web.xml
         //add other data taken from web.xml
         Map init_tpl_data = new HashMap();
@@ -88,6 +118,7 @@ public class TemplateResult {
                 init_tpl_data.put(name.substring(10), context.getInitParameter(name));
             }
         }
+
         return default_data_model;
     }
 
@@ -106,7 +137,10 @@ public class TemplateResult {
     //questo metodo principale si occupa di chiamare Freemarker e compilare il template
     //se � stato specificato un template di outline, quello richiesto viene inserito
     //all'interno dell'outline
-    protected void process(String tplname, Map datamodel, Writer out) throws ServletException {
+    //this main method calls Freemarker and compiles the template
+    //if an outline template has been specified, the requested template is
+    //embedded in the outline
+    protected void process(String tplname, Map datamodel, Writer out) throws TemplateManagerException {
         Template t;
         //assicuriamoci di avere sempre un data model da passare al template, che contenga anche tutti i default
         //ensure we have a data model, initialized with some default data
@@ -121,7 +155,7 @@ public class TemplateResult {
         String outline_name = (String) localdatamodel.get("outline_tpl");
         try {
             if (outline_name == null || outline_name.isEmpty()) {
-                //se non c'� un outline, carichiamo semplicemente il template specificato
+                //se non c'è un outline, carichiamo semplicemente il template specificato
                 //if an outline has not been set, load the specified template
                 t = cfg.getTemplate(tplname);
             } else {
@@ -138,15 +172,15 @@ public class TemplateResult {
             //add the data to the template and output the result
             t.process(localdatamodel, out);
         } catch (IOException e) {
-            throw new ServletException("Template error: " + e.getMessage(), e);
+            throw new TemplateManagerException("Template error: " + e.getMessage(), e);
         } catch (TemplateException e) {
-            throw new ServletException("Template error: " + e.getMessage(), e);
+            throw new TemplateManagerException("Template error: " + e.getMessage(), e);
         }
     }
 
     //questa versione di activate accetta un modello dati esplicito
     //this activate method gets an explicit data model
-    public void activate(String tplname, Map datamodel, HttpServletResponse response) throws ServletException, IOException {
+    public void activate(String tplname, Map datamodel, HttpServletResponse response) throws TemplateManagerException {
         //impostiamo il content type, se specificato dall'utente, o usiamo il default
         //set the output content type, if user-specified, or use the default
         String contentType = (String) datamodel.get("contentType");
@@ -158,17 +192,21 @@ public class TemplateResult {
         //impostiamo l'encoding, se specificato dall'utente, o usiamo il default
         //set the output encoding, if user-specified, or use the default
         String encoding = (String) datamodel.get("encoding");
-        /*if (encoding == null) {
+        if (encoding == null) {
             encoding = cfg.getOutputEncoding();
-        }*/
+        }
         response.setCharacterEncoding(encoding);
 
-        process(tplname, datamodel, response.getWriter());
+        try {
+            process(tplname, datamodel, response.getWriter());
+        } catch (IOException ex) {
+            throw new TemplateManagerException("Template error: " + ex.getMessage(), ex);
+        }
     }
 
     //questa versione di activate estrae un modello dati dagli attributi della request
     //this acivate method extracts the data model from the request attributes
-    public void activate(String tplname, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public void activate(String tplname, HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
         Map datamodel = getRequestDataModel(request);
         activate(tplname, datamodel, response);
     }
@@ -176,14 +214,18 @@ public class TemplateResult {
     //questa versione di activate pu� essere usata per generare output non diretto verso il browser, ad esempio
     //su un file
     //this activate method can be used to generate output and save it to a file
-    public void activate(String tplname, Map datamodel, OutputStream out) throws ServletException, UnsupportedEncodingException {
+    public void activate(String tplname, Map datamodel, OutputStream out) throws TemplateManagerException {
         //impostiamo l'encoding, se specificato dall'utente, o usiamo il default
         String encoding = (String) datamodel.get("encoding");
         if (encoding == null) {
-            encoding = cfg.getDefaultEncoding();
+            encoding = cfg.getOutputEncoding();
         }
-        //notare la gestione dell'encoding, che viene invece eseguita implicitamente tramite il setContentType nel contesto servlet
-        //note how we set the output encoding, which is usually handled via setContentType when the output is sent to a browser
-        process(tplname, datamodel, new OutputStreamWriter(out, encoding));
+        try {
+            //notare la gestione dell'encoding, che viene invece eseguita implicitamente tramite il setContentType nel contesto servlet
+            //note how we set the output encoding, which is usually handled via setContentType when the output is sent to a browser
+            process(tplname, datamodel, new OutputStreamWriter(out, encoding));
+        } catch (UnsupportedEncodingException ex) {
+            throw new TemplateManagerException("Template error: " + ex.getMessage(), ex);
+        }
     }
 }

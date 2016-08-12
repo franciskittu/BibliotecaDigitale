@@ -1,6 +1,7 @@
 package it.biblio.controller;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletException;
@@ -11,6 +12,9 @@ import javax.sql.DataSource;
 
 import it.biblio.data.impl.BibliotecaDataLayerPgsqlImpl;
 import it.biblio.data.model.BibliotecaDataLayer;
+import it.biblio.data.model.Opera;
+import it.biblio.data.model.Utente;
+import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.*;
 
 /**
@@ -21,8 +25,6 @@ import it.biblio.framework.result.*;
  *
  */
 public abstract class BibliotecaBaseController extends HttpServlet {
-
-	private static final long serialVersionUID = 8021980007988958087L;
 	
 	@Resource(name = "jdbc/bibliodb")
 	private DataSource ds;
@@ -31,11 +33,72 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 	
 	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException;
 	
-	protected void action_result(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
+	/**
+	 * Richiama la pagina di errore specificando li problema riscontrato.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 */
+	protected void action_error(HttpServletRequest request, HttpServletResponse response) {
+		if (request.getAttribute("exception") != null) {
+			(new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request,
+					response);
+		} else {
+			(new FailureResult(getServletContext())).activate((String) request.getAttribute("message"), request,
+					response);
+		}
+	}
+	
+	
+	/**
+	 * Istanzia il modello dei dati da passare a Freemarker e chiama i metodi del package framework.result
+	 * per attivare la response e inviare le pagine come output
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 * @throws DataLayerException se occorre un errore nella logica dei dati
+	 */
+	protected void action_result(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, DataLayerException{
+		BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+		if((Boolean)request.getAttribute("acquisitore") == true){
+			Opera O = datalayer.creaOpera();
+			O.setPubblicata(false);
+			List<Opera> opere = datalayer.getOpereByQuery(O);
+			request.setAttribute("opere_non_pubblicate", opere);
+		}
+		else if((Boolean)request.getAttribute("trascrittore") == true){
+			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("username"));
+			Opera O = datalayer.creaOpera();
+			O.setPubblicata(false);
+			O.setTrascrittore(U);
+			List<Opera> opere = datalayer.getOpereByQuery(O);
+			request.setAttribute("opere_in_trascrizione",opere);
+			
+			opere = datalayer.getOpereDaTrascrivere();
+			request.setAttribute("opere_da_trascrivere", opere);
+		}
+		else if((Boolean) request.getAttribute("revisore_acquisizioni") == true){
+			Opera query = datalayer.creaOpera();
+			query.setPubblicata(false);
+			List<Opera> opere = datalayer.getOpereByQuery(query);
+		}
+		else if((Boolean) request.getAttribute("revisore_trascrizioni") == true){
+			
+		}
+		
 		TemplateResult res = new TemplateResult(getServletContext());
 		request.setAttribute("strip_slashes", new SplitSlashesFmkExt() );
 		res.activate("", request, response);
 	}
+	
+	/**
+	 * Inizializza la connessione al DB e la rende disponibile come attributo della 
+	 * servlet <b>request</b>.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 */
 	private void processBaseRequest(HttpServletRequest request, HttpServletResponse response){
 		try(BibliotecaDataLayer datalayer = new BibliotecaDataLayerPgsqlImpl(ds)){
 			datalayer.init();

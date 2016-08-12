@@ -5,6 +5,7 @@ import java.sql.SQLException;
 
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Utente;
+import it.biblio.framework.data.DataLayerException;
 
 public class OperaImpl implements Opera{
 
@@ -120,7 +121,7 @@ public class OperaImpl implements Opera{
 	}
 	
 	@Override
-	public Utente getTrascrittore() {
+	public Utente getTrascrittore() throws DataLayerException {
 		if(this.trascrittore == null){
 			this.trascrittore = datalayer.getUtente(this.id_trascrittore);
 		}
@@ -134,7 +135,7 @@ public class OperaImpl implements Opera{
 	}
 
 	@Override
-	public Utente getAcquisitore() {
+	public Utente getAcquisitore() throws DataLayerException {
 		if(this.acquisitore == null){
 			this.acquisitore = datalayer.getUtente(this.id_acquisitore);
 		}

@@ -4,7 +4,7 @@ import java.util.List;
 
 import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
-import it.biblio.framework.security.SecurityLayer;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Classe che definisce una funzione richiamabile all'interno

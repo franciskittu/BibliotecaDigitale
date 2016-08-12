@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import it.biblio.data.model.Commenta;
 import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Utente;
+import it.biblio.framework.data.DataLayerException;
 
 public class CommentaImpl implements Commenta {
 
@@ -37,7 +38,7 @@ public class CommentaImpl implements Commenta {
 	}
 
 	@Override
-	public Utente getUtente() {
+	public Utente getUtente() throws DataLayerException {
 		if(utente == null){
 			utente = datalayer.getUtente(id_utente);
 		}
@@ -51,7 +52,7 @@ public class CommentaImpl implements Commenta {
 	}
 
 	@Override
-	public Pagina getTrascrizione() {
+	public Pagina getTrascrizione() throws DataLayerException {
 		if(trascrizione == null){
 			trascrizione = datalayer.getPagina(id_trascrizione);
 		}

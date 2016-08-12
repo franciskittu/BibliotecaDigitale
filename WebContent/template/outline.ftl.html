@@ -28,7 +28,7 @@
 
 <body id="page-top" class="index">
  
- 	<#if loggato??>
+ 	<#if loggato?? && loggato>
  		<#if acquisitore?? && acquisitore>
  			<#include "acquisitore.ftl.html">
  		<#elseif trascrittore?? && trascrittore>

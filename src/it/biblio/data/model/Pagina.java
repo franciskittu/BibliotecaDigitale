@@ -2,6 +2,8 @@ package it.biblio.data.model;
 
 import java.sql.Timestamp;
 
+import it.biblio.framework.data.DataLayerException;
+
 /**
  * Interfaccia del Plain Old Java Object della Entità Pagina.
  * Contiene metodi get e set per ogni attributo dell'entità.
@@ -35,7 +37,7 @@ public interface Pagina {
 	Boolean getTrascrizioneValidata();
 	void setTrascrizioneValidata(Boolean b);
 	
-	Opera getOpera();
+	Opera getOpera() throws DataLayerException;
 	void setOpera(Opera O);
 	
 }

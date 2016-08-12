@@ -22,6 +22,9 @@
                    	</li>
                 </ul>
                 <form action="Login" class="form-inline">
+                			<#if errore_login?? && errore_login>
+                			<label>credenziali non valide</label>
+                			</#if>
                             <div class="form-group">
                                 <input class="form-control" type="text" name="username" placeholder="Username" />
                             </div>

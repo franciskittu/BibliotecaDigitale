@@ -1,5 +1,7 @@
 package it.biblio.data.model;
 
+import it.biblio.framework.data.DataLayerException;
+
 /**
 * Interfaccia del Plain Old Java Object della Entità Commenta.
 * Contiene metodi get e set per ogni attributo dell'entità.
@@ -12,10 +14,10 @@ public interface Commenta {
 
 	long getProgressivo();
 	
-	Utente getUtente();
+	Utente getUtente() throws DataLayerException;
 	void setUtente(Utente U);
 	
-	Pagina getTrascrizione();
+	Pagina getTrascrizione() throws DataLayerException;
 	void setTrascrizione(Pagina T);
 	
 	String getTitolo();

@@ -14,20 +14,25 @@ import javax.servlet.http.*;
 import javax.sql.DataSource;
 
 import it.biblio.data.impl.BibliotecaDataLayerPgsqlImpl;
+import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
+import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.FailureResult;
+import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
-import it.biblio.framework.security.*;
+import it.biblio.framework.utility.*;
 
-@WebServlet(description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
+@WebServlet(name="UploadImmagine", description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
 @MultipartConfig
-public class UploadImmagine extends HttpServlet {
-	private static final long serialVersionUID = 1L;
+public class UploadImmagine extends BibliotecaBaseController {
 
-	@Resource(name = "jdbc/bibliodb")
-	private DataSource ds;
-
+	/**
+	 * Ottiene il nome del file dal tipo Part
+	 * 
+	 * @param part File
+	 * @return il nome del file se Part contiente il campo filename, <b>null</b> altrimenti
+	 */
 	private String getFileName(final Part part) {
 		final String partHeader = part.getHeader("content-disposition");
 
@@ -46,8 +51,9 @@ public class UploadImmagine extends HttpServlet {
 	 * @param numero
 	 * @param b
 	 * @return
+	 * @throws DataLayerException 
 	 */
-	private String checkNumeroPagina(BibliotecaDataLayerPgsqlImpl datalayer, String numero, long opera) {
+	private String checkNumeroPagina(BibliotecaDataLayer datalayer, String numero, long opera) throws DataLayerException {
 		List<Pagina> pagine = datalayer.getPagineOpera(opera);
 		if (pagine != null) {
 			for (Pagina pagina : pagine) {
@@ -59,7 +65,34 @@ public class UploadImmagine extends HttpServlet {
 		return "true";
 	}
 
-	private void gestisciUpload(BibliotecaDataLayerPgsqlImpl datalayer, HttpServletRequest request, HttpServletResponse response) throws ErroreBiblioteca, IOException, ServletException {
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException 
+	 */
+	private void action_ajax(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
+		try {
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+
+			Map template_data = new HashMap();
+			String pagina = request.getParameter("numeroAJAX");
+			String opera = request.getParameter("operaAJAX");
+			String ris = checkNumeroPagina(datalayer, pagina, Long.parseLong(opera));
+			template_data.put("outline_tpl", "");
+			template_data.put("risultato", ris);
+			/* chiama il template per l'oggetto JSON */
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", template_data, response);
+		} catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request,response);
+		}
+	}
+	
+	
+	private void action_upload(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, ControllerException {
+		BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 		final long id_opera = Long.parseLong(request.getParameter("opera"));
 		final Part filePart = request.getPart("fileToUpload");
 		final String nomeFile = getFileName(filePart);
@@ -72,15 +105,13 @@ public class UploadImmagine extends HttpServlet {
 		try {
 			md = MessageDigest.getInstance("SHA-1");
 		} catch (NoSuchAlgorithmException e) {
-			throw new ErroreBiblioteca("Algoritmo per il message digest non valido!");
+			throw new ControllerException("Algoritmo per il message digest non valido!");
 		}
-		OutputStream out = null;
-		InputStream in = null;
-		try {
+		
+		try(OutputStream out = new FileOutputStream(new File(path + File.separator + nomeFile));
+				InputStream in = filePart.getInputStream()) {
 
 			String sdigest = "";
-			out = new FileOutputStream(new File(path + File.separator + nomeFile));
-			in = filePart.getInputStream();
 
 			int read = 0;
 			final byte[] bytes = new byte[1024];
@@ -97,7 +128,7 @@ public class UploadImmagine extends HttpServlet {
 	        }
 	        
 	        if(sdigest.equals("")){
-	        	throw new ErroreBiblioteca("message digest non calcolato correttamente");
+	        	throw new ControllerException("message digest non calcolato correttamente");
 	        }
 	        
 
@@ -116,93 +147,31 @@ public class UploadImmagine extends HttpServlet {
 			P = datalayer.aggiungiPagina(P);
 			String url = "http://["+request.getLocalAddr()+"]:"+request.getLocalPort()+getServletContext().getContextPath() + File.separator + P.getPathImmagine();
 			System.out.println(url);
+			action_result(request,response);
 
-		} catch (Exception ex) {
-			throw new ErroreBiblioteca(ex.getMessage());
-		} finally {
-			if (out != null) {
-				out.close();
-			}
-			if (in != null) {
-				in.close();
-			}
-
+		} catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request,response);
 		}
-		response.sendRedirect("Visualizza?richiesta=upload");
 	}
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-			throws IOException, ServletException {
+			throws ServletException {
 
 		
 		try {
-			/**
-			 * Connessione al db
-			 */
-			Connection connection = ds.getConnection();
-			/**
-			 * Oggetto DAO
-			 */
-			BibliotecaDataLayerPgsqlImpl datalayer = new BibliotecaDataLayerPgsqlImpl(connection);
-
 			if (request.getParameter("numeroAJAX") != null) {
-				Map template_data = new HashMap();
-				String pagina = request.getParameter("numeroAJAX");
-				String opera = request.getParameter("operaAJAX");
-				String ris = checkNumeroPagina(datalayer, pagina, Long.parseLong(opera));
-				template_data.put("outline_tpl", "");
-				template_data.put("risultato", ris);
-				/* chiama il template per l'oggetto JSON */
-				TemplateResult tr = new TemplateResult(getServletContext());
-				tr.activate("controlloAjax.ftl.json", template_data, response);
+				action_ajax(request, response);
 			} else {
-				gestisciUpload(datalayer, request, response);
-				//new Visualizza(ds).processRequest(request, response);
+				action_upload(request, response);
+				
 			}
-		} catch (SQLException e) {
-			FailureResult res = new FailureResult(getServletContext());
-			res.activate(e.getMessage(), request, response);
-		} catch (ErroreBiblioteca e) {
-			FailureResult res = new FailureResult(getServletContext());
-			res.activate(e.getMessage(), request, response);
+		} catch (ControllerException | IOException | TemplateManagerException ex) {
+			request.setAttribute("exception", ex);
+            action_error(request, response);
 		}
 
 		
-	}
-
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
-	public UploadImmagine() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @see Servlet#getServletInfo()
-	 */
-	public String getServletInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		processRequest(request, response);
-	}
-
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
 	}
 
 }

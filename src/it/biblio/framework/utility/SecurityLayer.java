@@ -1,4 +1,4 @@
-package it.biblio.framework.security;
+package it.biblio.framework.utility;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;

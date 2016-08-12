@@ -7,6 +7,7 @@ import java.sql.Timestamp;
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Utente;
+import it.biblio.framework.data.DataLayerException;
 
 /**
  * Implementazionde del Plain Old Java Object relativo all'interfaccia Pagina
@@ -142,9 +143,10 @@ public class PaginaImpl implements Pagina {
 
 	/**
 	 * Caricamento Lazy dell'oggetto
+	 * @throws DataLayerException 
 	 */
 	@Override
-	public Opera getOpera() {
+	public Opera getOpera() throws DataLayerException {
 		if(this.opera == null){
 			this.opera = datalayer.getOpera(id_opera);
 		}

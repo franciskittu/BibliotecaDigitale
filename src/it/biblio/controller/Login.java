@@ -17,7 +17,7 @@ import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.SplitSlashesFmkExt;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
-import it.biblio.framework.security.SecurityLayer;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Servlet implementation class Login
@@ -28,17 +28,7 @@ import it.biblio.framework.security.SecurityLayer;
 public class Login extends BibliotecaBaseController {
 
 
-	private void action_error(HttpServletRequest request, HttpServletResponse response) {
-		if (request.getAttribute("exception") != null) {
-			(new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request,
-					response);
-		} else {
-			(new FailureResult(getServletContext())).activate((String) request.getAttribute("message"), request,
-					response);
-		}
-	}
-	
-	private void action_login(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
+	private void action_login(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, IOException {
 		try {
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 			Utente U = datalayer.getUtenteByUsername(SecurityLayer.addSlashes(request.getParameter("username")));
@@ -53,18 +43,21 @@ public class Login extends BibliotecaBaseController {
 					for (Ruolo ruolo : ruoli_utente) {
 						nomi_ruoli_utente.add(ruolo.getNome());
 					}
-					HttpSession s = SecurityLayer.createSession(request, U.getUsername(), U.getID(), nomi_ruoli_utente);
+					SecurityLayer.createSession(request, U.getUsername(), U.getID(), nomi_ruoli_utente);
 				} else {
 					// display dell'errore nella form di login
 					request.setAttribute("errore_login", true);
+					action_result(request,response);
 				}
 			} else {
 				// display dell'errore nella form di login
 				request.setAttribute("errore_login", true);
+				action_result(request,response);
 			}
 			
 			// fine processamento
-			action_result(request,response);
+			// è necessario ricaricare la pagina 
+			response.sendRedirect("Home");
 			
 		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -77,10 +70,10 @@ public class Login extends BibliotecaBaseController {
 
 		try {
 			action_login(request, response);
-		} catch (TemplateManagerException ex) {
+		} catch (TemplateManagerException | IOException ex) {
 			request.setAttribute("exception", ex);
             action_error(request, response);
-		}
+		} 
 
 	}
 

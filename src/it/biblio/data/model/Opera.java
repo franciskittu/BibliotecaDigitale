@@ -1,5 +1,7 @@
 package it.biblio.data.model;
 
+import it.biblio.framework.data.DataLayerException;
+
 /**
 * Interfaccia del Plain Old Java Object della Entità Utente.
 * Contiene metodi get e set per ogni attributo dell'entità.
@@ -30,10 +32,10 @@ public interface Opera {
 	Boolean getPubblicata();
 	void setPubblicata(Boolean b);
 	
-	Utente getTrascrittore();
+	Utente getTrascrittore() throws DataLayerException;
 	void setTrascrittore(Utente T);
 	
-	Utente getAcquisitore();
+	Utente getAcquisitore() throws DataLayerException;
 	void setAcquisitore(Utente A);
 	
 	Integer getNumeroPagine();

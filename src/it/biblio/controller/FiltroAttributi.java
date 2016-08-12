@@ -13,7 +13,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import it.biblio.framework.security.SecurityLayer;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Servlet Filter implementation class FiltroAttributi
@@ -53,6 +53,11 @@ public class FiltroAttributi implements Filter {
 			request.setAttribute("revisore_trascrizioni", ruoli.contains("revisore trascrizioni"));
 		}else{
 			request.setAttribute("loggato", false);
+			request.setAttribute("acquisitore", false);
+			request.setAttribute("trascrittore", false);
+			request.setAttribute("admin", false);
+			request.setAttribute("revisore_acquisizioni", false);
+			request.setAttribute("revisore_trascrizioni", false);
 		}
 		chain.doFilter(request, response);
 	}

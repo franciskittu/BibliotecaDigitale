@@ -16,8 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import it.biblio.framework.result.FailureResult;
-import it.biblio.framework.security.ErroreBiblioteca;
-import it.biblio.framework.security.SecurityLayer;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Servlet Filter implementation class FiltroSessione

@@ -3,11 +3,12 @@ package it.biblio.controller;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import it.biblio.framework.security.SecurityLayer;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Con questa server si effettua il logout invalidando la sessione esistente.
@@ -15,12 +16,13 @@ import it.biblio.framework.security.SecurityLayer;
  * @author francesco
  *
  */
+@WebServlet(name="Logout", urlPatterns={"/Logout"})
 public class Logout extends HttpServlet {
 
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		SecurityLayer.disposeSession(request);
-		response.sendRedirect("Visualizza");
+		response.sendRedirect("Home");
 		 
 	}
 	// <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on

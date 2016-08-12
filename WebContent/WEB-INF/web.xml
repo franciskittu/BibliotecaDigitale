@@ -1,46 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
   <display-name>BiblioTech</display-name>
-  <servlet>
-    <servlet-name>EsempioDS</servlet-name>
-    <servlet-class>it.biblio.servlet.EsempioDS</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>Registrazione</servlet-name>
-    <servlet-class>it.biblio.servlet.Registrazione</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>Visualizza</servlet-name>
-    <servlet-class>it.biblio.servlet.Visualizza</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>Logout</servlet-name>
-    <servlet-class>it.biblio.servlet.Logout</servlet-class>
-  </servlet>
-  <servlet>
-    <servlet-name>Ricerca</servlet-name>
-    <servlet-class>it.biblio.servlet.Ricerca</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>Registrazione</servlet-name>
-    <url-pattern>/Registrazione</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>Ricerca</servlet-name>
-    <url-pattern>/Ricerca</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>Visualizza</servlet-name>
-    <url-pattern>/Visualizza</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>Logout</servlet-name>
-    <url-pattern>/Logout</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>EsempioDS</servlet-name>
-    <url-pattern>/EsempioDS</url-pattern>
-  </servlet-mapping>
   <context-param>
     <param-name>view.template_directory</param-name>
     <param-value>template</param-value>
@@ -75,6 +35,6 @@
     <res-sharing-scope>Shareable</res-sharing-scope>
   </resource-ref>
   <welcome-file-list>
-    <welcome-file>Visualizza</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 </web-app>

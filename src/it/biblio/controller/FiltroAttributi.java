@@ -45,12 +45,22 @@ public class FiltroAttributi implements Filter {
 			request.setAttribute("userid", (Long) s.getAttribute("userid"));
 			request.setAttribute("nomeutente", (String) s.getAttribute("username"));
 			List<String> ruoli = (List<String>) s.getAttribute("ruoli");
+			
 			request.setAttribute("ruoli", ruoli);
+			if(ruoli != null){
 			request.setAttribute("acquisitore", ruoli.contains("acquisitore"));
 			request.setAttribute("trascrittore", ruoli.contains("trascrittore"));
 			request.setAttribute("admin", ruoli.contains("admin"));
 			request.setAttribute("revisore_acquisizioni", ruoli.contains("revisore acquisizioni"));
 			request.setAttribute("revisore_trascrizioni", ruoli.contains("revisore trascrizioni"));
+			}
+			else{
+				request.setAttribute("acquisitore", false);
+				request.setAttribute("trascrittore", false);
+				request.setAttribute("admin", false);
+				request.setAttribute("revisore_acquisizioni", false);
+				request.setAttribute("revisore_trascrizioni", false);
+			}
 		}else{
 			request.setAttribute("loggato", false);
 			request.setAttribute("acquisitore", false);

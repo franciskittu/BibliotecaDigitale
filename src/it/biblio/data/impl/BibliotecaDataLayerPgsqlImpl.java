@@ -483,7 +483,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		}catch(SQLException ex){
 			throw new DataLayerException("Incapace di caricare le pagine", ex);
 		}
-		return null;
+		return ris;
 	}
 
 	@Override

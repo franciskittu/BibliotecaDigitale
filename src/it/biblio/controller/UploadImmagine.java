@@ -96,8 +96,7 @@ public class UploadImmagine extends BibliotecaBaseController {
 		final long id_opera = Long.parseLong(request.getParameter("opera"));
 		final Part filePart = request.getPart("fileToUpload");
 		final String nomeFile = getFileName(filePart);
-		final String directory_immagini = getServletContext().getInitParameter("system.directory_immagini");
-		final String path = getServletContext().getRealPath(File.separator) + directory_immagini;
+		final String path = getServletContext().getInitParameter("system.directory_immagini");
 		final String numero = (String) request.getParameter("numero_pagina");
 		
 		
@@ -141,12 +140,13 @@ public class UploadImmagine extends BibliotecaBaseController {
 			}
 			Pagina P = datalayer.creaPagina();
 			P.setOpera(O);
-			P.setPathImmagine(directory_immagini + File.separator + nomeFile);
+			P.setPathImmagine(path + File.separator + nomeFile);
 			P.setUploadImmagine(new Timestamp(Calendar.getInstance().getTime().getTime()));
 			P.setNumero(numero);
 			P = datalayer.aggiungiPagina(P);
-			String url = "http://["+request.getLocalAddr()+"]:"+request.getLocalPort()+getServletContext().getContextPath() + File.separator + P.getPathImmagine();
-			System.out.println(url);
+			//String url = "http://["+request.getLocalAddr()+"]:"+request.getLocalPort()+getServletContext().getContextPath() + File.separator + P.getPathImmagine();
+			//System.out.println(url);
+			//request.setAttribute("url", url);
 			action_result(request,response);
 
 		} catch (DataLayerException ex) {

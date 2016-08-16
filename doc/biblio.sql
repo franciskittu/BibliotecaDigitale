@@ -113,7 +113,8 @@ CREATE TABLE opera (
     pubblicata boolean,
     num_pagine integer,
     trascrittore integer,
-    acquisitore integer
+    acquisitore integer,
+    numero_pagine integer
 );
 
 
@@ -340,9 +341,9 @@ SELECT pg_catalog.setval('commenta_progressivo_seq', 1, false);
 -- Data for Name: opera; Type: TABLE DATA; Schema: public; Owner: biblioadmin
 --
 
-COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata, num_pagine, trascrittore, acquisitore) FROM stdin;
-1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	t	5	\N	\N
-2	titolo	mambo	2000	rizzoli	descr	f	10	\N	20
+COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata, num_pagine, trascrittore, acquisitore, numero_pagine) FROM stdin;
+1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	t	5	\N	\N	10
+2	titolo	mambo	2000	rizzoli	descr	f	10	\N	20	10
 \.
 
 
@@ -358,7 +359,8 @@ SELECT pg_catalog.setval('opera_id_seq', 2, true);
 --
 
 COPY pagina (id, numero, path_immagine, opera, trascrizione_validata, upload_immagine, ultima_modifica_trascrizione, path_trascrizione, immagine_validata) FROM stdin;
-4	1	/BiblioTech/immagini-opere/il_tesoretto_1.jpg	2	f	2016-08-09 12:48:43.287	\N		f
+15	1	/home/francesco/Documents/Magistrale/OOP/PROJ/immagini-opere/il_tesoretto_1.jpg	2	f	2016-08-13 12:10:20.742	\N		f
+16	2	/home/francesco/Documents/Magistrale/OOP/PROJ/immagini-opere/Aristotle_latin_manuscript.jpg	2	f	2016-08-13 12:41:53.644	\N		f
 \.
 
 
@@ -366,7 +368,7 @@ COPY pagina (id, numero, path_immagine, opera, trascrizione_validata, upload_imm
 -- Name: pagina_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('pagina_id_seq', 4, true);
+SELECT pg_catalog.setval('pagina_id_seq', 16, true);
 
 
 --
@@ -409,6 +411,7 @@ COPY utente (id, username, password, nome, cognome, email) FROM stdin;
 16	marcolino	-112-31477370-80114-96-92-102-20-37-581226874-67-70125	Marco	D\\'Ettorre	marcodettorre88@gmail.com
 20	marco	1114-8352-87-2760115-103-88-125-3026-3677-112-30-34-9339	marco	marco	marcodettorre88@gmail.com
 25	giutom	6239127-113-10411618-6-193-7717-66-10234-8254104-52	Giuseppe	Tomei	giutom88@gmail.com
+26	franceschiello	-52-63-103-10662126-125-372171-6-671-11084-14-57-348142	Franceschiello	Secchiello	franceschiellosecchiello@univaq.it
 \.
 
 
@@ -416,7 +419,7 @@ COPY utente (id, username, password, nome, cognome, email) FROM stdin;
 -- Name: utente_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('utente_id_seq', 25, true);
+SELECT pg_catalog.setval('utente_id_seq', 26, true);
 
 
 --

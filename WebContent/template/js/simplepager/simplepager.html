@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+WEB EGINEERING COURSE - University of L'Aquila 
+
+Thi example shows a simple technique for client-side table pagination.
+Table data is loaded using two access functions that can be rewritten
+to use any data source (e.g., AJAX calls, ecc.)
+
+See the course homepage: http://www.di.univaq.it/gdellape/students.php
+
+-->
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <title>Javascript pagination</title>
+    <link rel="stylesheet" href="demos.css" type="text/css" />
+    <style type="text/css">.pagerLink { background-color:white;
+    color: blue; border: 1px solid blue; margin: 1px; padding: 2px;
+    text-decoration: none; } .pagerCurrent { background-color:blue;
+    color: white; border: 1px solid blue; margin: 1px; padding:
+    4px; }</style>
+    <script type="text/javascript" src="simplepager.js"></script>
+    <script type="text/javascript" src="simplepagerdata.js">
+    </script>
+  </head>
+  <body>
+    <h1 class="sezione">A simple Javascript pager</h1>
+    <p>In this example, paging is performed client-side with
+    Javascript, which queries an external data source (such as a
+    remote server via AJAX) to retrieve the data pages and create
+    the pager.</p>
+    <p>An important detail, however, is that the document is
+    designed to support also server side paging: indeed, when
+    loaded, it displays the first page of data and a set of static
+    links to load the next ones, sending the page number as a
+    parameter to the server.</p>
+    <p>The script, if activated, replaces "on the fly" the
+    server-side paging structures with the client-side ones. In
+    this way, we need to develop the server support for two types
+    of pagination (i.e., the server must be able to return complete
+    pages or just blocks of data to be inserted in the page), but
+    the user can always make use of the best available pagination
+    mechanism.</p>
+    <p>Go to page: 
+    <span id="paging">
+      <span class="pagerCurrent">1</span>
+      <a class="pagerLink" href="?page=2">2</a>
+      <a class="pagerLink" href="?page=3">3</a>
+    </span></p>
+    <table border="1" id="voti">
+      <tr>
+        <th>Number</th>
+        <th>Grade</th>
+      </tr>
+      <tr>
+        <td>124610</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td>112233</td>
+        <td>28</td>
+      </tr>
+    </table>
+  </body>
+</html>

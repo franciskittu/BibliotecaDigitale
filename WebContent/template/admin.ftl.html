@@ -1,10 +1,69 @@
 <div>
 
-ricerca opera -->  pubblica, rimuovi
+	<!--  PAGINATORE -->
+    <link rel="stylesheet" href="template/js/simplepager/demos.css" type="text/css" />
+    <style type="text/css">.pagerLink { background-color:white;
+    color: blue; border: 1px solid blue; margin: 1px; padding: 2px;
+    text-decoration: none; } .pagerCurrent { background-color:blue;
+    color: white; border: 1px solid blue; margin: 1px; padding:
+    4px; }</style>
+    <script type="text/javascript" src="template/js/simplepager/simplepager.js"></script>
+    <script type="text/javascript" src="template/js/simplepager/simplepagerdata.js">
+    </script>
+	<script type="text/javascript">
+        $.ajax({
+        url: 'Registrazione',
+        type: 'POST',
+        data: 'usernameAjax='+obj.value,
+            success: function(data) {
+                        console.log((data));
+                        if (eval(data)){
+                            
+                            document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Username gia' presente, inserirne un altro</li></ul></p>";
+                            
+                        }
+                        
+                        else {
+                            
+                            $("#status").remove();
+                            document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
+                            
+                        }
+            }
+        });
+        
+	</script>
+	
+	
+	
+	
+	<p>Go to page: 
+    <span id="paging">
+      <span class="pagerCurrent">1</span>
+      <a class="pagerLink" href="?page=2">2</a>
+      <a class="pagerLink" href="?page=3">3</a>
+    </span></p>
+    <table border="1" id="voti">
+      <tr>
+        <th>Number</th>
+        <th>Grade</th>
+      </tr>
+      <tr>
+        <td>124610</td>
+        <td>30</td>
+      </tr>
+      <tr>
+        <td>112233</td>
+        <td>28</td>
+      </tr>
+    </table>
+
+
+ricerca opera -->  pubblica, rimuovi,titolo editore anno 
 ricerca utente --> assegna come 
 
 assegnare ruoli utenti 
-aggiungere
+aggiungere 
 rimuovere opera
 pubblicare le opere  
 </div> 

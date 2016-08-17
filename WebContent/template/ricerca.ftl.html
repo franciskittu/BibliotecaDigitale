@@ -10,7 +10,7 @@
             <div class="row">
                 <div class="col-lg-8 col-lg-offset-2">
                     
-                    <form name="ricerca" id="ricerca" method="GET" novalidate action="Ricerca">
+                    <form id="form_ricerca" novalidate>
                         <div class="row control-group">
                             <div class="form-group col-xs-12 floating-label-form-group controls">
                                 <label>Titolo</label>
@@ -56,12 +56,13 @@
                      	</#if>
                          <br>
                         <div id="success"></div>
-                        <div class="row">
-                            <div class="form-group col-xs-12">
-                                <button type="submit" class="btn btn-success btn-lg">Invia</button>
-                            </div>
-                        </div>
+                        
                     </form>
+                    <div class="row">
+                            <div class="form-group col-xs-12">
+                                <button onclick="ricerca()" class="btn btn-success btn-lg">Invia</button>
+                            </div>
+                    </div>
                 </div>
             </div>
         </div>

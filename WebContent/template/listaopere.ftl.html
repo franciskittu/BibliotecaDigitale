@@ -1,5 +1,35 @@
-<#if opere??>
-
+<div id = "divlistaopere" style="display: none;">
+   <link rel="stylesheet" href="template/js/simplepager/demos.css" type="text/css" />
+    <style type="text/css">.pagerLink { background-color:white;
+    color: blue; border: 1px solid blue; margin: 1px; padding: 2px;
+    text-decoration: none; } .pagerCurrent { background-color:blue;
+    color: white; border: 1px solid blue; margin: 1px; padding:
+    4px; }</style>
+    <script type="text/javascript" src="template/js/simplepager/simplepager.js"></script>
+    <script type="text/javascript" src="template/js/simplepager/simplepagerdata.js">
+    </script>
+    <p>Go to page: 
+    <span id="paging">
+      <span class="pagerCurrent">1</span>
+      <a class="pagerLink" href="?page=2">2</a>
+      <a class="pagerLink" href="?page=3">3</a>
+    </span></p>
+			    <table border="1" id="voti">
+			      <tr>
+			        <th>Number</th>
+			        <th>Grade</th>
+			      </tr>
+			      <tr>
+			        <td>124610</td>
+			        <td>30</td>
+			      </tr>
+			      <tr>
+			        <td>112233</td>
+			        <td>28</td>
+			      </tr>
+			    </table>
+    
+    <!--  
     <section id="listaopere">
         <div class="container">
             <div class="row">
@@ -9,8 +39,7 @@
                 </div>
             </div>
                     <div class="list-group">
-                    <#if (opere?size > 0)>
-                        <#list opere as opera>
+                    
                         <table class="table ">
 							  <thead>
 							    <tr class="tabella">
@@ -22,19 +51,21 @@
 							  </thead>
 							  <tbody>
 								  	<tr class="riga_tabella" data>
-								      <th scope="row">${opera.ID}</th>
-								      <td>${opera.titolo}</td>
-								      <td>${opera.descrizione}</td>
-								      <td>${opera.numeroPagine}</td>
+								      <th scope="row">id</th>
+								      <td>titolo</td>
+								      <td>descrizione</td>
+								      <td>numeroPagine</td>
 								    </tr>
 							  </tbody>
 							</table>
-  						</#list>
-                    <#else>
+  					
                     LA RICERCA NON HA PRODOTTO RISULTATI.
-                    </#if>
                     </div>
         </div>
     </section>
     <script ="text/javascript> window.location.hash='#listaopere'</script>
-</#if>
+    -->
+	
+ </div>
+    
+    

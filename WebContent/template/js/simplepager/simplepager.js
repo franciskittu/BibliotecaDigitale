@@ -16,14 +16,12 @@ function makeRow(datarow) {
 	//creiamo la riga
 	//create the row
 	var row = document.createElement('tr');
-    var cellstylecallback = getCellStyleCallback();
 	var i;
 	//e inseriamo tante celle quanti sono gli elementi della datarow
 	//and add as many cells as the datarow elements are
 	for(i in datarow) {
 		var cell = document.createElement('td');
 		cell.textContent = datarow[i];
-		if (typeof(cellstylecallback)=="function") cellstylecallback(cell.style, datarow,i);		
 		row.appendChild(cell);
 	}
 	return row;				
@@ -50,7 +48,7 @@ function updateTable(id,data,hascaption) {
 	//get a reference to the table body
 	var tbody = tab.tBodies[0];
 		
-	//per evitare sfarfallii, sovrascriviamo le righe già presenti, 
+	//per evitare sfarfallii, sovrascriviamo le righe giï¿½ presenti, 
 	//quindi ne aggiungiamo altre o cancelliamo quelle inutili solo se necessario
 	//to avoid flickering, overwrite the displayed rows
 	//and add/remove rows only if strictly needed
@@ -63,7 +61,7 @@ function updateTable(id,data,hascaption) {
 	//create a <tr> representing the data row
 		var newrow = makeRow(data[i]);		
 		if (i<oldrows) {
-			//se esiste già un' i-esima riga la sovrascriviamo con i nuovi dati
+			//se esiste giï¿½ un' i-esima riga la sovrascriviamo con i nuovi dati
 			//if the i-th row already exists, overwrite it with the new data
 			tbody.replaceChild(newrow,tbody.rows[i+skip]);
 		} else {
@@ -72,7 +70,7 @@ function updateTable(id,data,hascaption) {
 			tbody.appendChild(newrow);
 		}
 	}
-	//infine, cancelliamo tutte le righe che non ci servono più
+	//infine, cancelliamo tutte le righe che non ci servono piï¿½
 	//finally, delete all the unised extra rows
 	for(i=data.length; i<oldrows; ++i) {
 		tbody.removeChild(tbody.rows[data.length+skip]);
@@ -84,11 +82,11 @@ function updateTable(id,data,hascaption) {
 function makePageLink(page) {
 	var link = document.createElement("a");
 	//nota: grazie all'effetto closure, la variabile page usata nella funzione anonima creata
-	//qui sotto conserverà il valore passato durante la chiamata a makePageLink
+	//qui sotto conserverï¿½ il valore passato durante la chiamata a makePageLink
 	//note: thanks to the closure, the page variable used in the created function
 	//is set to the page value passed to makePageLink
 	link.onclick=function(){switchPage(page);}
-	//l'href del link è nullo
+	//l'href del link ï¿½ nullo
 	//the link href is null
 	link.href="javascript:void(0)";
 	link.textContent=page;

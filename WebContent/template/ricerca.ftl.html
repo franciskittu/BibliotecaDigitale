@@ -42,12 +42,15 @@
                             </div>
                         </div>
                         <#if (revisore_acquisizioni?? && revisore_acquisizioni) || (revisore_trascrizioni?? && revisore_trascrizioni) || (trascrittore?? && trascrittore)  || (admin?? && admin)>
-	                         <div class="row control-group">
-	                     		<div class="form-group col-xs-12 floating-label-form-group controls">
-	                         		<label>pubblicata</label>
-	                         		<input type="checkbox" class="form-control" id="pubblicata" name="pubblicata" checked="checked">
-	                         </div>
-                         </div>
+	                        
+							    <div class="checkbox">
+							  
+							    <label>
+							      <input type="checkbox" placeholder="Pubblicata" id="pubblicata" name="pubblicata" checked="checked">Pubblicata
+							    </label>
+							    </div>
+							  
+							
                          <#else>
                          <input type="hidden" class="form-control" id="pubblicata" name="pubblicata" value="true">
                      	</#if>

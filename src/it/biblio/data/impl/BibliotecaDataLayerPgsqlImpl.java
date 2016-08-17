@@ -64,8 +64,8 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
 			rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
 			gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
-			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,pubblicata, acquisitore, trascrittore,numero_pagine) VALUES(?,?,?,?,?,?,?,?,?) RETURNING ID");
-			aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, pubblicata = ?, acquisitore = ?, trascrittore = ?, numero_pagine = ? WHERE id = ?");
+			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,immagini_pubblicate, trascrizioni_pubblicate,acquisitore, trascrittore,numero_pagine) VALUES(?,?,?,?,?,,?,?,?,?,?) RETURNING ID");
+			aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, immagini_pubblicate = ?, trascrizioni_pubblicate = ?,acquisitore = ?, trascrittore = ?, numero_pagine = ? WHERE id = ?");
 			gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 			aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 					+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
@@ -253,18 +253,19 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aOpera.setString(3, OI.getAnno());
 			aOpera.setString(4, OI.getEditore());
 			aOpera.setString(5, OI.getDescrizione());
-			aOpera.setBoolean(6, OI.getPubblicata());
+			aOpera.setBoolean(6, OI.getImmaginiPubblicate());
+			aOpera.setBoolean(7, OI.getTrascrizioniPubblicate());
 			if(OI.getAcquisitore() != null){
-				aOpera.setLong(7,OI.getAcquisitore().getID());
+				aOpera.setLong(8,OI.getAcquisitore().getID());
 			}else{
-				aOpera.setNull(7,Type.LONG);
+				aOpera.setNull(8,Type.LONG);
 			}
 			if(OI.getTrascrittore() != null){
-				aOpera.setLong(8, OI.getTrascrittore().getID());
+				aOpera.setLong(9, OI.getTrascrittore().getID());
 			}else{
-				aOpera.setNull(8, Type.LONG);
+				aOpera.setNull(9, Type.LONG);
 			}
-			aOpera.setInt(9, OI.getNumeroPagine());
+			aOpera.setInt(10, OI.getNumeroPagine());
 			try(ResultSet chiave = aOpera.executeQuery()){
 				if(chiave.next()){
 					return getOpera(chiave.getLong("ID"));
@@ -282,7 +283,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		Opera OI = (OperaImpl) O; 
 		List<Opera> ris = new ArrayList<Opera>();
 		try{
-			String query = "SELECT * FROM Opera WHERE pubblicata = "+OI.getPubblicata().toString();
+			String query = "SELECT * FROM Opera WHERE immagini_pubblicate = "+OI.getImmaginiPubblicate().toString()+" AND trascrizioni_pubblicate = "+OI.getImmaginiPubblicate().toString();
 			if(O.getID() != 0){
 				query = query + " AND id = "+O.getID();
 			}
@@ -401,19 +402,20 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aggiornaOpera.setString(3, O.getAnno());
 			aggiornaOpera.setString(4, O.getEditore());
 			aggiornaOpera.setString(5, O.getDescrizione());
-			aggiornaOpera.setBoolean(6, O.getPubblicata());
+			aggiornaOpera.setBoolean(6, O.getImmaginiPubblicate());
+			aggiornaOpera.setBoolean(7, O.getTrascrizioniPubblicate());
 			if(O.getAcquisitore() != null){
-				aggiornaOpera.setLong(7,O.getAcquisitore().getID());
+				aggiornaOpera.setLong(8,O.getAcquisitore().getID());
 			}else{
-				aggiornaOpera.setNull(7,Types.INTEGER);
+				aggiornaOpera.setNull(8,Types.INTEGER);
 			}
 			if(O.getTrascrittore() != null){
-				aggiornaOpera.setLong(8, O.getTrascrittore().getID());
+				aggiornaOpera.setLong(9, O.getTrascrittore().getID());
 			}else{
-				aggiornaOpera.setNull(8, Types.INTEGER);
+				aggiornaOpera.setNull(9, Types.INTEGER);
 			}
-			aggiornaOpera.setInt(9, O.getNumeroPagine());
-			aggiornaOpera.setLong(10, O.getID());
+			aggiornaOpera.setInt(10, O.getNumeroPagine());
+			aggiornaOpera.setLong(11, O.getID());
 			if(aggiornaOpera.executeUpdate() == 1){
 				return getOpera(O.getID());
 			}

@@ -63,14 +63,15 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 		BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 		if((Boolean)request.getAttribute("acquisitore") == true){
 			Opera O = datalayer.creaOpera();
-			O.setPubblicata(false);
+			O.setImmaginiPubblicate(false);
 			List<Opera> opere = datalayer.getOpereByQuery(O);
 			request.setAttribute("opere_non_pubblicate", opere);
 		}
 		else if((Boolean)request.getAttribute("trascrittore") == true){
 			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("username"));
 			Opera O = datalayer.creaOpera();
-			O.setPubblicata(false);
+			O.setImmaginiPubblicate(true);
+			O.setTrascrizioniPubblicate(false);
 			O.setTrascrittore(U);
 			List<Opera> opere = datalayer.getOpereByQuery(O);
 			request.setAttribute("opere_in_trascrizione",opere);
@@ -80,11 +81,13 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 		}
 		else if((Boolean) request.getAttribute("revisore_acquisizioni") == true){
 			Opera query = datalayer.creaOpera();
-			query.setPubblicata(false);
+			query.setImmaginiPubblicate(false);;
 			List<Opera> opere = datalayer.getOpereByQuery(query);
 		}
 		else if((Boolean) request.getAttribute("revisore_trascrizioni") == true){
-			
+			Opera query = datalayer.creaOpera();
+			query.setTrascrizioniPubblicate(false);
+			List<Opera> opere = datalayer.getOpereByQuery(query);
 		}
 		
 		TemplateResult res = new TemplateResult(getServletContext());

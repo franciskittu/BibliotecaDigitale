@@ -29,8 +29,11 @@ public interface Opera {
 	String getDescrizione();
 	void setDescrizione(String descrizione);
 	
-	Boolean getPubblicata();
-	void setPubblicata(Boolean b);
+	Boolean getImmaginiPubblicate();
+	void setImmaginiPubblicate(Boolean b);
+	
+	Boolean getTrascrizioniPubblicate();
+	void setTrascrizioniPubblicate(Boolean b);
 	
 	Utente getTrascrittore() throws DataLayerException;
 	void setTrascrittore(Utente T);

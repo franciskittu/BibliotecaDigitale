@@ -1,0 +1,12 @@
+[
+	<#list opere as opera>
+    {"id": "${opera.ID}",
+    "titolo": "${opera.titolo!""?html}",
+    "autore": "${opera.autore!""?html}",
+    "editore" : "${opera.editore!""?html}",
+    "lingua" : "${opera.lingua!""?html}",
+    "immagini_pubblicate" : "true",
+    "trascrizioni_pubblicate" : "true"
+    }
+    </#list>
+]

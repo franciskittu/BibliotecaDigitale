@@ -3,27 +3,15 @@ function ricerca(){
 	titolo=document.getElementById("form_ricerca").titolo.value;
 	autore=document.getElementById("form_ricerca").autore.value;
 	editore=document.getElementById("form_ricerca").editore.value;
-	anno_pubblicazione=document.getElementById("form_ricerca").annoPubbliazione.value;
+	anno_pubblicazione=document.getElementById("form_ricerca").annoPubblicazione.value;
 	lingua=document.getElementById("form_ricerca").lingua.value;
 	pubblicata=document.getElementById("form_ricerca").pubblicata.value;
 	 $.ajax({
          url: 'Ricerca',
          type: 'GET',
-         data: 'titolo='+titolo+"&autore="+autore+"&editore="+editore+"&annopubblicazione="+annopubblicazione+"&immagini_pubblicate="+pubblicata+"&lingua="+lingua,
+         data: 'titolo='+titolo+"&autore="+autore+"&editore="+editore+"&anno="+anno_pubblicazione+"&immagini_pubblicate="+pubblicata+"&lingua="+lingua,
              success: function(data) {
                          console.log((data));
-                         if (eval(data)){
-                             
-                             document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Username gia' presente, inserirne un altro</li></ul></p>";
-                             
-                         }
-                         
-                         else {
-                             
-                             $("#status").remove();
-                             document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
-                             
-                         }
              }
          });
      };		

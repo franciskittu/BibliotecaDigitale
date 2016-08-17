@@ -11,7 +11,7 @@ public class OperaImpl implements Opera{
 
 	private long ID, id_trascrittore, id_acquisitore;
 	private Integer numeropagine;
-	private Boolean pubblicata;
+	private Boolean immagini_pubblicate, trascrizioni_pubblicate;
 	private String titolo,descrizione, lingua, anno, editore;
 	private Utente trascrittore, acquisitore;
 	
@@ -26,7 +26,7 @@ public class OperaImpl implements Opera{
 	 */
 	public OperaImpl(BibliotecaDataLayerPgsqlImpl datalayer){
 		titolo = descrizione = editore = lingua = anno = "";
-		pubblicata = false;
+		immagini_pubblicate = trascrizioni_pubblicate = false;
 		ID = id_acquisitore= id_trascrittore = numeropagine = 0;
 		this.datalayer = datalayer;
 	}
@@ -39,7 +39,8 @@ public class OperaImpl implements Opera{
 	 * @throws SQLException
 	 */
 	public OperaImpl(BibliotecaDataLayerPgsqlImpl datalayer, ResultSet dati) throws SQLException{
-		pubblicata = dati.getBoolean("pubblicata");
+		immagini_pubblicate = dati.getBoolean("immagini_pubblicate");
+		trascrizioni_pubblicate = dati.getBoolean("trascrizioni_pubblicate");
 		ID = dati.getLong("ID");
 		titolo = dati.getString("titolo");
 		descrizione = dati.getString("descrizione");
@@ -109,16 +110,6 @@ public class OperaImpl implements Opera{
 		this.descrizione = descrizione;
 		
 	}
-
-	@Override
-	public Boolean getPubblicata() {
-		return pubblicata;
-	}
-
-	@Override
-	public void setPubblicata(Boolean b) {
-		this.pubblicata = b;
-	}
 	
 	@Override
 	public Utente getTrascrittore() throws DataLayerException {
@@ -156,6 +147,28 @@ public class OperaImpl implements Opera{
 	@Override
 	public void setNumeroPagine(Integer numeropagine) {
 		this.numeropagine = numeropagine;
+		
+	}
+
+	@Override
+	public Boolean getImmaginiPubblicate() {
+		return this.immagini_pubblicate;
+	}
+
+	@Override
+	public void setImmaginiPubblicate(Boolean b) {
+		this.immagini_pubblicate = b;
+		
+	}
+
+	@Override
+	public Boolean getTrascrizioniPubblicate() {
+		return this.trascrizioni_pubblicate;
+	}
+
+	@Override
+	public void setTrascrizioniPubblicate(Boolean b) {
+		this.trascrizioni_pubblicate = b;
 		
 	}
 

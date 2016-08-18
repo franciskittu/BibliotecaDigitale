@@ -283,7 +283,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		Opera OI = (OperaImpl) O; 
 		List<Opera> ris = new ArrayList<Opera>();
 		try{
-			String query = "SELECT * FROM Opera WHERE immagini_pubblicate = "+OI.getImmaginiPubblicate().toString()+" AND trascrizioni_pubblicate = "+OI.getImmaginiPubblicate().toString();
+			String query = "SELECT * FROM Opera WHERE immagini_pubblicate = "+OI.getImmaginiPubblicate().toString()+" AND trascrizioni_pubblicate = "+OI.getTrascrizioniPubblicate().toString();
 			if(O.getID() != 0){
 				query = query + " AND id = "+O.getID();
 			}

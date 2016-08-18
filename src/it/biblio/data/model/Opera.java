@@ -43,4 +43,7 @@ public interface Opera {
 	
 	Integer getNumeroPagine();
 	void setNumeroPagine(Integer numero_pagine);
+	
+	String getAutore();
+	void setAutore(String autore);
 }

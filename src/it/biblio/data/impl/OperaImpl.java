@@ -12,7 +12,7 @@ public class OperaImpl implements Opera{
 	private long ID, id_trascrittore, id_acquisitore;
 	private Integer numeropagine;
 	private Boolean immagini_pubblicate, trascrizioni_pubblicate;
-	private String titolo,descrizione, lingua, anno, editore;
+	private String titolo,descrizione, lingua, anno, editore, autore;
 	private Utente trascrittore, acquisitore;
 	
 	/**
@@ -25,7 +25,7 @@ public class OperaImpl implements Opera{
 	 * @param datalayer DAO
 	 */
 	public OperaImpl(BibliotecaDataLayerPgsqlImpl datalayer){
-		titolo = descrizione = editore = lingua = anno = "";
+		titolo = descrizione = editore = lingua = anno = autore ="";
 		immagini_pubblicate = trascrizioni_pubblicate = false;
 		ID = id_acquisitore= id_trascrittore = numeropagine = 0;
 		this.datalayer = datalayer;
@@ -50,6 +50,7 @@ public class OperaImpl implements Opera{
 		id_trascrittore = dati.getLong("trascrittore");
 		id_acquisitore = dati.getLong("acquisitore");
 		numeropagine = dati.getInt("numero_pagine");
+		autore = dati.getString("autore");
 		this.datalayer = datalayer;
 	}
 	
@@ -170,6 +171,16 @@ public class OperaImpl implements Opera{
 	public void setTrascrizioniPubblicate(Boolean b) {
 		this.trascrizioni_pubblicate = b;
 		
+	}
+	
+	@Override
+	public void setAutore(String autore){
+		this.autore = autore;
+	}
+	
+	@Override
+	public String getAutore(){
+		return this.autore;
 	}
 
 }

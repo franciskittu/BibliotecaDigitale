@@ -32,15 +32,17 @@ public class Ricerca extends BibliotecaBaseController {
 
 			List<Opera> opere = new ArrayList<Opera>();
 			Opera O = datalayer.creaOpera();
+			O.setAutore(SecurityLayer.addSlashes(autore));
 			O.setAnno(SecurityLayer.addSlashes(anno));
 			O.setEditore(SecurityLayer.addSlashes(editore));
 			O.setTitolo(SecurityLayer.addSlashes(titolo));
-			O.setImmaginiPubblicate((immagini_pubblicate != null && immagini_pubblicate.equals("true")) ? true : false);
+			O.setImmaginiPubblicate((immagini_pubblicate != null && immagini_pubblicate.equals("false")) ? false : true);
 			O.setLingua(SecurityLayer.addSlashes(lingua));
 			opere = datalayer.getOpereByQuery(O);
 
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("query.ftl.json", request, response);
 		} catch (DataLayerException ex) {

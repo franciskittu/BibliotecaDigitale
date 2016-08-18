@@ -75,13 +75,12 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 			O.setTrascrittore(U);
 			List<Opera> opere = datalayer.getOpereByQuery(O);
 			request.setAttribute("opere_in_trascrizione",opere);
-			
 			opere = datalayer.getOpereDaTrascrivere();
 			request.setAttribute("opere_da_trascrivere", opere);
 		}
 		else if((Boolean) request.getAttribute("revisore_acquisizioni") == true){
 			Opera query = datalayer.creaOpera();
-			query.setImmaginiPubblicate(false);;
+			query.setImmaginiPubblicate(false);
 			List<Opera> opere = datalayer.getOpereByQuery(query);
 		}
 		else if((Boolean) request.getAttribute("revisore_trascrizioni") == true){

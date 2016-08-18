@@ -1,33 +1,52 @@
-<div id = "divlistaopere" style="display: none;">
-   <link rel="stylesheet" href="template/js/simplepager/demos.css" type="text/css" />
-    <style type="text/css">.pagerLink { background-color:white;
-    color: blue; border: 1px solid blue; margin: 1px; padding: 2px;
-    text-decoration: none; } .pagerCurrent { background-color:blue;
-    color: white; border: 1px solid blue; margin: 1px; padding:
-    4px; }</style>
-    <script type="text/javascript" src="template/js/simplepager/simplepager.js"></script>
-    <script type="text/javascript" src="template/js/simplepager/simplepagerdata.js">
-    </script>
-    <p>Go to page: 
+        <section id="listaopere" style="display: none;">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 id = "titoloListaOpere">LISTA DELLE OPERE</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+    <p>
     <span id="paging">
       <span class="pagerCurrent">1</span>
       <a class="pagerLink" href="?page=2">2</a>
       <a class="pagerLink" href="?page=3">3</a>
     </span></p>
-			    <table border="1" id="voti">
-			      <tr>
-			        <th>Number</th>
-			        <th>Grade</th>
-			      </tr>
-			      <tr>
-			        <td>124610</td>
-			        <td>30</td>
-			      </tr>
-			      <tr>
-			        <td>112233</td>
-			        <td>28</td>
-			      </tr>
-			    </table>
+    
+			   <div class="list-group">
+                    
+                        <table id=tableopere class="table ">
+							  <thead>
+							    <tr class="tabella">
+							      <th>#</th>
+							      <th>Titolo opera</th>
+							      <th>Descrizione opera</th>
+							      <th>Numero pagine</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+								  	<tr class="riga_tabella" >
+								      
+								    </tr>
+							  </tbody>
+							</table>
+  					
+                   
+                    </div>
+        </div>
+    </section>
+    <section id="erroreRicerca" style="display: none;">
+    	<div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <hr class="star-primary">
+
+                    <h3 class="nessun_risultato">CI DISPIACE, LA RICERCA NON HA PRODOTTO RISULTATI</h3>
+                    <hr class="star-primary">
+                </div>
+            </div>
+    	</div>
+    </section>
     
     <!--  
     <section id="listaopere">
@@ -63,9 +82,9 @@
                     </div>
         </div>
     </section>
-    <script ="text/javascript> window.location.hash='#listaopere'</script>
+    
     -->
 	
- </div>
+
     
     

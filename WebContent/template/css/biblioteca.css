@@ -3,6 +3,23 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+.nessun_risultato{
+	color:#18BC9C;
+} 
+.pagerLink { background-color:white;
+    color: #2C3E50; 
+    border: 1px solid #2C3E50; 
+    margin: 1px; 
+    padding: 2px;
+    text-decoration: none; 
+} 
+.pagerCurrent { 
+	background-color:#2C3E50;
+    color: white; 
+    margin: 1px;
+    padding:4px; 
+}
+
 body {
   font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   overflow-x: hidden;

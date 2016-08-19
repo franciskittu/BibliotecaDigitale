@@ -1,4 +1,4 @@
-var pages;
+var pages = [];
 
 //ritorna i dati di una pagina
 //returns the data for a given page
@@ -171,13 +171,16 @@ function ricerca(){
                 	 		window.location.hash='#erroreRicerca';
             	 		}
             	 		else {
-                         for (i=0; i<data.length; i++) {
+            	 			var k = 0;
+            	 			var i = 0;
+            	 			while(i<data.length) {
+                        	 var temp = [];
                         	 
-                        	 pages=[
-                        	        [{id: data[i].id, titolo: data[i].titolo,  descrizione:data[i].descrizione, anno:data[i].anno }],
-                        		 	[{matricola:"555555",voto:19}],
-                               		[{matricola:"556677",voto:19},{matricola:"667788",voto:27},{matricola:"888888",voto:21}]
-                        		 ];
+                        	 for(j=i; j < i+3 && j < data.length; j++){
+                        		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine });
+                        	 }
+                        	 pages[k++] = temp;
+                        	 i = i+3;
                          }
                          
                          init();

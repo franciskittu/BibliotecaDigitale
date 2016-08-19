@@ -9,7 +9,7 @@
     "immagini_pubblicate" : "${opera.immaginiPubblicate?then('true','false')?js_string}",
     "trascrizioni_pubblicate" : "${opera.trascrizioniPubblicate?then('true','false')?js_string}",
     "descrizione" : "${opera.descrizione!""?js_string}",
-    "numero_pagine" :"${opera.numero_pagine!""?js_string}" 
+    "numero_pagine" :"${opera.numeroPagine!""?js_string}" 
     }
     <#sep>, </#sep>
     </#list>

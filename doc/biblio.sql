@@ -30,40 +30,6 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: autore; Type: TABLE; Schema: public; Owner: biblioadmin; Tablespace: 
---
-
-CREATE TABLE autore (
-    id integer NOT NULL,
-    nome character varying NOT NULL,
-    cognome character varying
-);
-
-
-ALTER TABLE autore OWNER TO biblioadmin;
-
---
--- Name: autore_id_seq; Type: SEQUENCE; Schema: public; Owner: biblioadmin
---
-
-CREATE SEQUENCE autore_id_seq
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER TABLE autore_id_seq OWNER TO biblioadmin;
-
---
--- Name: autore_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: biblioadmin
---
-
-ALTER SEQUENCE autore_id_seq OWNED BY autore.id;
-
-
---
 -- Name: commenta; Type: TABLE; Schema: public; Owner: biblioadmin; Tablespace: 
 --
 
@@ -110,11 +76,12 @@ CREATE TABLE opera (
     anno character(4) NOT NULL,
     editore character varying,
     descrizione character varying,
-    pubblicata boolean,
-    num_pagine integer,
     trascrittore integer,
     acquisitore integer,
-    numero_pagine integer
+    numero_pagine integer,
+    immagini_pubblicate boolean,
+    trascrizioni_pubblicate boolean,
+    autore character varying
 );
 
 
@@ -266,13 +233,6 @@ ALTER SEQUENCE utente_id_seq OWNED BY utente.id;
 
 
 --
--- Name: id; Type: DEFAULT; Schema: public; Owner: biblioadmin
---
-
-ALTER TABLE ONLY autore ALTER COLUMN id SET DEFAULT nextval('autore_id_seq'::regclass);
-
-
---
 -- Name: progressivo; Type: DEFAULT; Schema: public; Owner: biblioadmin
 --
 
@@ -308,21 +268,6 @@ ALTER TABLE ONLY utente ALTER COLUMN id SET DEFAULT nextval('utente_id_seq'::reg
 
 
 --
--- Data for Name: autore; Type: TABLE DATA; Schema: public; Owner: biblioadmin
---
-
-COPY autore (id, nome, cognome) FROM stdin;
-\.
-
-
---
--- Name: autore_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
---
-
-SELECT pg_catalog.setval('autore_id_seq', 1, false);
-
-
---
 -- Data for Name: commenta; Type: TABLE DATA; Schema: public; Owner: biblioadmin
 --
 
@@ -341,9 +286,13 @@ SELECT pg_catalog.setval('commenta_progressivo_seq', 1, false);
 -- Data for Name: opera; Type: TABLE DATA; Schema: public; Owner: biblioadmin
 --
 
-COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata, num_pagine, trascrittore, acquisitore, numero_pagine) FROM stdin;
-1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	t	5	\N	\N	10
-2	titolo	mambo	2000	rizzoli	descr	f	10	\N	20	10
+COPY opera (id, titolo, lingua, anno, editore, descrizione, trascrittore, acquisitore, numero_pagine, immagini_pubblicate, trascrizioni_pubblicate, autore) FROM stdin;
+1	titolo opera	italiano	1900	Rizzoli Larousse	descrizione	\N	\N	10	t	f	\N
+3	I promessi sposi	italiano	1800	Lomardia Editore	Il famosissimo romanzo di Manzoni	\N	\N	200	t	f	Alessandro Manzoni
+4	I Malavoglia	italiano	1881	Treves	Famossissimo romanzo dello scrittore siciliano G.V.	\N	\N	900	t	f	Giovanni Verga
+5	Poesie	italiano	1500	Treves	Raccolta di poesie di Pascoli	\N	\N	500	t	f	Giovanni Pascoli
+6	Sogno di un attimo di primavera	italiano	1896	Treves	Poema tragico, tragicissimo	\N	\N	550	t	f	Gabri D'Annunzio
+2	titolo	mambo	2000	rizzoli	descr	\N	20	10	t	f	\N
 \.
 
 
@@ -351,7 +300,7 @@ COPY opera (id, titolo, lingua, anno, editore, descrizione, pubblicata, num_pagi
 -- Name: opera_id_seq; Type: SEQUENCE SET; Schema: public; Owner: biblioadmin
 --
 
-SELECT pg_catalog.setval('opera_id_seq', 2, true);
+SELECT pg_catalog.setval('opera_id_seq', 6, true);
 
 
 --
@@ -420,14 +369,6 @@ COPY utente (id, username, password, nome, cognome, email) FROM stdin;
 --
 
 SELECT pg_catalog.setval('utente_id_seq', 26, true);
-
-
---
--- Name: autore_pkey; Type: CONSTRAINT; Schema: public; Owner: biblioadmin; Tablespace: 
---
-
-ALTER TABLE ONLY autore
-    ADD CONSTRAINT autore_pkey PRIMARY KEY (id);
 
 
 --

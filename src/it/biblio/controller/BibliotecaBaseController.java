@@ -68,7 +68,7 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 			request.setAttribute("opere_non_pubblicate", opere);
 		}
 		else if((Boolean)request.getAttribute("trascrittore") == true){
-			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("username"));
+			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("nomeutente"));
 			Opera O = datalayer.creaOpera();
 			O.setImmaginiPubblicate(true);
 			O.setTrascrizioniPubblicate(false);

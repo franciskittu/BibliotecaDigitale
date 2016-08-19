@@ -1,0 +1,17 @@
+[
+<#if utenti?? && (utenti?size > 0)>
+	<#list utenti as utente>
+    {"id": "${utente.ID}",
+    "nome": "${utente.nome!""?js_string}",
+    "cognome": "${utente.cognome!""?js_string}",
+    "email" : "${utente.email!""?js_string}",
+    "nomeutente" : "${utente.username!""?js_string}",
+    "id_ruolo" : "${ruolo.ID!""?js_string}",
+    "nome_ruolo": "${ruolo.nome!""?js_string}",
+    "descrizione_ruolo": "${ruolo.descrizione!""?js_string}",
+    "ruoli_csv" : <#list ruoli as ruoli_csv>"${ruoli_csv.nome!""?js_string},"</#list>
+    }
+    <#sep>, </#sep>
+    </#list>
+    </#if>
+]

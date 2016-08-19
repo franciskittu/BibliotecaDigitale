@@ -10,7 +10,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
+import it.biblio.data.model.Ruolo;
+import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
+import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.SecurityLayer;
@@ -18,6 +21,25 @@ import it.biblio.framework.utility.SecurityLayer;
 @WebServlet(name="Ricerca", urlPatterns={"/Ricerca"})
 public class Ricerca extends BibliotecaBaseController {
 
+	@Override
+	protected void action_error(HttpServletRequest request, HttpServletResponse response){
+		try{
+			(new TemplateResult(getServletContext())).activate("error.ftl.json", request,
+					response);
+			
+		}catch(TemplateManagerException ex){
+			request.setAttribute("exception", ex);
+			(new FailureResult(getServletContext())).activate((Exception) request.getAttribute("exception"), request,
+					response);
+		}
+	}
+	/**
+	 * Funzione di ricerca delle opere che restituisce un oggetto JSON.
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
 	private void action_ricerca_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException{
 		try {
@@ -44,12 +66,58 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
-			tr.activate("query.ftl.json", request, response);
+			tr.activate("queryOpere.ftl.json", request, response);
 		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
 		}
 
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
+	private void action_ricerca_utenti_ajax(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException{
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			List<Utente> utenti = datalayer.getTuttiGliUtenti();
+			List<Ruolo> ruoli = datalayer.getListaRuoliUtente(datalayer.getUtenteByUsername((String) request.getAttribute("nomeutente")) );
+			Ruolo ruolo = ruoli.get(0);
+			ruoli = datalayer.getTuttiIRuoli();
+			
+			request.setAttribute("utenti", utenti);
+			request.setAttribute("ruolo", ruolo);
+			request.setAttribute("ruoli", ruoli);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryUtenti.ftl.json", request, response);
+		} catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+
+	private void action_tutteleopere_ajax(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException {
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			List<Opera> opere = datalayer.getTutteLeOpere();
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		}  catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
 	}
 	private void action_ricerca(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
@@ -87,8 +155,19 @@ public class Ricerca extends BibliotecaBaseController {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 
 		try {
-			//action_ricerca(request, response);
-			action_ricerca_ajax(request,response);
+			if(request.getParameter("tipoRicerca") == null){
+				action_ricerca_ajax(request,response);
+			}
+			else{
+				switch(request.getParameter("tipoRicerca")){
+				case "utenti": action_ricerca_utenti_ajax(request,response);
+				break;
+				case "tutteleopere": action_tutteleopere_ajax(request,response);
+				break;
+				default: action_ricerca_ajax(request,response);
+				break;
+				}
+			}
 		} catch (TemplateManagerException ex) {
 			request.setAttribute("exception", ex);
 			action_error(request, response);

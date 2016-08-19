@@ -15,6 +15,8 @@ public interface BibliotecaDataLayer extends DataLayer{
 	
 	Utente getUtenteByUsername(String username)throws DataLayerException;
 	
+	List<Utente> getTuttiGliUtenti() throws DataLayerException;
+	
 	/*Operazioni Ruolo*/
 	Ruolo creaRuolo()throws DataLayerException;
 	
@@ -25,6 +27,8 @@ public interface BibliotecaDataLayer extends DataLayer{
 	List<Ruolo> getListaRuoliUtente(Utente U)throws DataLayerException;
 	
 	Ruolo aggiungiRuolo(Ruolo R)throws DataLayerException;
+	
+	List<Ruolo> getTuttiIRuoli() throws DataLayerException;
 	
 	/*Operazioni Privilegi*/
 	Privilegi creaPrivilegio()throws DataLayerException;
@@ -47,6 +51,8 @@ public interface BibliotecaDataLayer extends DataLayer{
 	List<Opera> getOpereByQuery(Opera P)throws DataLayerException;
 	
 	List<Opera> getOpereDaTrascrivere()throws DataLayerException;
+	
+	List<Opera> getTutteLeOpere() throws DataLayerException;
 	
 	/*Operazioni Pagina*/
 	

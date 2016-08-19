@@ -32,10 +32,10 @@ import it.biblio.framework.data.DataLayerPgsqlImpl;
  */
 public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements BibliotecaDataLayer {
 
-	private PreparedStatement aUtente, gUtente,gUtenteUsername;
-	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente;
+	private PreparedStatement aUtente, gUtente,gUtenteUsername, gUtenti;
+	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente,gRuoli;
 	private PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
-	private PreparedStatement gOpera, aOpera, aggiornaOpera;
+	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere;
 	private PreparedStatement gPagina, aPagina, gPagineOpera;
 	private PreparedStatement gCommenta, aCommenta;
 	
@@ -56,16 +56,19 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aUtente = c.prepareStatement("INSERT INTO Utente(username,password,email,nome,cognome) VALUES (?,?,?,?,?) RETURNING ID");
 			gUtente = c.prepareStatement("SELECT * FROM Utente WHERE id = ?");
 			gUtenteUsername = c.prepareStatement("SELECT * FROM Utente WHERE username = ?");
+			gUtenti = c.prepareStatement("SELECT * FROM Utente ORDER BY(username)");
 			aRuolo = c.prepareStatement("INSERT INTO Ruolo(nome, descrizione) VALUES (?,?) RETURNING progressivo");
 			gRuolo = c.prepareStatement("SELECT * FROM Ruolo WHERE id = ?");
 			gRuoloNome = c.prepareStatement("SELECT * FROM Ruolo WHERE nome = ?");
 			gRuoliUtente = c.prepareStatement("SELECT Ruolo.* FROM Ruolo,Utente,Privilegi WHERE username = ? AND Utente.id = Privilegi.utente AND Privilegi.ruolo = Ruolo.id");
+			gRuoli = c.prepareStatement("SELECT * FROM Ruolo");
 			gPrivilegi = c.prepareStatement("SELECT * FROM Privilegi WHERE id = ?");
 			aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
 			rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
 			gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
 			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,immagini_pubblicate, trascrizioni_pubblicate,acquisitore, trascrittore,numero_pagine) VALUES(?,?,?,?,?,,?,?,?,?,?) RETURNING ID");
 			aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, immagini_pubblicate = ?, trascrizioni_pubblicate = ?,acquisitore = ?, trascrittore = ?, numero_pagine = ? WHERE id = ?");
+			gOpere = c.prepareStatement("SELECT * FROM Opera");
 			gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 			aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 					+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
@@ -309,7 +312,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 				query = query + " AND numero_pagine = " + O.getNumeroPagine();
 			}
 			
-			try(ResultSet rs = gOpereByQuery.executeQuery(query)){
+			try(ResultSet rs = gOpereByQuery.executeQuery(query+" ORDER BY(titolo)")){
 				while(rs.next()){
 					ris.add(new OperaImpl(this, rs));
 				}
@@ -487,7 +490,46 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		}
 		return ris;
 	}
+	
+	@Override
+	public List<Utente> getTuttiGliUtenti() throws DataLayerException {
+		List<Utente> ris = new ArrayList<Utente>();
+		try(ResultSet rs = this.gUtenti.executeQuery()){
+			while(rs.next()){
+				ris.add(new UtenteImpl(this,rs));
+			}
+		} catch (SQLException ex) {
+			throw new DataLayerException("Incapace di caricare tutti gli utenti", ex);
+		}
+		return ris;
+	}
 
+	@Override
+	public List<Ruolo> getTuttiIRuoli() throws DataLayerException {
+		List<Ruolo> ris = new ArrayList<Ruolo>();
+		try(ResultSet rs = this.gRuoli.executeQuery()){
+			while(rs.next()){
+				ris.add(new RuoloImpl(this,rs));
+			}
+		} catch (SQLException ex) {
+			throw new DataLayerException("Incapace di caricare tutti i ruoli", ex);
+		}
+		return ris;
+	}
+
+	@Override
+	public List<Opera> getTutteLeOpere() throws DataLayerException {
+		List<Opera> ris = new ArrayList<Opera>();
+		try(ResultSet rs = this.gOpere.executeQuery()){
+			while(rs.next()){
+				ris.add(new OperaImpl(this,rs));
+			}
+		} catch (SQLException ex) {
+			throw new DataLayerException("Incapace di caricare tutte le opere", ex);
+		}
+		return ris;
+	}
+	
 	@Override
 	public void destroy() throws DataLayerException {
 		try {
@@ -501,14 +543,17 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.gCommenta.close();
 			this.gOpera.close();
 			this.gOpereByQuery.close();
+			this.gOpere.close();
 			this.gPagina.close();
 			this.gPagineOpera.close();
 			this.gPrivilegi.close();
 			this.gRuoliUtente.close();
+			this.gRuoli.close();
 			this.gRuolo.close();
 			this.gRuoloNome.close();
 			this.gUtente.close();
 			this.gUtenteUsername.close();
+			this.gUtenti.close();
 			this.gOpereDaTrascrivere.close();
 			this.rPrivilegiUtente.close();
 		} catch (SQLException e) {
@@ -516,5 +561,8 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		}
 		super.destroy();
 	}
+
+
+	
 
 }

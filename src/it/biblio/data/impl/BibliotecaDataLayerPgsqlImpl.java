@@ -1,5 +1,6 @@
 package it.biblio.data.impl;
 
+import java.io.File;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,8 +34,8 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	private PreparedStatement aUtente, gUtente,gUtenteUsername, gUtenti;
 	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente,gRuoli;
 	private PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
-	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere;
-	private PreparedStatement gPagina, aPagina, gPagineOpera;
+	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera;
+	private PreparedStatement gPagina, aPagina, gPagineOpera, rPagina;
 	private PreparedStatement gCommenta, aCommenta;
 	
 	private Statement gOpereByQuery,gOpereDaTrascrivere;
@@ -70,11 +71,13 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 			aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 					+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
+			rPagina = c.prepareStatement("DELETE FROM Pagina WHERE id = ?");
 			gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 			aCommenta = c.prepareStatement("");
 			gOpereByQuery = c.createStatement();
 			gOpereDaTrascrivere = c.createStatement();
 			gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ?");
+			rOpera = c.prepareStatement("DELETE FROM Opera WHERE id = ?");
 		} catch(SQLException ex){
 			throw new DataLayerException("Errore nell'inizializzazione del datalayer della biblioteca", ex);
 		}
@@ -528,6 +531,51 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		return ris;
 	}
 	
+	private void rimuoviFilesPagina(Pagina P){
+		if(P!= null){
+			if(P.getPathImmagine() != null){
+				File f = new File(P.getPathImmagine());
+				if(f.exists()){
+					f.delete();
+				}
+			}
+			if(P.getPathTrascrizione() != null){
+				File f = new File(P.getPathImmagine());
+				if(f.exists()){
+					f.delete();
+				}
+			}
+		}
+	}
+	
+	@Override
+	public Pagina rimuoviPagina(Pagina P) throws DataLayerException {
+		try{
+			this.rPagina.setLong(1, P.getID());
+			if(this.rPagina.executeUpdate()==1){
+				rimuoviFilesPagina(P);
+				return P;
+			}
+		}catch (SQLException ex) {
+			throw new DataLayerException("Incapace di eliminare la pagina richiesta", ex);
+		}
+		return null;
+	}
+	
+
+	@Override
+	public Opera rimuoviOpera(Opera O) throws DataLayerException {
+		try{
+			this.rOpera.setLong(1, O.getID());
+			if(this.rOpera.executeUpdate() == 1){
+				return O;
+			}
+		}catch (SQLException ex) {
+			throw new DataLayerException("Incapace di eliminare l'opera richiesta", ex);
+		}
+		return null;
+	}
+
 	@Override
 	public void destroy() throws DataLayerException {
 		try {
@@ -554,12 +602,13 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.gUtenti.close();
 			this.gOpereDaTrascrivere.close();
 			this.rPrivilegiUtente.close();
+			this.rPagina.close();
+			this.rOpera.close();
 		} catch (SQLException e) {
 			
 		}
 		super.destroy();
 	}
-
 
 	
 

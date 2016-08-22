@@ -123,11 +123,10 @@ function makeRow(datarow) {
 		rimuovi.onclick= function(){
 			$.ajax({
 		         url: 'Rimuovi',
-		         dataType: "json",
 		         type: 'GET',
 		         data: 'id_opera='+this.id,
 		             success: function(data) {
-		            	 if(data==true){
+		            	 if(eval(data)){
 		            		 alert("ok");
 		            	 }
 		            	 else 

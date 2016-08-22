@@ -174,11 +174,13 @@ public class Ricerca extends BibliotecaBaseController {
 			else{
 				switch(request.getParameter("tipoRicerca")){
 				case "utenti": action_ricerca_utenti_ajax(request,response);
-				break;
+					break;
 				case "tutteleopere": action_tutteleopere_ajax(request,response);
-				break;
+					break;
+				case "opereInPubblicazioneAcquisizioni":;
+					break;
 				default: action_ricerca_ajax(request,response);
-				break;
+					break;
 				}
 			}
 		} catch (TemplateManagerException ex) {

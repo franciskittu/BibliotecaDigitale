@@ -54,6 +54,8 @@ public interface BibliotecaDataLayer extends DataLayer{
 	
 	List<Opera> getTutteLeOpere() throws DataLayerException;
 	
+	Opera rimuoviOpera(Opera O) throws DataLayerException;
+	
 	/*Operazioni Pagina*/
 	
 	Pagina creaPagina()throws DataLayerException;
@@ -63,6 +65,8 @@ public interface BibliotecaDataLayer extends DataLayer{
 	Pagina aggiungiPagina(Pagina P)throws DataLayerException;
 	
 	List<Pagina> getPagineOpera(long id_opera)throws DataLayerException;
+	
+	Pagina rimuoviPagina(Pagina P) throws DataLayerException;
 	
 	/*Operazioni Commenta*/
 	

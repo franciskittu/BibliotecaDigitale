@@ -15,6 +15,7 @@ import it.biblio.framework.utility.SecurityLayer;
  */
 public class SplitSlashesFmkExt implements TemplateMethodModelEx {
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object exec(List arg0) throws TemplateModelException {
 		//la lista contiene i parametri passati alla funzione nel template

@@ -1,37 +1,78 @@
 var admin=false;
+
+////////////////////////////////////////////////////////////
+/* 	LISTA OPERE IN PUBBLICAZIONE ACQUISIZIONI PER ADMIN   */
+////////////////////////////////////////////////////////////
+
+function opereInPubblicazioneAcquisizioni(){
+	debugger
+	$.ajax({
+        url: 'Ricerca',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=opereInPubblicazioneAcquisizioni',
+            success: function(data) {
+    	 		if (data==""){
+                    document.getElementById("listaopere").style.display="none";
+    	 			document.getElementById("erroreRicerca").style.display="inline";
+        	 		window.location.hash='#erroreRicerca';
+    	 		}
+    	 		else {         	 			
+    	 			var k = 0;
+    	 			var i = 0;
+        	 			while(i<data.length) {
+                    	 var temp = [];
+                    	 
+                    	 for(j=i; j < i+3 && j < data.length; j++){
+                    		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
+                    	 }
+                    	 pages[k++] = temp;
+                    	 i = i+3;
+        	 			}
+                   admin= true;
+                   init();
+     	 			document.getElementById("erroreRicerca").style.display="none";
+	                document.getElementById("listaopere").style.display="inline";
+	                window.location.hash='#listaopere';
+    	 		}
+            }
+});
+}
+
+
+
 ///////////////////////
-/* 	RICERCA ADMIN   */
+/* 	LISTA OPERE ADMIN   */
 //////////////////////
-function ricercaAdmin() {
+function listaOpereAdmin() {
 		$.ajax({
 	         url: 'Ricerca',
 	         dataType: "json",
 	         type: 'GET',
 	         data: 'tipoRicerca=tutteleopere',
 	             success: function(data) {
-	            	console.log(data);
          	 		if (data==""){
- 	                    document.getElementById("listaopere").style.display="none";
-         	 			document.getElementById("erroreRicerca").style.display="inline";
+ 	                    document.getElementById("listaopere").style.visible="none";
+         	 			document.getElementById("erroreRicerca").style.visible="visible";
              	 		window.location.hash='#erroreRicerca';
          	 		}
          	 		else {         	 			
          	 			var k = 0;
          	 			var i = 0;
-         	 			while(i<data.length) {
-                     	 var temp = [];
-                     	 
-                     	 for(j=i; j < i+3 && j < data.length; j++){
-                     		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
-                     	 }
-                     	 pages[k++] = temp;
-                     	 i = i+3;
-                      }
-                    admin= true;
-                    init();
-      	 			document.getElementById("erroreRicerca").style.display="none";
-	                document.getElementById("listaopere").style.display="inline";
-	                window.location.hash='#listaopere';
+	         	 			while(i<data.length) {
+	                     	 var temp = [];
+	                     	 
+	                     	 for(j=i; j < i+3 && j < data.length; j++){
+	                     		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
+	                     	 }
+	                     	 pages[k++] = temp;
+	                     	 i = i+3;
+	         	 			}
+	                    admin= true;
+	                    init();
+	      	 			document.getElementById("erroreRicerca").style.visible="none";
+		                document.getElementById("listaopere").style.visible="yes";
+		                window.location.hash='#listaopere';
          	 		}
 	             }
 	});
@@ -76,10 +117,23 @@ function makeRow(datarow) {
 	if (admin){
 		var rimuovi = document.createElement('button');
 		rimuovi.className="btn btn-danger btn-lg";
+		rimuovi.id=datarow.id;
 		var testo=document.createTextNode("rimuovi");
 		rimuovi.appendChild(testo);
 		rimuovi.onclick= function(){
-			console.log("sono qui");
+			$.ajax({
+		         url: 'Rimuovi',
+		         dataType: "json",
+		         type: 'GET',
+		         data: 'id_opera='+this.id,
+		             success: function(data) {
+		            	 if(data==true){
+		            		 alert("ok");
+		            	 }
+		            	 else 
+		            		 alert("non ok");
+		             }
+			});
 		};
 		var cell = document.createElement('td');
 		cell.appendChild(rimuovi)
@@ -295,7 +349,6 @@ function controllausername(obj){
                 data : {numeroAJAX:obj.value, operaAJAX:id },
                 //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
                     success: function(data) {
-                                console.log((data));
                                 if (eval(data)){
                                     
                                     document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Username gia' presente, inserirne un altro</li></ul></p>";

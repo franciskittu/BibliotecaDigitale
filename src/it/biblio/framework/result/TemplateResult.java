@@ -39,7 +39,8 @@ public class TemplateResult {
         init();
     }
 
-    private void init() {
+    @SuppressWarnings("deprecation")
+	private void init() {
         cfg = new Configuration();
         //impostiamo l'encoding di default per l'input e l'output
         //set the default input and outpout encoding

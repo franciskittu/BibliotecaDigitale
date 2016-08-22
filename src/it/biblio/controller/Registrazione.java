@@ -1,25 +1,17 @@
 package it.biblio.controller;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
-import it.biblio.data.impl.BibliotecaDataLayerPgsqlImpl;
 import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
-import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.ControllerException;
@@ -27,6 +19,11 @@ import it.biblio.framework.utility.SecurityLayer;
 
 @WebServlet(name="Registrazione", urlPatterns={"/Registrazione"})
 public class Registrazione extends BibliotecaBaseController {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5016452337535270516L;
 
 	/**
 	 * Metodo per il controllo della correttezza dei parametri della form di

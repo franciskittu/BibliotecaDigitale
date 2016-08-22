@@ -21,6 +21,12 @@ import it.biblio.framework.utility.SecurityLayer;
 @WebServlet(name="Ricerca", urlPatterns={"/Ricerca"})
 public class Ricerca extends BibliotecaBaseController {
 
+	/**
+	 * campo per la serializzazione della classe.
+	 * 
+	 */
+	private static final long serialVersionUID = 8446825403497077597L;
+
 	@Override
 	protected void action_error(HttpServletRequest request, HttpServletResponse response){
 		try{
@@ -103,6 +109,12 @@ public class Ricerca extends BibliotecaBaseController {
 		}
 	}
 
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
 	private void action_tutteleopere_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
 		try{
@@ -119,6 +131,7 @@ public class Ricerca extends BibliotecaBaseController {
 			action_error(request, response);
 		}
 	}
+	@SuppressWarnings("unused")
 	private void action_ricerca(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
 		try {

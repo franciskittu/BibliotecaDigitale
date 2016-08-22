@@ -1,6 +1,5 @@
 package it.biblio.data.impl;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,14 +7,13 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
 
 import javax.sql.DataSource;
 
 import com.sun.xml.internal.ws.org.objectweb.asm.Type;
 
-import it.biblio.data.model.Commenta;
 import it.biblio.data.model.BibliotecaDataLayer;
+import it.biblio.data.model.Commenta;
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Privilegi;
@@ -441,7 +439,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		} catch(SQLException ex){
 			throw new DataLayerException("Incapace di caricare il ruolo", ex);
 		}
-		return null;
+		return ris;
 	}
 
 	@Override

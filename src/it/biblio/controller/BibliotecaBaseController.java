@@ -24,6 +24,7 @@ import it.biblio.framework.result.*;
  * @author francesco
  *
  */
+@SuppressWarnings("serial")
 public abstract class BibliotecaBaseController extends HttpServlet {
 	
 	@Resource(name = "jdbc/bibliodb")

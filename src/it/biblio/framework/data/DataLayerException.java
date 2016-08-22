@@ -5,6 +5,7 @@ package it.biblio.framework.data;
  * @author francesco
  *
  */
+@SuppressWarnings("serial")
 public class DataLayerException extends Exception {
 
 	public DataLayerException(String message) {

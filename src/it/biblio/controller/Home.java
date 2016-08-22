@@ -11,6 +11,11 @@ import it.biblio.framework.result.TemplateManagerException;
 @WebServlet(name="Home", urlPatterns={"/index.html", "/Home"})
 public class Home extends BibliotecaBaseController {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -8654932571825576771L;
+
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {

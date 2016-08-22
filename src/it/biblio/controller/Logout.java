@@ -19,6 +19,11 @@ import it.biblio.framework.utility.SecurityLayer;
 @WebServlet(name="Logout", urlPatterns={"/Logout"})
 public class Logout extends HttpServlet {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1503993411303022678L;
+
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		SecurityLayer.disposeSession(request);

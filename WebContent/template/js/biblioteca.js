@@ -15,19 +15,14 @@ function ricercaAdmin() {
          	 			document.getElementById("erroreRicerca").style.display="inline";
              	 		window.location.hash='#erroreRicerca';
          	 		}
-         	 		else {
-         	 			var riga = document.createElement('button');
-         	 			riga.className="btn btn-danger btn-lg";
-         	 			var testo=document.createTextNode("rimuovi");
-         	 			riga.appendChild(testo);
-         	 			
+         	 		else {         	 			
          	 			var k = 0;
          	 			var i = 0;
          	 			while(i<data.length) {
                      	 var temp = [];
                      	 
                      	 for(j=i; j < i+3 && j < data.length; j++){
-                     		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno},riga);                             
+                     		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
                      	 }
                      	 pages[k++] = temp;
                      	 i = i+3;
@@ -37,7 +32,6 @@ function ricercaAdmin() {
       	 			document.getElementById("erroreRicerca").style.display="none";
 	                document.getElementById("listaopere").style.display="inline";
 	                window.location.hash='#listaopere';
-	                admin=false;
          	 		}
 	             }
 	});
@@ -80,14 +74,16 @@ function makeRow(datarow) {
 	}
 	//se sono admin inserisco il bottone rimuovi nella tabella 
 	if (admin){
-	var rimuovi = document.createElement('button');
-	rimuovi.className="btn btn-danger btn-lg";
-	var testo=document.createTextNode("rimuovi");
-	rimuovi.appendChild(testo);
-	rimuovi.onclick= function(){
-		console.log("sono qui");
-	};
-	row.appendChild(rimuovi);
+		var rimuovi = document.createElement('button');
+		rimuovi.className="btn btn-danger btn-lg";
+		var testo=document.createTextNode("rimuovi");
+		rimuovi.appendChild(testo);
+		rimuovi.onclick= function(){
+			console.log("sono qui");
+		};
+		var cell = document.createElement('td');
+		cell.appendChild(rimuovi)
+		row.appendChild(cell);
 	}
 	//console.log(row);
 	return row;				

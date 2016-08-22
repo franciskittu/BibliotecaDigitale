@@ -1,31 +1,41 @@
 package it.biblio.controller;
 
-import java.io.*;
-import java.net.URL;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.*;
-import java.util.*;
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.*;
-import javax.servlet.http.*;
-import javax.sql.DataSource;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 
-import it.biblio.data.impl.BibliotecaDataLayerPgsqlImpl;
 import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
 import it.biblio.framework.data.DataLayerException;
-import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
-import it.biblio.framework.utility.*;
+import it.biblio.framework.utility.ControllerException;
 
 @WebServlet(name="UploadImmagine", description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
 @MultipartConfig
 public class UploadImmagine extends BibliotecaBaseController {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -2649569830853593682L;
 
 	/**
 	 * Ottiene il nome del file dal tipo Part
@@ -75,7 +85,7 @@ public class UploadImmagine extends BibliotecaBaseController {
 		try {
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 
-			Map template_data = new HashMap();
+			Map<String,Object> template_data = new HashMap<>();
 			String pagina = request.getParameter("numeroAJAX");
 			String opera = request.getParameter("operaAJAX");
 			String ris = checkNumeroPagina(datalayer, pagina, Long.parseLong(opera));

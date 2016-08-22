@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-public class SecurityLayer {
+public final class SecurityLayer {
 
     //--------- SESSION SECURITY ------------    
      //questa funzione esegue una serie di controlli di sicurezza
@@ -152,7 +152,8 @@ public class SecurityLayer {
     //attuale, ma con protocollo https
     //this function redirects the browser on the current address, but
     //with https protocol
-    public static void redirectToHttps(HttpServletRequest request, HttpServletResponse response) throws ServletException {
+    @SuppressWarnings("static-access")
+	public static void redirectToHttps(HttpServletRequest request, HttpServletResponse response) throws ServletException {
         //estraiamo le parti della request url
         String server = request.getServerName();
         //int port = request.getServerPort();

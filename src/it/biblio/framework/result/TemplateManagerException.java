@@ -6,6 +6,7 @@ package it.biblio.framework.result;
  * @author francesco
  *
  */
+@SuppressWarnings("serial")
 public class TemplateManagerException extends Exception {
 
 	public TemplateManagerException(String message) {

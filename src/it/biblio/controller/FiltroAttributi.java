@@ -38,6 +38,7 @@ public class FiltroAttributi implements Filter {
 	/**
 	 * @see Filter#doFilter(ServletRequest, ServletResponse, FilterChain)
 	 */
+	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		HttpSession s = SecurityLayer.checkSession((HttpServletRequest)request);
 		if(s != null){

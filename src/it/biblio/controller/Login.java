@@ -3,20 +3,17 @@ package it.biblio.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.annotation.Resource;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.sql.DataSource;
 
-import it.biblio.data.model.*;
+import it.biblio.data.model.BibliotecaDataLayer;
+import it.biblio.data.model.Ruolo;
+import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
-import it.biblio.framework.result.FailureResult;
-import it.biblio.framework.result.SplitSlashesFmkExt;
 import it.biblio.framework.result.TemplateManagerException;
-import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
@@ -27,6 +24,11 @@ import it.biblio.framework.utility.SecurityLayer;
 @WebServlet(description = "Verifica credenziali e reindirizzamento alla homepage utente", urlPatterns = { "/Login" })
 public class Login extends BibliotecaBaseController {
 
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6467942832198091561L;
 
 	private void action_login(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, IOException {
 		try {

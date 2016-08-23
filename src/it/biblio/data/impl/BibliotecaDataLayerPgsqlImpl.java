@@ -58,7 +58,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gUtenti = c.prepareStatement("SELECT * FROM Utente ORDER BY(username)");
 			aRuolo = c.prepareStatement("INSERT INTO Ruolo(nome, descrizione) VALUES (?,?) RETURNING progressivo");
 			gRuolo = c.prepareStatement("SELECT * FROM Ruolo WHERE id = ?");
-			gRuoloNome = c.prepareStatement("SELECT * FROM Ruolo WHERE nome = ?");
+			gRuoloNome = c.prepareStatement("SELECT * FROM Ruolo WHERE LOWER(nome) = LOWER(?)");
 			gRuoliUtente = c.prepareStatement("SELECT Ruolo.* FROM Ruolo,Utente,Privilegi WHERE username = ? AND Utente.id = Privilegi.utente AND Privilegi.ruolo = Ruolo.id");
 			gRuoli = c.prepareStatement("SELECT * FROM Ruolo");
 			gPrivilegi = c.prepareStatement("SELECT * FROM Privilegi WHERE id = ?");
@@ -294,16 +294,16 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 				query = query + " AND id = "+O.getID();
 			}
 			if(!O.getAnno().equals("")){
-				query = query + " AND anno = '"+O.getAnno()+"'";
+				query = query + " AND LOWER(anno) = LOWER('"+O.getAnno()+"')";
 			}
 			if(!O.getLingua().equals("")){
-				query = query + " AND lingua = '"+O.getLingua()+"'";
+				query = query + " AND LOWER(lingua) = LOWER('"+O.getLingua()+"')";
 			}
 			if(!O.getEditore().equals("")){
-				query = query + " AND editore LIKE '%"+O.getEditore()+"%'";
+				query = query + " AND LOWER(editore) LIKE LOWER('%"+O.getEditore()+"%')";
 			}
 			if(!O.getTitolo().equals("")){
-				query = query + " AND titolo LIKE '%"+O.getTitolo()+"%'";
+				query = query + " AND LOWER(titolo) LIKE LOWER('%"+O.getTitolo()+"%')";
 			}
 			if(O.getAcquisitore() != null){
 				query = query + " AND acquisitore = "+O.getAcquisitore().getID();
@@ -313,6 +313,9 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			}
 			if(O.getNumeroPagine() != 0){
 				query = query + " AND numero_pagine = " + O.getNumeroPagine();
+			}
+			if(!O.getAutore().equals("")){
+				query = query + " AND LOWER(autore) LIKE LOWER('%" + O.getAutore() + "%')";
 			}
 			
 			try(ResultSet rs = gOpereByQuery.executeQuery(query+" ORDER BY(titolo)")){

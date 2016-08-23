@@ -77,6 +77,7 @@ function listaOpereAdmin() {
 	      	 			document.getElementById("erroreRicerca").style.visible="none";
 	      	 			document.getElementById("erroreRicerca").style.display="none";
 		                document.getElementById("listaopere").style.visible="yes";
+		                document.getElementById("listaopere").style.display="inline";
 		                window.location.hash='#listaopere';
          	 		}
 	             }
@@ -302,6 +303,7 @@ function ricerca(){
             	 		else {
             	 			var k = 0;
             	 			var i = 0;
+            	 			pages = [];
             	 			while(i<data.length) {
                         	 var temp = [];
                         	 

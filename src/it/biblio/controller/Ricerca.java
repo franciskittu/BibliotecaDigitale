@@ -126,7 +126,54 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
-		}  catch (DataLayerException ex) {
+		} catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
+	private void action_opere_in_pubblicazione_acquisizioni_ajax(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException {
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			List<Opera> opere = datalayer.getOpereInPubblicazioneAcquisizioni();
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		} catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+	
+
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
+	private void action_opere_in_pubblicazione_trascrizioni_ajax(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException {
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			List<Opera> opere = datalayer.getOpereInPubblicazioneTrascrizioni();
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
 		}
@@ -177,7 +224,9 @@ public class Ricerca extends BibliotecaBaseController {
 					break;
 				case "tutteleopere": action_tutteleopere_ajax(request,response);
 					break;
-				case "opereInPubblicazioneAcquisizioni":;
+				case "opereInPubblicazioneAcquisizioni": action_opere_in_pubblicazione_acquisizioni_ajax(request, response);
+					break;
+				case "opereInPubblicazioneTrascrizioni": action_opere_in_pubblicazione_trascrizioni_ajax(request, response);
 					break;
 				default: action_ricerca_ajax(request,response);
 					break;

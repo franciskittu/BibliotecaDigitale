@@ -34,11 +34,11 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	private PreparedStatement aUtente, gUtente,gUtenteUsername, gUtenti;
 	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente,gRuoli;
 	private PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
-	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera;
+	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera ;
 	private PreparedStatement gPagina, aPagina, gPagineOpera, rPagina;
 	private PreparedStatement gCommenta, aCommenta;
 	
-	private Statement gOpereByQuery,gOpereDaTrascrivere;
+	private Statement gOpereByQuery,gOpereDaTrascrivere, gOpereInPubblicazioneAcquisizioni, gOpereInPubblicazioneTrascrizioni;
 	
 	
 	public BibliotecaDataLayerPgsqlImpl(DataSource ds) {
@@ -78,6 +78,8 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gOpereDaTrascrivere = c.createStatement();
 			gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ?");
 			rOpera = c.prepareStatement("DELETE FROM Opera WHERE id = ?");
+			gOpereInPubblicazioneAcquisizioni = c.createStatement();
+			gOpereInPubblicazioneTrascrizioni = c.createStatement();
 		} catch(SQLException ex){
 			throw new DataLayerException("Errore nell'inizializzazione del datalayer della biblioteca", ex);
 		}
@@ -577,6 +579,39 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	}
 
 	@Override
+	public List<Opera> getOpereInPubblicazioneAcquisizioni() throws DataLayerException {
+		List<Opera> ris = new ArrayList<Opera>();
+		String query = "SELECT Opera.* FROM Opera JOIN Pagina ON (Pagina.opera=Opera.id) "
+				+ "WHERE immagini_pubblicate = false "
+				+ "GROUP BY(Opera.id) HAVING COUNT(*) = Opera.numero_pagine";
+		try(ResultSet rs = this.gOpereInPubblicazioneAcquisizioni.executeQuery(query)){
+			while(rs.next()){
+				ris.add(new OperaImpl(this,rs));
+			}
+		} catch (SQLException e) {
+			throw new DataLayerException("Incapace di ottenere le opere in pubblicazione acquisizioni", e);
+		}
+		return ris;
+	}
+
+
+	@Override
+	public List<Opera> getOpereInPubblicazioneTrascrizioni() throws DataLayerException {
+		List<Opera> ris = new ArrayList<Opera>();
+		String query = "SELECT Opera.* FROM Opera JOIN Pagina ON (Pagina.opera=Opera.id) "
+				+ "WHERE immagini_pubblicate = true AND trascrizioni_pubblicate = false "
+				+ "GROUP BY(Opera.id) HAVING COUNT(*) = Opera.numero_pagine";
+		try(ResultSet rs = this.gOpereInPubblicazioneAcquisizioni.executeQuery(query)){
+			while(rs.next()){
+				ris.add(new OperaImpl(this,rs));
+			}
+		} catch (SQLException e) {
+			throw new DataLayerException("Incapace di ottenere le opere in pubblicazione acquisizioni", e);
+		}
+		return ris;
+	}
+
+	@Override
 	public void destroy() throws DataLayerException {
 		try {
 			this.aUtente.close();
@@ -590,6 +625,8 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.gOpera.close();
 			this.gOpereByQuery.close();
 			this.gOpere.close();
+			this.gOpereInPubblicazioneAcquisizioni.close();
+			this.gOpereInPubblicazioneTrascrizioni.close();
 			this.gPagina.close();
 			this.gPagineOpera.close();
 			this.gPrivilegi.close();

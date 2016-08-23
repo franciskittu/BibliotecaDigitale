@@ -5,7 +5,6 @@ var admin=false;
 ////////////////////////////////////////////////////////////
 
 function opereInPubblicazioneAcquisizioni(){
-	debugger
 	$.ajax({
         url: 'Ricerca',
         dataType: "json",
@@ -20,11 +19,13 @@ function opereInPubblicazioneAcquisizioni(){
     	 		else {         	 			
     	 			var k = 0;
     	 			var i = 0;
+     	 			pages=[];
+
         	 			while(i<data.length) {
                     	 var temp = [];
-                    	 
+                    	 var cont=0;
                     	 for(j=i; j < i+3 && j < data.length; j++){
-                    		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
+                    		 temp.push({riga_tabella:cont++,id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
                     	 }
                     	 pages[k++] = temp;
                     	 i = i+3;
@@ -53,17 +54,20 @@ function listaOpereAdmin() {
 	             success: function(data) {
          	 		if (data==""){
  	                    document.getElementById("listaopere").style.visible="none";
+ 	                   document.getElementById("listaopere").style.display="none";
          	 			document.getElementById("erroreRicerca").style.visible="visible";
              	 		window.location.hash='#erroreRicerca';
          	 		}
          	 		else {         	 			
          	 			var k = 0;
          	 			var i = 0;
+         	 			var cont=0;
+         	 			pages=[];
 	         	 			while(i<data.length) {
 	                     	 var temp = [];
 	                     	 
 	                     	 for(j=i; j < i+3 && j < data.length; j++){
-	                     		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
+	                     		 temp.push({riga_tabella:cont++, id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
 	                     	 }
 	                     	 pages[k++] = temp;
 	                     	 i = i+3;
@@ -71,6 +75,7 @@ function listaOpereAdmin() {
 	                    admin= true;
 	                    init();
 	      	 			document.getElementById("erroreRicerca").style.visible="none";
+	      	 			document.getElementById("erroreRicerca").style.display="none";
 		                document.getElementById("listaopere").style.visible="yes";
 		                window.location.hash='#listaopere';
          	 		}
@@ -104,6 +109,7 @@ function makeRow(datarow) {
 	//creiamo la riga
 	//create the row
 	var row = document.createElement('tr');
+	row.id="riga"+datarow.id;
 	row.className = "riga_tabella";
 	var i;
 	//e inseriamo tante celle quanti sono gli elementi della datarow
@@ -121,16 +127,24 @@ function makeRow(datarow) {
 		var testo=document.createTextNode("rimuovi");
 		rimuovi.appendChild(testo);
 		rimuovi.onclick= function(){
+			self=this;
 			$.ajax({
 		         url: 'Rimuovi',
 		         type: 'GET',
 		         data: 'id_opera='+this.id,
 		             success: function(data) {
 		            	 if(eval(data)){
-		            		 alert("ok");
+		            		 for(i=0; i< pages.length; i++){
+		            			 for(j=0; j<pages[i].length; j++){
+			            			 if(pages[i][j].id==self.id){
+			            				 pages[i].splice(j,1);
+			            			 }
+		            			 }
+		            		 }
+		            		 document.getElementById("riga"+self.id).remove();
 		            	 }
 		            	 else 
-		            		 alert("non ok");
+		            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
 		             }
 			});
 		};

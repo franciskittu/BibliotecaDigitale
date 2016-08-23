@@ -1,7 +1,4 @@
-<script type="text/javascript">
-		listaOpereAdmin();
-		opereInPubblicazioneAcquisizioni();
-</script>
+
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -19,13 +16,10 @@
                         <a href="#page-top"></a>
                     </li>
                    	<li class="page-scroll">
-                       	<a href="#listaopere">Opere</a>
+                       	<a onclick="scelta_sezione(1);">Opere</a>
                    	</li>
                     <li class="page-scroll">
-                        <a href="#ricerca">Pagine</a>
-                    </li>
-                    <li class="page-scroll">
-                        <a href="#ricerca">Opere da pubblicare</a>
+                        <a onclick="scelta_sezione(2);">Opere da pubblicare</a>
                     </li>
                     <li class="page-scroll">
                         <a href="#ricerca">Utenti</a>
@@ -45,15 +39,16 @@
         </div>
         <!-- /.container-fluid -->
 </nav>
-<section id="listaopere" style="visible: none;">
-<br>
+
+<section id="listaopere">
+	<br>
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
                     <h2>LISTA DELLE OPERE</h2>
                     <hr class="star-primary">
                 </div>
-            </div>
+        </div>
     <p>
     <span id="paging">
       <span class="pagerCurrent">1</span>
@@ -88,18 +83,65 @@
                    
                 </div>
         </div>
- </section>
- <section id="erroreRicerca" style="visible: none;"">
- 	<div class="container">
-         <div class="row">
-             <div class="col-lg-12 text-center">
-                 <hr class="star-primary">
+</section>
 
-                 <h3 class="nessun_risultato">CI DISPIACE, LA RICERCA NON HA PRODOTTO RISULTATI</h3>
-                 <hr class="star-primary">
-             </div>
-         </div>
- 	</div>
+<section id="tableOpereInPubbAcqu">
+	<br>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>LISTA DELLE OPERE IN PUBBLICAZIONE ( ACQUISITORE )</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+    <p>
+    <span id="paging">
+      <span class="pagerCurrent">1</span>
+      <a class="pagerLink" href="?page=2">2</a>
+      <a class="pagerLink" href="?page=3">3</a>
+      <a class="pagerLink" href="?page=4">4</a>
+      <a class="pagerLink" href="?page=5">5</a>
+    </span></p>
+    
+			   <div class="list-group">
+                    
+                        <table id=tableopereacquisizione class="table ">
+							  <thead>
+							    <tr class="tabella">
+							      <th>#</th>
+							      <th>ID</th>
+							      <th>Titolo opera</th>
+							      <th>Editore</th>
+							      <th>Rimuovi</th>
+							      <th>Pubblica</th>
+							    </tr>
+							  </thead>
+							  <tbody>
+								  	<tr class="riga_tabella_admin" >
+								      	
+								    </tr>
+							  </tbody>
+							</table>
+  					
+                   
+                </div>
+        </div>
  </section>
+ 
+ <section id="erroreRicerca">
+	<div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <hr class="star-primary">
+                <h3 class="nessun_risultato">CI DISPIACE, NON CI SONO RISULTATI PER QUESTA SEZIONE</h3>
+                <hr class="star-primary">
+            </div>
+        </div>
+	</div>
+</section>
+
+<script type="text/javascript">
+
+		scelta_sezione();
 	
-
+</script>

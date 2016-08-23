@@ -1,43 +1,61 @@
 var admin=false;
-
+var sezione;
+/*function modificaVisibility(obj){
+	var sezioni= document.getElementsByTagName("SECTION");
+	for (var i =0; i<sezioni.length; i++){
+		sezioni[i].style.visibility="none";
+		sezioni[i].style.display="none";
+	} 
+	var id_elemento= obj.firstChild.getAttribute("HREF");
+	id_elemento = id_elemento.substring(1); 
+    document.getElementById(id_elemento).style.visibility="visible";
+    document.getElementById(id_elemento).style.display="block";
+}
+*/
+function scelta_sezione(caso){
+		var sezioni= document.getElementsByTagName("SECTION");
+		for (var i =0; i<sezioni.length; i++){
+			sezioni[i].style.visibility="none";
+			sezioni[i].style.display="none";
+		}
+		switch(caso) {
+	    case 1:
+	    	sezione=1;
+	    	listaOpereAdmin();
+	        break;
+	    case 2:
+	    	sezione=2;
+	    	opereInPubblicazioneAcquisizioni();
+	        break;
+	    default:
+	    	console.log("caso default");
+		};
+}
 ////////////////////////////////////////////////////////////
 /* 	LISTA OPERE IN PUBBLICAZIONE ACQUISIZIONI PER ADMIN   */
 ////////////////////////////////////////////////////////////
 
 function opereInPubblicazioneAcquisizioni(){
-	$.ajax({
-        url: 'Ricerca',
-        dataType: "json",
-        type: 'GET',
-        data: 'tipoRicerca=opereInPubblicazioneAcquisizioni',
-            success: function(data) {
-    	 		if (data==""){
-                    document.getElementById("listaopere").style.display="none";
-    	 			document.getElementById("erroreRicerca").style.display="inline";
-        	 		window.location.hash='#erroreRicerca';
-    	 		}
-    	 		else {         	 			
-    	 			var k = 0;
-    	 			var i = 0;
-     	 			pages=[];
-
-        	 			while(i<data.length) {
-                    	 var temp = [];
-                    	 var cont=0;
-                    	 for(j=i; j < i+3 && j < data.length; j++){
-                    		 temp.push({riga_tabella:cont++,id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
-                    	 }
-                    	 pages[k++] = temp;
-                    	 i = i+3;
-        	 			}
-                   admin= true;
-                   init();
-     	 			document.getElementById("erroreRicerca").style.display="none";
-	                document.getElementById("listaopere").style.display="inline";
-	                window.location.hash='#listaopere';
-    	 		}
-            }
-});
+			$.ajax({
+		        url: 'Ricerca',
+		        dataType: "json",
+		        type: 'GET',
+		        data: 'tipoRicerca=opereInPubblicazioneAcquisizioni',
+		            success: function(data) {
+		    	 		if (data==""){
+		    	 			document.getElementById("erroreRicerca").style.display="block";
+		    	 			document.getElementById("erroreRicerca").style.visibility="visible";
+		    	 		}
+		    	 		else {         	 			
+		    	 			paginatore(data);
+		    	 			admin= true;
+		    	 			init();
+			                document.getElementById("tableOpereInPubbAcqu").style.display="block";
+			                document.getElementById("tableOpereInPubbAcqu").style.visibility="visible";
+			                
+		    	 		}
+		            }
+			});
 }
 
 
@@ -46,51 +64,58 @@ function opereInPubblicazioneAcquisizioni(){
 /* 	LISTA OPERE ADMIN   */
 //////////////////////
 function listaOpereAdmin() {
-		$.ajax({
-	         url: 'Ricerca',
-	         dataType: "json",
-	         type: 'GET',
-	         data: 'tipoRicerca=tutteleopere',
-	             success: function(data) {
-         	 		if (data==""){
- 	                    document.getElementById("listaopere").style.visible="none";
- 	                   document.getElementById("listaopere").style.display="none";
-         	 			document.getElementById("erroreRicerca").style.visible="visible";
-             	 		window.location.hash='#erroreRicerca';
-         	 		}
-         	 		else {         	 			
-         	 			var k = 0;
-         	 			var i = 0;
-         	 			var cont=0;
-         	 			pages=[];
-	         	 			while(i<data.length) {
-	                     	 var temp = [];
-	                     	 
-	                     	 for(j=i; j < i+3 && j < data.length; j++){
-	                     		 temp.push({riga_tabella:cont++, id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
-	                     	 }
-	                     	 pages[k++] = temp;
-	                     	 i = i+3;
-	         	 			}
-	                    admin= true;
-	                    init();
-	      	 			document.getElementById("erroreRicerca").style.visible="none";
-	      	 			document.getElementById("erroreRicerca").style.display="none";
-		                document.getElementById("listaopere").style.visible="yes";
-		                document.getElementById("listaopere").style.display="inline";
-		                window.location.hash='#listaopere';
-         	 		}
-	             }
-	});
+				$.ajax({
+			         url: 'Ricerca',
+			         dataType: "json",
+			         type: 'GET',
+			         data: 'tipoRicerca=tutteleopere',
+			             success: function(data) {
+		         	 		if (data==""){
+		         	 			document.getElementById("erroreRicerca").style.visible="visible";
+		         	 			document.getElementById("erroreRicerca").style.display="block";
+		             	 		window.location.hash='#erroreRicerca';
+		         	 		}
+		         	 		else {      
+		         	 			paginatore(data);
+			                    admin= true;
+			                    init();
+				                document.getElementById("listaopere").style.visible="yes";
+				                document.getElementById("listaopere").style.display="block";
+				                window.location.hash='#listaopere';
+		         	 		}
+			             }
+				});
 }
-$('.riga_tabella').click( function() {
-    window.location = $(this).find('a').attr('href');
-});
+
 
 ///////////////////
 /* 	PAGINATORE   */
 ///////////////////
 var pages = [];
+
+
+function paginatore(data){
+	var k = 0,i = 0,cont=0;
+	pages=[];
+	while(i<data.length) {
+	 	 var temp = [];
+	 	 switch(sezione){
+	 	 	case 1:
+	 	 		for(j=i; j < i+3 && j < data.length; j++){
+	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine,editore:data[j].editore,anno:data[j].anno});                             
+	 		 	}
+	 	 		break;
+	 	 	case 2:
+	 	 		for(j=i; j < i+3 && j < data.length; j++){
+	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, titolo: data[j].titolo, editore:data[j].editore});                             
+	 		 	}
+	 	 		break;
+	 	 }
+	 	 
+	 	 pages[k++] = temp;
+	 	 i = i+3;
+	}
+}
 
 //ritorna i dati di una pagina
 //returns the data for a given page
@@ -122,36 +147,81 @@ function makeRow(datarow) {
 	}
 	//se sono admin inserisco il bottone rimuovi nella tabella 
 	if (admin){
-		var rimuovi = document.createElement('button');
-		rimuovi.className="btn btn-danger btn-lg";
-		rimuovi.id=datarow.id;
-		var testo=document.createTextNode("rimuovi");
-		rimuovi.appendChild(testo);
-		rimuovi.onclick= function(){
-			self=this;
-			$.ajax({
-		         url: 'Rimuovi',
-		         type: 'GET',
-		         data: 'id_opera='+this.id,
-		             success: function(data) {
-		            	 if(eval(data)){
-		            		 for(i=0; i< pages.length; i++){
-		            			 for(j=0; j<pages[i].length; j++){
-			            			 if(pages[i][j].id==self.id){
-			            				 pages[i].splice(j,1);
-			            			 }
-		            			 }
-		            		 }
-		            		 document.getElementById("riga"+self.id).remove();
-		            	 }
-		            	 else 
-		            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
-		             }
-			});
-		};
-		var cell = document.createElement('td');
-		cell.appendChild(rimuovi)
-		row.appendChild(cell);
+		switch (sezione){
+			case 1: 
+				var rimuovi = document.createElement('button');
+				rimuovi.className="btn btn-danger btn-lg";
+				rimuovi.id=datarow.id;
+				var testo=document.createTextNode("Rimuovi");
+				rimuovi.appendChild(testo);
+				rimuovi.onclick= function(){
+					self=this;
+					$.ajax({
+				         url: 'Rimuovi',
+				         type: 'GET',
+				         data: 'id_opera='+this.id,
+				             success: function(data) {
+				            	 if(eval(data)){
+				            		 for(i=0; i< pages.length; i++){
+				            			 for(j=0; j<pages[i].length; j++){
+					            			 if(pages[i][j].id==self.id){
+					            				 pages[i].splice(j,1);
+					            			 }
+				            			 }
+				            		 }
+				            		 document.getElementById("riga"+self.id).remove();
+				            	 }
+				            	 else 
+				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
+				             }
+					});
+				};
+				var cell = document.createElement('td');
+				cell.appendChild(rimuovi);
+				row.appendChild(cell);
+				break;
+			case 2:
+				var rimuovi = document.createElement('button');
+				rimuovi.className="btn btn-danger btn-lg";
+				rimuovi.id=datarow.id;
+				var testo=document.createTextNode("Rimuovi");
+				rimuovi.appendChild(testo);
+				rimuovi.onclick= function(){
+					self=this;
+					$.ajax({
+				         url: 'Rimuovi',
+				         type: 'GET',
+				         data: 'id_opera='+this.id,
+				             success: function(data) {
+				            	 if(eval(data)){
+				            		 for(i=0; i< pages.length; i++){
+				            			 for(j=0; j<pages[i].length; j++){
+					            			 if(pages[i][j].id==self.id){
+					            				 pages[i].splice(j,1);
+					            			 }
+				            			 }
+				            		 }
+				            		 document.getElementById("riga"+self.id).remove();
+				            	 }
+				            	 else 
+				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
+				             }
+					});
+				};
+				var pubblica = document.createElement('button');
+				pubblica.className="btn btn-primary btn-lg";
+				pubblica.id=datarow.id;
+				var testo=document.createTextNode("Pubblica");
+				pubblica.appendChild(testo);
+				var cell = document.createElement('td');
+				cell.appendChild(rimuovi);
+				var cell1 = document.createElement('td');
+				cell1.appendChild(pubblica);
+				row.appendChild(cell);
+				row.appendChild(cell1);
+				break;
+		}
+		
 	}
 	//console.log(row);
 	return row;				
@@ -265,6 +335,13 @@ function switchPage(page) {
 	data = getPageData(page);	
 	//visualizzazione del nuovo set di righe
 	//diaplay the rows
+	switch(sezione){
+		case 1:
+			updateTable("tableopere",data);
+			break;
+		case 2:
+			updateTable("tableopereacquisizione",data);
+	}
 	updateTable("tableopere",data);
 	//aggiornamento dei link di paginazione
 	//update the pager

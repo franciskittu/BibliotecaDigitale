@@ -1,17 +1,16 @@
-var admin=false;
-var sezione;
-/*function modificaVisibility(obj){
-	var sezioni= document.getElementsByTagName("SECTION");
-	for (var i =0; i<sezioni.length; i++){
-		sezioni[i].style.visibility="none";
-		sezioni[i].style.display="none";
-	} 
-	var id_elemento= obj.firstChild.getAttribute("HREF");
-	id_elemento = id_elemento.substring(1); 
-    document.getElementById(id_elemento).style.visibility="visible";
-    document.getElementById(id_elemento).style.display="block";
-}
+///////////////
+/////ADMIN/////
+///////////////
+/*
+ SE SEZIONE = 0 VISTA DEFAULT 
+			= 1 VISTA LISTA OPERE 
+			= 2 VISTA LISTA OPERE DA PUBBLICARE (ACQUISIZIONE)
+			= 3 VISTA PAGINE DELL'OPERA
+			= 4 
 */
+var admin=false;
+var sezione=0;
+
 function scelta_sezione(caso){
 		var sezioni= document.getElementsByTagName("SECTION");
 		for (var i =0; i<sezioni.length; i++){
@@ -27,14 +26,55 @@ function scelta_sezione(caso){
 	    	sezione=2;
 	    	opereInPubblicazioneAcquisizioni();
 	        break;
+	    case 3: 
+	    	listaPagineOpera();
+	    	break;
+	    case 4: 
+	    	listaUtenti();
+	    	break;
 	    default:
-	    	console.log("caso default");
+	    	sezione=0
+	    	vistaDefaultAdmin();
 		};
 }
-////////////////////////////////////////////////////////////
-/* 	LISTA OPERE IN PUBBLICAZIONE ACQUISIZIONI PER ADMIN   */
-////////////////////////////////////////////////////////////
+/*VISTA DEFAULT PER L'UTENTE ADMIN*/
+function vistaDefaultAdmin(){
+	document.getElementById("admindefault").style.display="block";
+    document.getElementById("admindefault").style.visibility="visible";
+}
+/*LISTA DI TUTTI GLI UTENTI PER L'ADMIN*/
+function listaUtenti(){
+		$.ajax({
+		        url: 'Ricerca',
+		        dataType: "json",
+		        type: 'GET',
+		        data: 'tipoRicerca=listaUtenti',
+		            success: function(data) {
+		    	 		if (data==""){
+		    	 			errore();
+		    	 		}
+		    	 		else {         	 			
+		    	 			paginatore(data);
+		    	 			admin= true;
+		    	 			init();
+			                document.getElementById("utenti").style.visible="yes";
+    					    document.getElementById("utenti").style.display="block";
+	
+		    	 		}
+		            }
+		});
+}
 
+function listaPagineOpera(){
+        admin= true;
+        init();
+        document.getElementById("pagine_opera").style.visible="yes";
+        document.getElementById("pagine_opera").style.display="block";
+        window.location.hash='#pagine_opera';
+		
+}
+
+/* 	LISTA OPERE IN PUBBLICAZIONE ACQUISIZIONI PER ADMIN   */
 function opereInPubblicazioneAcquisizioni(){
 			$.ajax({
 		        url: 'Ricerca',
@@ -43,8 +83,7 @@ function opereInPubblicazioneAcquisizioni(){
 		        data: 'tipoRicerca=opereInPubblicazioneAcquisizioni',
 		            success: function(data) {
 		    	 		if (data==""){
-		    	 			document.getElementById("erroreRicerca").style.display="block";
-		    	 			document.getElementById("erroreRicerca").style.visibility="visible";
+		    	 			errore();
 		    	 		}
 		    	 		else {         	 			
 		    	 			paginatore(data);
@@ -71,9 +110,7 @@ function listaOpereAdmin() {
 			         data: 'tipoRicerca=tutteleopere',
 			             success: function(data) {
 		         	 		if (data==""){
-		         	 			document.getElementById("erroreRicerca").style.visible="visible";
-		         	 			document.getElementById("erroreRicerca").style.display="block";
-		             	 		window.location.hash='#erroreRicerca';
+		         	 			errore();
 		         	 		}
 		         	 		else {      
 		         	 			paginatore(data);
@@ -86,7 +123,11 @@ function listaOpereAdmin() {
 			             }
 				});
 }
-
+function errore (){
+		document.getElementById("erroreRicerca").style.visible="visible";
+		document.getElementById("erroreRicerca").style.display="block";
+		window.location.hash='#erroreRicerca';
+}
 
 ///////////////////
 /* 	PAGINATORE   */
@@ -110,6 +151,15 @@ function paginatore(data){
 	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, titolo: data[j].titolo, editore:data[j].editore});                             
 	 		 	}
 	 	 		break;
+	 	 	case 3:
+	 	 		for(j=i; j < i+3 && j < data.length; j++){
+	 		 		 temp.push({riga_tabella:cont++, numero_pagina: data[j].numero_pagina, opera: data[j].opera});                             
+	 		 	}
+	 		case 4:
+	 	 		for(j=i; j < i+3 && j < data.length; j++){
+	 		 		 temp.push({riga_tabella:cont++, username: data[j].username, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email, ruolo: data[j].ruolo});                             
+	 		 	}
+	 		 	break;
 	 	 }
 	 	 
 	 	 pages[k++] = temp;
@@ -135,7 +185,6 @@ function makeRow(datarow) {
 	//creiamo la riga
 	//create the row
 	var row = document.createElement('tr');
-	row.id="riga"+datarow.id;
 	row.className = "riga_tabella";
 	var i;
 	//e inseriamo tante celle quanti sono gli elementi della datarow
@@ -148,7 +197,25 @@ function makeRow(datarow) {
 	//se sono admin inserisco il bottone rimuovi nella tabella 
 	if (admin){
 		switch (sezione){
-			case 1: 
+			case 1:
+				row.onclick = function(){
+					self = this;
+					$.ajax({
+				        url: 'SelezionaOpera',
+				        type: 'GET',
+				        data: 'id_opera='+self.id,
+				            success: function(data) {
+				            	sezione = 3;
+				            	if (data==""){
+				        			errore();
+				        		}
+				            	else {
+				            		paginatore(data);
+				            		scelta_sezione(3);
+				            	}
+				            }
+					});
+				}
 				var rimuovi = document.createElement('button');
 				rimuovi.className="btn btn-danger btn-lg";
 				rimuovi.id=datarow.id;
@@ -220,8 +287,14 @@ function makeRow(datarow) {
 				row.appendChild(cell);
 				row.appendChild(cell1);
 				break;
+			case 3:
+				alert("caso 3");
+				break;
+			case 4: 
+				alert("caso 4");
+				break;
+			
 		}
-		
 	}
 	//console.log(row);
 	return row;				
@@ -343,6 +416,16 @@ function switchPage(page) {
 		case 2:
 			updateTable("tableopereacquisizione",data);
 			updatePager("paging1",page);
+			//updateTable("tableOpereTrascrizione",data);
+			//updatePager("paging2",page);
+			break;
+		case 3: 
+			
+			break;
+		case 4:
+
+			break;
+
 	}
 	//aggiornamento dei link di paginazione
 	//update the pager
@@ -405,9 +488,9 @@ function ricerca(){
          });
      };		
 
-///////////////////////////
-/* 	CONTROLLA USERNAME   */
-///////////////////////////
+//////////////////////////////////////////
+/* 	CONTROLLA USERNAME REGISTRAZIONE   */
+/////////////////////////////////////////
    
 
 function controllausername(obj){
@@ -433,6 +516,9 @@ function controllausername(obj){
             });
             };
             
+///////////////////////////////////////////////////
+/* 	CONTROLLA PAGINA GIA' INSERITA ACQUISIZIONE */
+/////////////////////////////////////////////////
             
 function controllaNumeroPagina(obj){
 	var id = document.getElementById("opera").value;
@@ -443,15 +529,11 @@ function controllaNumeroPagina(obj){
     //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
         success: function(data) {
                     if (eval(data)){
-                        
-                        document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Username gia' presente, inserirne un altro</li></ul></p>";
-                        
+                        document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Pagina gia' presente, scegline un'altra</li></ul></p>";
                     }
-                    
                     else {
-                        
                         $("#status").remove();
-                        document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
+                        document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                         
                     }
         }

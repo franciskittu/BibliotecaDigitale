@@ -1,31 +1,19 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/xhtml; charset=utf-8"/>
-    <script type="text/javascript" src="js/wed-master/lib/wed/polyfills/contains.js"></script>
-    <script type="text/javascript" src="js/wed-master/lib/wed/polyfills/matches.js"></script>
-    <script type="text/javascript" src="js/wed-master/lib/wed/polyfills/closest.js"></script>
-    <script type="text/javascript" src="js/wed-master/lib/wed/polyfills/innerHTML_for_XML.js"></script>
-    <script type="text/javascript" src="js/wed-master/lib/wed/polyfills/firstElementChild_etc.js"></script>
-    <script type="text/javascript" src="js/wed-master/lib/wed/polyfills/normalize.js"></script>
-  </head>
-  <body>
-    <iframe id="mocha-frame" width="100%" src="js/wed-master/web/mocha_frame.html" style="height: 500px;"></iframe>
-      <script language="javascript">
-        (function () {
-          var frame = document.getElementById('mocha-frame');
-          frame.src += window.location.search;
-        })();
-      </script>
-    <div id="mocha-fixture">
-      <div style="display:none">
-        <div id="data"></div>
-        <!-- This should remain empty -->
-        <div id="empty-data"></div>
-        <div id="domroot"></div>
-      </div>
-      <iframe id="wedframe" width="100%" src="js/wed-master/web/wed_test.html"></iframe>
-      <p id="test-para" contenteditable="true">Test para which has to be visible.</p>
+<section id="editortei">
+    <div id="left_container">
+          <div id="image_view">
+
+
+          </div>
+          <div id="editor">
+            
+
+          </div>
     </div>
-  </body>
-</html>
+    <div id="annotation_view">
+      
+
+    </div>
+
+
+    <script src="template/js/TEA-master/app.js"></script>
+</section>

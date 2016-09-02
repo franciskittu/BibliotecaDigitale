@@ -282,10 +282,8 @@ function makeRow(datarow) {
 				pubblica.appendChild(testo);
 				var cell = document.createElement('td');
 				cell.appendChild(rimuovi);
-				var cell1 = document.createElement('td');
 				cell1.appendChild(pubblica);
 				row.appendChild(cell);
-				row.appendChild(cell1);
 				break;
 			case 3:
 				alert("caso 3");

@@ -282,8 +282,10 @@ function makeRow(datarow) {
 				pubblica.appendChild(testo);
 				var cell = document.createElement('td');
 				cell.appendChild(rimuovi);
+				var cell1 = document.createElement('td');
 				cell1.appendChild(pubblica);
 				row.appendChild(cell);
+				row.appendChild(cell1);
 				break;
 			case 3:
 				alert("caso 3");
@@ -294,7 +296,7 @@ function makeRow(datarow) {
 			
 		}
 	}
-	//console.log(row);
+	console.log(row);
 	return row;				
 }
 
@@ -403,9 +405,10 @@ function updatePager(id,page) {
 function switchPage(page) {
 	//acquisizione dei dati
 	//load the data
-	data = getPageData(page);	
+	data = getPageData(page);
 	//visualizzazione del nuovo set di righe
 	//diaplay the rows
+	if (admin){
 	switch(sezione){
 		case 1:
 			updateTable("tableopere",data);
@@ -424,6 +427,11 @@ function switchPage(page) {
 
 			break;
 
+	}
+	}
+	else {
+		updateTable("tableopere",data);
+		updatePager("paging",page);
 	}
 	//aggiornamento dei link di paginazione
 	//update the pager

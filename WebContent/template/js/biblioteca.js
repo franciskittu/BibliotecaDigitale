@@ -7,6 +7,7 @@
 			= 2 VISTA LISTA OPERE DA PUBBLICARE (ACQUISIZIONE)
 			= 3 VISTA PAGINE DELL'OPERA
 			= 4 
+			= 5 TRASCRITTORE
 */
 var admin=false;
 var sezione=0;
@@ -32,11 +33,17 @@ function scelta_sezione(caso){
 	    case 4: 
 	    	listaUtenti();
 	    	break;
+	    case 5:
+	    	sezione = 5;
+	    	listaOpereTrascrittore();
+	    	break;
 	    default:
 	    	sezione=0
 	    	vistaDefaultAdmin();
 		};
 }
+
+
 /*VISTA DEFAULT PER L'UTENTE ADMIN*/
 function vistaDefaultAdmin(){
 	document.getElementById("admindefault").style.display="block";
@@ -160,6 +167,11 @@ function paginatore(data){
 	 		 		 temp.push({riga_tabella:cont++, username: data[j].username, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email, ruolo: data[j].ruolo});                             
 	 		 	}
 	 		 	break;
+	 		case 5:
+	 			for(j=i; j < i+3 && j < data.length; j++){
+	 		 		 temp.push({riga_tabella:cont++, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});                             
+	 		 	}
+	 			break;
 	 	 }
 	 	 
 	 	 pages[k++] = temp;
@@ -186,6 +198,7 @@ function makeRow(datarow) {
 	//create the row
 	var row = document.createElement('tr');
 	row.className = "riga_tabella";
+	row.id="";
 	var i;
 	//e inseriamo tante celle quanti sono gli elementi della datarow
 	//and add as many cells as the datarow elements are
@@ -426,12 +439,19 @@ function switchPage(page) {
 		case 4:
 
 			break;
-
+		
 	}
+	}
+	else if (sezione==5){
+		updateTable("lista_opere_in_trascrizione",data);
+		updatePager("paging",page);
+		updateTable("lista_opere_da_trascrivere",data);
+		updatePager("paging1",page);
 	}
 	else {
 		updateTable("tableopere",data);
 		updatePager("paging",page);
+		
 	}
 	//aggiornamento dei link di paginazione
 	//update the pager
@@ -544,4 +564,65 @@ function controllaNumeroPagina(obj){
                     }
         }
     });
-}            
+}  
+
+/*VISTA TRASCRITTORE*/
+function listaOpereTrascrittore(){
+	$.ajax({
+        url: 'listaOpere',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=opere_in_trascrizione',
+            success: function(data) {
+    	 		if (data==""){
+    	 			errore();
+    	 		}
+    	 		else {
+    	 			document.getElementById("lista_opere_in_trascrizione").style.display="block";
+    	 			document.getElementById("lista_opere_in_trascrizione").style.visibility="visible";
+    	 			paginatore(data);
+    	 			init();
+    	 		}
+            }
+	});
+	$.ajax({
+        url: 'listaOpere',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=opere_da_trascrivere',
+            success: function(data) {
+    	 		if (data==""){
+    	 			errore();
+    	 		}
+    	 		else {
+    	 			document.getElementById("lista_opere_da_trascrivere").style.display="block";
+    	 			document.getElementById("lista_opere_da_trascrivere").style.visibility="visible";
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
+    	 			paginatore(data);
+    	 			init();
+    	 		}
+            }
+	});
+	
+}
+
+function invia_trascrizione(obj){
+	console.log(document.getElementById("editor_tei").id_della_pagina.value);
+	$.ajax({
+	    url: 'invia_trascrizione',
+	    type: 'GET',
+	    data : "id_pagina="+obj.id,
+	    //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
+	        success: function(data) {
+	                    if (eval(data)){
+	                        alert("ok");
+	                    }
+	                    else {
+	                        $("#status").remove();
+	                        alert("ok");
+	                        
+	                    }
+	        }
+	    });
+}

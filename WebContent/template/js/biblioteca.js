@@ -569,7 +569,7 @@ function controllaNumeroPagina(obj){
 /*VISTA TRASCRITTORE*/
 function listaOpereTrascrittore(){
 	$.ajax({
-        url: 'listaOpere',
+        url: 'Ricerca',
         dataType: "json",
         type: 'GET',
         data: 'tipoRicerca=opere_in_trascrizione',
@@ -586,7 +586,7 @@ function listaOpereTrascrittore(){
             }
 	});
 	$.ajax({
-        url: 'listaOpere',
+        url: 'Ricerca',
         dataType: "json",
         type: 'GET',
         data: 'tipoRicerca=opere_da_trascrivere',
@@ -610,9 +610,9 @@ function listaOpereTrascrittore(){
 function invia_trascrizione(obj){
 	console.log(document.getElementById("editor_tei").id_della_pagina.value);
 	$.ajax({
-	    url: 'invia_trascrizione',
+	    url: 'Trascrivi',
 	    type: 'GET',
-	    data : "id_pagina="+obj.id,
+	    data : "id_pagina="+obj.id,//anche tutte le input della form 
 	    //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
 	        success: function(data) {
 	                    if (eval(data)){

@@ -25,6 +25,11 @@
   	<param-name>system.directory_immagini</param-name>
   	<param-value>/home/francesco/Documents/Magistrale/OOP/PROJ/immagini-opere</param-value><!-- non bisogna memorizzare mai i file caricati nel contesto dell'applicazione!!! -->
   </context-param>
+  <context-param>
+  	<param-name>system.directory_trascrizioni</param-name>
+  	<param-value>/home/francesco/Documents/Magistrale/OOP/PROJ/trascrizioni-opere</param-value><!-- non bisogna memorizzare mai i file caricati nel contesto dell'applicazione!!! -->
+  </context-param>
+  
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>

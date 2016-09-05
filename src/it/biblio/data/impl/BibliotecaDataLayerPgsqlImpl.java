@@ -67,7 +67,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
 			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,immagini_pubblicate, trascrizioni_pubblicate,acquisitore, trascrittore,numero_pagine) VALUES(?,?,?,?,?,,?,?,?,?,?) RETURNING ID");
 			aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, immagini_pubblicate = ?, trascrizioni_pubblicate = ?,acquisitore = ?, trascrittore = ?, numero_pagine = ? WHERE id = ?");
-			gOpere = c.prepareStatement("SELECT * FROM Opera");
+			gOpere = c.prepareStatement("SELECT * FROM Opera ORDER BY(titolo)");
 			gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
 			aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 					+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");

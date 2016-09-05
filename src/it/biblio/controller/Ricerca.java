@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
+import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Ruolo;
 import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
@@ -162,6 +163,58 @@ public class Ricerca extends BibliotecaBaseController {
 	 * @param response
 	 * @throws TemplateManagerException
 	 */
+	private void action_opere_in_trascrizione(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException {
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			Utente U = datalayer.getUtenteByUsername((String) request.getAttribute("nomeutente"));
+			Opera O = datalayer.creaOpera();
+			O.setImmaginiPubblicate(true);
+			O.setTrascrizioniPubblicate(false);
+			O.setTrascrittore(U);
+			List<Opera> opere = datalayer.getOpereByQuery(O);
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		}
+			catch(DataLayerException ex) {
+				request.setAttribute("message", "Data access exception: " + ex.getMessage());
+				action_error(request, response);
+			}
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
+	private void action_opere_da_trascrivere(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException {
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			List<Opera> opere = datalayer.getOpereDaTrascrivere();
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		}
+			catch(DataLayerException ex) {
+				request.setAttribute("message", "Data access exception: " + ex.getMessage());
+				action_error(request, response);
+			}
+	}
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
 	private void action_opere_in_pubblicazione_trascrizioni_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
 		try{
@@ -174,6 +227,24 @@ public class Ricerca extends BibliotecaBaseController {
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
 		} catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+	
+	private void action_pagine_opera(HttpServletRequest request, HttpServletResponse response)
+			throws TemplateManagerException {
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			long id_opera = Long.parseLong(request.getParameter("id_opera"));
+			List<Pagina> pagine = datalayer.getPagineOpera(id_opera);
+			request.setAttribute("pagine", pagine);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryPagine.ftl.json", request, response);
+		} catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
 		}
@@ -227,6 +298,10 @@ public class Ricerca extends BibliotecaBaseController {
 				case "opereInPubblicazioneAcquisizioni": action_opere_in_pubblicazione_acquisizioni_ajax(request, response);
 					break;
 				case "opereInPubblicazioneTrascrizioni": action_opere_in_pubblicazione_trascrizioni_ajax(request, response);
+					break;
+				case "opere_in_trascrizione": action_opere_in_trascrizione(request,response);
+					break;
+				case "opere_da_trascrivere": action_opere_da_trascrivere(request,response);
 					break;
 				default: action_ricerca_ajax(request,response);
 					break;

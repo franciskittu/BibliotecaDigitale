@@ -65,6 +65,12 @@ public class Trascrivi extends BibliotecaBaseController {
 		
 		try(PrintWriter out = new PrintWriter(new File(path + File.separator + p.getOpera().getTitolo() + p.getNumero()+".xml"))){
 			out.println(input_to_tei(request, response, p));
+			
+			p.setPathTrascrizione(path + File.separator + p.getOpera().getTitolo() + p.getNumero()+".xml");
+			
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			datalayer.aggiornaPagina(p);
+			
 		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);

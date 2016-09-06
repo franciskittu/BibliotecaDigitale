@@ -68,6 +68,8 @@ public interface BibliotecaDataLayer extends DataLayer{
 	
 	Pagina aggiungiPagina(Pagina P)throws DataLayerException;
 	
+	Pagina aggiornaPagina(Pagina P)throws DataLayerException;
+	
 	List<Pagina> getPagineOpera(long id_opera)throws DataLayerException;
 	
 	Pagina rimuoviPagina(Pagina P) throws DataLayerException;

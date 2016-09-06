@@ -35,7 +35,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente,gRuoli;
 	private PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
 	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera ;
-	private PreparedStatement gPagina, aPagina, gPagineOpera, rPagina;
+	private PreparedStatement gPagina, aPagina, gPagineOpera, rPagina, aggiornaPagina;
 	private PreparedStatement gCommenta, aCommenta;
 	
 	private Statement gOpereByQuery,gOpereDaTrascrivere, gOpereInPubblicazioneAcquisizioni, gOpereInPubblicazioneTrascrizioni;
@@ -72,6 +72,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aPagina = c.prepareStatement("INSERT INTO Pagina(numero,path_immagine,upload_immagine,immagine_validata,"
 					+ "path_trascrizione,ultima_modifica_trascrizione,trascrizione_validata,opera) VALUES(?,?,?,?,?,?,?,?) RETURNING ID");
 			rPagina = c.prepareStatement("DELETE FROM Pagina WHERE id = ?");
+			aggiornaPagina = c.prepareStatement("UPDATE Pagina SET numero = ?, path_immagine = ?, opera=?, trascrizione_validata = ?, upload_immagine = ?, ultima_modifica_trascrizione = ?, path_trascrizione = ?, immagine_validata=? WHERE id = ?");
 			gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 			aCommenta = c.prepareStatement("");
 			gOpereByQuery = c.createStatement();
@@ -615,6 +616,27 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	}
 
 	@Override
+	public Pagina aggiornaPagina(Pagina P) throws DataLayerException {
+		try {
+			this.aggiornaPagina.setString(1, P.getNumero());
+			this.aggiornaPagina.setString(2, P.getPathImmagine());
+			this.aggiornaPagina.setLong(3, P.getOpera().getID());
+			this.aggiornaPagina.setBoolean(4, P.getTrascrizioneValidata());
+			this.aggiornaPagina.setTimestamp(5, P.getUploadImmagine());
+			this.aggiornaPagina.setTimestamp(6, P.getUltimaModificaTrascrizione());
+			this.aggiornaPagina.setString(7, P.getPathTrascrizione());
+			this.aggiornaPagina.setBoolean(8, P.getImmagineValidata());
+			this.aggiornaPagina.setLong(9, P.getID());
+			if(this.aggiornaPagina.executeUpdate() == 1){
+				return this.getPagina(P.getID());
+			}
+		} catch (SQLException ex) {
+			throw new DataLayerException("Incapace di aggiornare l'opera", ex);
+		}
+		return null;
+	}
+
+	@Override
 	public void destroy() throws DataLayerException {
 		try {
 			this.aUtente.close();
@@ -624,6 +646,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.aPrivilegi.close();
 			this.aRuolo.close();
 			this.aggiornaOpera.close();
+			this.aggiornaPagina.close();
 			this.gCommenta.close();
 			this.gOpera.close();
 			this.gOpereByQuery.close();
@@ -649,7 +672,6 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		}
 		super.destroy();
 	}
-
 	
 
 }

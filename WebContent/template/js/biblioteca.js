@@ -325,9 +325,9 @@ function makeRow(datarow) {
 				var id = self.id ;
 				id = id.slice (4, id.length);
 				$.ajax({
-			         url: 'SelezionaOpera',
+			         url: 'Ricerca',
 			         type: 'GET',
-			         data: 'id_opera='+id,
+			         data: 'pagine_opera='+id,
 			             success: function(data) {
 			            	 if(eval(data)){
 			            		 scelta_sezione(6);

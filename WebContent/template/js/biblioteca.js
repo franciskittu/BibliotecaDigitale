@@ -9,6 +9,7 @@
 			= 4 
 			= 5 TRASCRITTORE
 			= 6 VISTA PAGINA TRASCRITTORE
+			= 7 INSERISCI OPERA
 */
 var admin=false;
 var sezione=0;
@@ -41,6 +42,10 @@ function scelta_sezione(caso){
 	    case 6:
 	    	sezione = 6;
 	    	trascrizionePagina();
+	    	break;
+	    case 7:
+	    	sezione = 7;
+	    	inserisciOpera();
 	    	break;
 	    default:
 	    	sezione=0
@@ -75,6 +80,11 @@ function listaUtenti(){
 		    	 		}
 		            }
 		});
+}
+
+function inserisciOpera(){
+	document.getElementById("inserisciOpera").style.visible="yes";
+    document.getElementById("inserisciOpera").style.display="block";
 }
 
 function listaPagineOpera(){

@@ -23,7 +23,10 @@
                     </li>
                     <li class="page-scroll">
                         <a href="javascript:void(0)" onclick="scelta_sezione(4);">Utenti</a>
-                    </li>   
+                    </li>
+                    <li class="page-scroll">
+                        <a href="javascript:void(0)" onclick="scelta_sezione(7);">Inserisci Opera</a>
+                    </li>      
                 </ul>
                 
                 <form style="margin-top: 10px;" action="Logout" class="form-inline">
@@ -265,18 +268,76 @@
                 </div>
     </div>
 </section> 
+<section id ="inserisciOpera">
 
- <section id="erroreRicerca">
 	<div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <hr class="star-primary">
-                <h3 class="nessun_risultato">CI DISPIACE, NON CI SONO RISULTATI PER QUESTA SEZIONE</h3>
-                <hr class="star-primary">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2>INSERISCI UN' OPERA</h2>
+                    <hr class="star-primary">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2">
+                    
+                    <form id="form_ricerca" novalidate action="AggiungiOpera">
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Titolo</label>
+                                <input type="text" class="form-control" placeholder="Titolo" id="titolo" name="titolo">
+                            </div>
+                        </div>
+	 					<div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Descrizione</label>
+                                <input type="text" class="form-control" placeholder="Descrizione" id="descrizione" name="descrizione">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Autore</label>
+                                <input type="text" class="form-control" placeholder="Autore" id="autore" name="autore">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Editore</label>
+                                <input type="text" class="form-control" placeholder="Editore" id="editore" name="editore">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Numero delle pagine</label>
+                                <input type="text" class="form-control" placeholder="Numero delle pagine" id="numeroPagine" name="numeroPagine">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Anno di pubblicazione</label>
+                                <input type="text" class="form-control" placeholder="Anno di pubblicazione" id="annoPubblicazione" name="anno">
+                            </div>
+                        </div>
+                        <div class="row control-group">
+                            <div class="form-group col-xs-12 floating-label-form-group controls">
+                                <label>Lingua</label>
+                                <input type="text" class="form-control" placeholder="Lingua" id="Lingua" name="lingua">
+                            </div>
+                        </div>
+                         <br>
+	                    <div class="row">
+	                            <div class="form-group col-xs-12">
+	                                <button class="btn btn-success btn-lg">Inserisci</button>
+	                            </div>
+	                    </div>
+	               </form>
+                </div>
             </div>
         </div>
-	</div>
+
 </section>
+
+<#include "ricerca.ftl.html">
+<#include "errore.ftl.html">
 
 <script type="text/javascript">
 

@@ -151,8 +151,10 @@ function errore (){
 		window.location.hash='#erroreRicerca';
 }
 function trascrizionePagina(){
-		document.getElementById("trascrivipagina").style.display="block";
-		document.getElementById("trascrivipagina").style.visibility="visible";
+		document.getElementById("openseadragon").style.display="block";
+		document.getElementById("openseadragon").style.visibility="visible";
+		document.getElementById("editortei").style.display="block";
+		document.getElementById("editortei").style.visibility="visible";
 }
 
 ///////////////////
@@ -336,14 +338,15 @@ function makeRow(datarow) {
 				id = id.slice (4, id.length);
 				$.ajax({
 			         url: 'Ricerca',
+			         dataType: 'json',
 			         type: 'GET',
-			         data: 'pagine_opera='+id,
+			         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 			             success: function(data) {
-			            	 if(eval(data)){
-			            		 scelta_sezione(6);
+			            	 if(data.length==0){
+			            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
 			            	 }
 			            	 else 
-			            		 alert("Ci dispiace! A causa di un problema non è stato possibile selezionare l'opera");
+			            		 scelta_sezione(6);
 			             }
 				});
 			};

@@ -303,6 +303,8 @@ public class Ricerca extends BibliotecaBaseController {
 					break;
 				case "opere_da_trascrivere": action_opere_da_trascrivere(request,response);
 					break;
+				case "pagine_opera": action_pagine_opera(request,response);
+					break;
 				default: action_ricerca_ajax(request,response);
 					break;
 				}

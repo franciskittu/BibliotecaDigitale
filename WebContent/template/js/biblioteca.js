@@ -8,6 +8,7 @@
 			= 3 VISTA PAGINE DELL'OPERA
 			= 4 
 			= 5 TRASCRITTORE
+			= 6 VISTA PAGINA TRASCRITTORE
 */
 var admin=false;
 var sezione=0;
@@ -36,6 +37,10 @@ function scelta_sezione(caso){
 	    case 5:
 	    	sezione = 5;
 	    	listaOpereTrascrittore();
+	    	break;
+	    case 6:
+	    	sezione = 6;
+	    	trascrizionePagina();
 	    	break;
 	    default:
 	    	sezione=0
@@ -135,6 +140,10 @@ function errore (){
 		document.getElementById("erroreRicerca").style.display="block";
 		window.location.hash='#erroreRicerca';
 }
+function trascrizionePagina(){
+		document.getElementById("trascrivipagina").style.display="block";
+		document.getElementById("trascrivipagina").style.visibility="visible";
+}
 
 ///////////////////
 /* 	PAGINATORE   */
@@ -143,7 +152,7 @@ var pages = [];
 
 
 function paginatore(data){
-	var k = 0,i = 0,cont=0;
+	var k = 0,i = 0,cont=1; 
 	pages=[];
 	while(i<data.length) {
 	 	 var temp = [];
@@ -169,7 +178,7 @@ function paginatore(data){
 	 		 	break;
 	 		case 5:
 	 			for(j=i; j < i+3 && j < data.length; j++){
-	 		 		 temp.push({riga_tabella:cont++, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});                             
+	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
 	 		 	}
 	 			break;
 	 	 }
@@ -198,14 +207,15 @@ function makeRow(datarow) {
 	//create the row
 	var row = document.createElement('tr');
 	row.className = "riga_tabella";
-	row.id="";
 	var i;
 	//e inseriamo tante celle quanti sono gli elementi della datarow
 	//and add as many cells as the datarow elements are
+	var cont=0;
 	for(i in datarow) {
 		var cell = document.createElement('td');
 		cell.textContent = datarow[i];
 		row.appendChild(cell);
+		row.id = "riga"+datarow.id;
 	}
 	//se sono admin inserisco il bottone rimuovi nella tabella 
 	if (admin){
@@ -309,7 +319,26 @@ function makeRow(datarow) {
 			
 		}
 	}
-	console.log(row);
+	else if(sezione == 5){	
+			row.onclick = function(){
+				self=this;
+				var id = self.id ;
+				id = id.slice (4, id.length);
+				$.ajax({
+			         url: 'SelezionaOpera',
+			         type: 'GET',
+			         data: 'id_opera='+id,
+			             success: function(data) {
+			            	 if(eval(data)){
+			            		 scelta_sezione(6);
+			            	 }
+			            	 else 
+			            		 alert("Ci dispiace! A causa di un problema non è stato possibile selezionare l'opera");
+			             }
+				});
+			};
+	}
+	//console.log(row);
 	return row;				
 }
 
@@ -443,9 +472,9 @@ function switchPage(page) {
 	}
 	}
 	else if (sezione==5){
-		updateTable("lista_opere_in_trascrizione",data);
+		updateTable("table_opere_in_trascrizione",data);
 		updatePager("paging",page);
-		updateTable("lista_opere_da_trascrivere",data);
+		updateTable("table_opere_da_trascrivere",data);
 		updatePager("paging1",page);
 	}
 	else {
@@ -575,7 +604,7 @@ function listaOpereTrascrittore(){
         data: 'tipoRicerca=opere_in_trascrizione',
             success: function(data) {
     	 		if (data==""){
-    	 			errore();
+    	 			//errore();
     	 		}
     	 		else {
     	 			document.getElementById("lista_opere_in_trascrizione").style.display="block";
@@ -592,7 +621,7 @@ function listaOpereTrascrittore(){
         data: 'tipoRicerca=opere_da_trascrivere',
             success: function(data) {
     	 		if (data==""){
-    	 			errore();
+    	 			//errore();
     	 		}
     	 		else {
     	 			document.getElementById("lista_opere_da_trascrivere").style.display="block";

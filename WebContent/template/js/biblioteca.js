@@ -13,7 +13,7 @@
 */
 var admin=false;
 var sezione=0;
-
+var vettore_ausiliario=[];
 function scelta_sezione(caso){
 		var sezioni= document.getElementsByTagName("SECTION");
 		for (var i =0; i<sezioni.length; i++){
@@ -68,8 +68,9 @@ function listaUtenti(){
 		        data: 'tipoRicerca=utenti',
 		            success: function(data) {
 	    	 				sezione=4;
-		    	 			paginatore(data);
-		    	 			admin= true;
+	    	 				admin= true;
+	    	 				vettore_ausiliario = data.ruoli;
+	    	 				paginatore(data.utenti);
 		    	 			init();
 			                document.getElementById("utenti").style.visibility="yes";
     					    document.getElementById("utenti").style.display="block";
@@ -129,17 +130,12 @@ function listaOpereAdmin() {
 			         type: 'GET',
 			         data: 'tipoRicerca=tutteleopere',
 			             success: function(data) {
-		         	 		if (data==""){
-		         	 			errore();
-		         	 		}
-		         	 		else {      
 		         	 			paginatore(data);
 			                    admin= true;
 			                    init();
 				                document.getElementById("listaopere").style.visible="yes";
 				                document.getElementById("listaopere").style.display="block";
 				                window.location.hash='#listaopere';
-		         	 		}
 			             }
 				});
 }
@@ -183,12 +179,12 @@ function paginatore(data){
 	 		 	}
 	 		case 4:
 	 	 		for(j=i; j < i+3 && j < data.length; j++){
-	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, nomeutente: data[j].nomeutente, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email,nome_ruolo: data[j].nome_ruolo, });                             
+	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, nomeutente: data[j].nomeutente, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email,ruolo : vettore_ausiliario[j].nome_ruolo});
 	 		 	}
 	 		 	break;
 	 		case 5:
 	 			for(j=i; j < i+3 && j < data.length; j++){
-	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
+	 		 		 temp.push({riga_tabella:cont++,id:data.utenti[j].id, titolo: data.utenti[j].titolo, descrizione: data.utenti[j].descrizione, numero_pagine: data.utenti[j].numero_pagine,ruolo: data.ruoli[j].ruolo});
 	 		 	}
 	 			break;
 	 	 }
@@ -323,6 +319,36 @@ function makeRow(datarow) {
 				alert("caso 3");
 				break;
 			case 4: 
+				var rimuovi = document.createElement('button');
+				rimuovi.className="btn btn-danger btn-lg";
+				var testo=document.createTextNode("Rimuovi");
+				rimuovi.id=datarow.id;
+				rimuovi.appendChild(testo);
+				rimuovi.onclick= function(){
+					self=this;
+					$.ajax({
+				         url: 'Rimuovi',
+				         type: 'GET',
+				         data: 'id_utente='+self.id,
+				             success: function(data) {
+				            	 if(eval(data)){
+				            		 for(i=0; i< pages.length; i++){
+				            			 for(j=0; j<pages[i].length; j++){
+					            			 if(pages[i][j].id==self.id){
+					            				 pages[i].splice(j,1);
+					            			 }
+				            			 }
+				            		 }
+				            		 document.getElementById("riga"+self.id).remove();
+				            	 }
+				            	 else 
+				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
+				             }
+					});
+				};
+				var cell = document.createElement('td');
+				cell.appendChild(rimuovi);
+				row.appendChild(cell);
 				break;
 			
 		}

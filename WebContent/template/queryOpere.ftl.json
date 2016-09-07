@@ -2,15 +2,15 @@
 <#if opere?? && (opere?size > 0)>
 	<#list opere as opera>
     {"id": "${opera.ID}",
-    "titolo": "${opera.titolo!""?js_string}",
-    "autore": "${opera.autore!""?js_string}",
-    "editore" : "${opera.editore!""?js_string}",
-    "lingua" : "${opera.lingua!""?js_string}",
+    "titolo": "${strip_slashes(opera.titolo)!""?js_string}",
+    "autore": "${strip_slashes(opera.autore)!""?js_string}",
+    "editore" : "${strip_slashes(opera.editore)!""?js_string}",
+    "lingua" : "${strip_slashes(opera.lingua)!""?js_string}",
     "immagini_pubblicate" : "${opera.immaginiPubblicate?then('true','false')?js_string}",
     "trascrizioni_pubblicate" : "${opera.trascrizioniPubblicate?then('true','false')?js_string}",
-    "descrizione" : "${opera.descrizione!""?js_string}",
-    "numero_pagine" :"${opera.numeroPagine!""?js_string}",
-    "anno": "${opera.anno!""?js_string}"
+    "descrizione" : "${strip_slashes(opera.descrizione)!""?js_string}",
+    "numero_pagine" :"${strip_slashes(opera.numeroPagine)!""?js_string}",
+    "anno": "${strip_slashes(opera.anno)!""?js_string}"
     }
     <#sep>, </#sep>
     </#list>

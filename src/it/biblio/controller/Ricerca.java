@@ -1,10 +1,7 @@
 package it.biblio.controller;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -74,6 +71,7 @@ public class Ricerca extends BibliotecaBaseController {
 
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
@@ -103,8 +101,8 @@ public class Ricerca extends BibliotecaBaseController {
 					ruoli.add(ruoli_utente.get(0));
 				else{
 					Ruolo ruolo = datalayer.creaRuolo();
-					ruolo.setNome("utente non registrato");
-					ruolo.setDescrizione("utente che può solo vedere il catalogo delle opere!");
+					ruolo.setNome("utente base");
+					ruolo.setDescrizione("utente che può solo vedere le opere!");
 					ruoli.add(ruolo);
 				}
 			}
@@ -139,6 +137,7 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
 		} catch (DataLayerException ex) {
@@ -162,6 +161,7 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
 		} catch (DataLayerException ex) {
@@ -191,6 +191,7 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
 		}
@@ -215,6 +216,7 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
 		}
@@ -237,6 +239,7 @@ public class Ricerca extends BibliotecaBaseController {
 			List<Opera> opere = datalayer.getOpereInPubblicazioneTrascrizioni();
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryOpere.ftl.json", request, response);
@@ -255,6 +258,7 @@ public class Ricerca extends BibliotecaBaseController {
 			List<Pagina> pagine = datalayer.getPagineOpera(id_opera);
 			request.setAttribute("pagine", pagine);
 			request.setAttribute("outline_tpl", "");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryPagine.ftl.json", request, response);
@@ -287,6 +291,7 @@ public class Ricerca extends BibliotecaBaseController {
 
 			request.setAttribute("ricerca", true);
 			request.setAttribute("opere", opere);
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 
 			action_result(request, response);
 		} catch (DataLayerException ex) {

@@ -225,8 +225,13 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	}
 
 	@Override
-	public Privilegi rimuoviPrivilegiUtente(long id_utente) {
-		// TODO Auto-generated method stub
+	public Privilegi rimuoviPrivilegiUtente(long id_utente) throws DataLayerException {
+		try{
+			this.rPrivilegiUtente.setLong(1, id_utente);
+			this.rPrivilegiUtente.executeUpdate();
+		}catch(SQLException ex){
+			throw new DataLayerException("Incapace di rimuovere il privilegio dell'utente", ex);
+		}
 		return null;
 	}
 

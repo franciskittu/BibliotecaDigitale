@@ -2,7 +2,7 @@
 <#if pagine?? && (pagine?size > 0)>
 	<#list pagine as pagina>
     {"id": "${pagina.ID}",
-    "numero": "${pagina.numero!""?js_string}",
+    "numero": "${strip_slashes(pagina.numero)!""?js_string}",
     "path_immagine": "${pagina.pathImmagine!""?js_string}",
     "path_trascrizione" : "${pagina.pathTrascrizione!""?js_string}",
     "upload_immagine" : "${pagina.uploadImmagine!""?js_string}",

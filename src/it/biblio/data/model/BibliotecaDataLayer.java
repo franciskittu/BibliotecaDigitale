@@ -18,7 +18,7 @@ public interface BibliotecaDataLayer extends DataLayer{
 	List<Utente> getTuttiGliUtenti() throws DataLayerException;
 	
 	Utente rimuoviUtente(Utente U) throws DataLayerException;
-	
+
 	/*Operazioni Ruolo*/
 	Ruolo creaRuolo()throws DataLayerException;
 	

@@ -65,7 +65,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
 			rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
 			gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
-			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,immagini_pubblicate, trascrizioni_pubblicate,acquisitore, trascrittore,numero_pagine) VALUES(?,?,?,?,?,,?,?,?,?,?) RETURNING ID");
+			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,immagini_pubblicate, trascrizioni_pubblicate,acquisitore, trascrittore,numero_pagine, autore) VALUES(?,?,?,?,?,?,?,?,?,?,?) RETURNING ID");
 			aggiornaOpera = c.prepareStatement("UPDATE Opera SET titolo = ?, lingua = ?, anno = ?, editore = ?, descrizione = ?, immagini_pubblicate = ?, trascrizioni_pubblicate = ?,acquisitore = ?, trascrittore = ?, numero_pagine = ? WHERE id = ?");
 			gOpere = c.prepareStatement("SELECT * FROM Opera ORDER BY(titolo)");
 			gPagina = c.prepareStatement("SELECT * FROM Pagina WHERE id = ?");
@@ -273,6 +273,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 				aOpera.setNull(9, Type.LONG);
 			}
 			aOpera.setInt(10, OI.getNumeroPagine());
+			aOpera.setString(11, OI.getAutore());
 			try(ResultSet chiave = aOpera.executeQuery()){
 				if(chiave.next()){
 					return getOpera(chiave.getLong("ID"));
@@ -471,7 +472,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	public List<Opera> getOpereDaTrascrivere() throws DataLayerException {
 		List<Opera> ris = new ArrayList<Opera>();
 		try{
-			try(ResultSet rs = this.gOpereDaTrascrivere.executeQuery("SELECT * FROM Opera WHERE trascrittore IS NULL ")){
+			try(ResultSet rs = this.gOpereDaTrascrivere.executeQuery("SELECT * FROM Opera WHERE trascrittore IS NULL AND immagini_pubblicate=true")){
 				while(rs.next()){
 					ris.add(new OperaImpl(this,rs));
 				}

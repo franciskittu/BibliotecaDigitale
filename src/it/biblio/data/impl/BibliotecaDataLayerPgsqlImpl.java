@@ -31,7 +31,7 @@ import it.biblio.framework.data.DataLayerPgsqlImpl;
  */
 public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements BibliotecaDataLayer {
 
-	private PreparedStatement aUtente, gUtente,gUtenteUsername, gUtenti;
+	private PreparedStatement aUtente, gUtente,gUtenteUsername, gUtenti, rUtente;
 	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente,gRuoli;
 	private PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
 	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera ;
@@ -56,6 +56,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gUtente = c.prepareStatement("SELECT * FROM Utente WHERE id = ?");
 			gUtenteUsername = c.prepareStatement("SELECT * FROM Utente WHERE username = ?");
 			gUtenti = c.prepareStatement("SELECT * FROM Utente ORDER BY(username)");
+			rUtente = c.prepareStatement("DELETE FROM Utente WHERE id = ?");
 			aRuolo = c.prepareStatement("INSERT INTO Ruolo(nome, descrizione) VALUES (?,?) RETURNING progressivo");
 			gRuolo = c.prepareStatement("SELECT * FROM Ruolo WHERE id = ?");
 			gRuoloNome = c.prepareStatement("SELECT * FROM Ruolo WHERE LOWER(nome) = LOWER(?)");
@@ -637,6 +638,20 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		return null;
 	}
 
+
+	@Override
+	public Utente rimuoviUtente(Utente U) throws DataLayerException {
+		try{
+			this.rUtente.setLong(1, U.getID());
+			if(this.rUtente.executeUpdate() == 1){
+				return U;
+			}
+		}catch (SQLException ex) {
+			throw new DataLayerException("Incapace di eliminare l'opera richiesta", ex);
+		}
+		return null;
+	}
+
 	@Override
 	public void destroy() throws DataLayerException {
 		try {
@@ -668,6 +683,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.rPrivilegiUtente.close();
 			this.rPagina.close();
 			this.rOpera.close();
+			this.rUtente.close();
 		} catch (SQLException e) {
 			
 		}

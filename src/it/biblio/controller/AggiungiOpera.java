@@ -40,7 +40,7 @@ public class AggiungiOpera extends BibliotecaBaseController {
 				throw new DataLayerException("Errore nell'aggiungere l'opera nel database");
 			}
 			else{
-				request.setAttribute("messaggio", "Inserimento dell'opera avvenuto correttamente;)");
+				request.setAttribute("messaggio", "È stata inserita l'opera "+O.getTitolo()+" di "+O.getAutore()+" con "+O.getNumeroPagine()+" pagine." );
 				action_result(request, response);
 			}
 		}

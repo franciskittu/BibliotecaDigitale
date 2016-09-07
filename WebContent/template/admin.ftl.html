@@ -42,10 +42,16 @@
         </div>
         <!-- /.container-fluid -->
 </nav>
+
 <section id="admindefault">
 		<div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
+                	<#if messaggio??>
+		<div>
+			${messaggio?html}
+		</div>
+</#if>
                     <hr class="star-primary">
                     <h2>Benvenuto utente admin</h2><br>
                     <h3>Seleziona l'azione da fare nel menù in alto</h3>
@@ -149,7 +155,8 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>OPERE IN PUBBLICAZIONE ( ACQUISIZIONE )</h2>
+                    <h2>OPERE IN PUBBLICAZIONE</h2>
+                    <h3>ACQUISIZIONE</h3>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -186,7 +193,8 @@
                 </div>
                 <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>OPERE IN PUBBLICAZIONE ( TRASCRIZIONE )</h2>
+                    <h2>OPERE IN PUBBLICAZIONE</h2>
+                    <h3>TRASCRIZIONE</h3>
                     <hr class="star-primary">
                 </div>
             </div>
@@ -229,12 +237,12 @@
         <div class="row">
             <div class="col-lg-12 text-center">
                 <hr class="star-primary">
-                <h3 class="nessun_risultato">GESTIONE UTENTI</h3>
+                <h2>GESTIONE UTENTI</h2>
                 <hr class="star-primary">
             </div>
         </div>
         <p>
-            <span id="paging1">
+            <span id="paging4">
               <span class="pagerCurrent">1</span>
               <a class="pagerLink" href="?page=2">2</a>
               <a class="pagerLink" href="?page=3">3</a>
@@ -245,7 +253,7 @@
     
                <div class="list-group">
                     
-                        <table id=tableopereacquisizione class="table ">
+                        <table id=tableutenti class="table ">
                               <thead>
                                 <tr class="tabella">
                                   <th>#</th>
@@ -326,7 +334,7 @@
                          <br>
 	                    <div class="row">
 	                            <div class="form-group col-xs-12">
-	                                <button class="btn btn-success btn-lg">Inserisci</button>
+	                                <button onclick="scelta_sezione()" class="btn btn-success btn-lg">Inserisci</button>
 	                            </div>
 	                    </div>
 	               </form>
@@ -337,7 +345,17 @@
 </section>
 
 <#include "ricerca.ftl.html">
-<#include "errore.ftl.html">
+ <section id="erroreRicerca">
+	<div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center">
+                <hr class="star-primary">
+                <h3 class="nessun_risultato">CI DISPIACE, NON CI SONO RISULTATI PER QUESTA SEZIONE</h3>
+                <hr class="star-primary">
+            </div>
+        </div>
+	</div>
+</section>
 
 <script type="text/javascript">
 

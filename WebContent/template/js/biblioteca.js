@@ -61,24 +61,22 @@ function vistaDefaultAdmin(){
 }
 /*LISTA DI TUTTI GLI UTENTI PER L'ADMIN*/
 function listaUtenti(){
-		$.ajax({
-		        url: 'Ricerca',
+		$.ajax({ 
+				url: 'Ricerca',
 		        dataType: "json",
 		        type: 'GET',
-		        data: 'tipoRicerca=listaUtenti',
+		        data: 'tipoRicerca=utenti',
 		            success: function(data) {
-		    	 		if (data==""){
-		    	 			errore();
-		    	 		}
-		    	 		else {         	 			
+	    	 				sezione=4;
 		    	 			paginatore(data);
 		    	 			admin= true;
 		    	 			init();
-			                document.getElementById("utenti").style.visible="yes";
+			                document.getElementById("utenti").style.visibility="yes";
     					    document.getElementById("utenti").style.display="block";
-	
-		    	 		}
-		            }
+		            },
+					error: function(error){
+						console.log(error);
+					}
 		});
 }
 
@@ -185,7 +183,7 @@ function paginatore(data){
 	 		 	}
 	 		case 4:
 	 	 		for(j=i; j < i+3 && j < data.length; j++){
-	 		 		 temp.push({riga_tabella:cont++, username: data[j].username, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email, ruolo: data[j].ruolo});                             
+	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, nomeutente: data[j].nomeutente, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email,nome_ruolo: data[j].nome_ruolo, });                             
 	 		 	}
 	 		 	break;
 	 		case 5:
@@ -194,7 +192,6 @@ function paginatore(data){
 	 		 	}
 	 			break;
 	 	 }
-	 	 
 	 	 pages[k++] = temp;
 	 	 i = i+3;
 	}
@@ -236,7 +233,7 @@ function makeRow(datarow) {
 				row.onclick = function(){
 					self = this;
 					$.ajax({
-				        url: 'SelezionaOpera',
+				        url: 'Rimuovi',
 				        type: 'GET',
 				        data: 'id_opera='+self.id,
 				            success: function(data) {
@@ -326,7 +323,6 @@ function makeRow(datarow) {
 				alert("caso 3");
 				break;
 			case 4: 
-				alert("caso 4");
 				break;
 			
 		}
@@ -479,7 +475,8 @@ function switchPage(page) {
 			
 			break;
 		case 4:
-
+			updateTable("tableutenti",data);
+			updatePager("paging4",page);
 			break;
 		
 	}

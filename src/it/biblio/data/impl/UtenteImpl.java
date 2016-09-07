@@ -4,6 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import it.biblio.data.model.*;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Implementazionde del Plain Old Java Object relativo all'interfaccia Utente
@@ -44,7 +45,7 @@ public class UtenteImpl implements Utente {
 		username = dati.getString("username");
 		password = dati.getString("password");
 		nome = dati.getString("nome");
-		cognome = dati.getString("cognome");
+		cognome = SecurityLayer.stripSlashes(dati.getString("cognome")) ;
 		email = dati.getString("email");
 		this.datalayer = datalayer;
 	}

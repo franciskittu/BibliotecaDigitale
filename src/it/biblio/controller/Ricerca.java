@@ -1,7 +1,9 @@
 package it.biblio.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -15,6 +17,7 @@ import it.biblio.data.model.Ruolo;
 import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.FailureResult;
+import it.biblio.framework.result.SplitSlashesFmkExt;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.SecurityLayer;
@@ -92,14 +95,25 @@ public class Ricerca extends BibliotecaBaseController {
 		try{
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 			
+			List<Ruolo> ruoli = new ArrayList<>();
 			List<Utente> utenti = datalayer.getTuttiGliUtenti();
-			List<Ruolo> ruoli = datalayer.getListaRuoliUtente(datalayer.getUtenteByUsername((String) request.getAttribute("nomeutente")) );
-			Ruolo ruolo = ruoli.get(0);
-			ruoli = datalayer.getTuttiIRuoli();
+			for(Utente utente : utenti){
+				List<Ruolo> ruoli_utente = datalayer.getListaRuoliUtente(utente);
+				if(!ruoli_utente.isEmpty())
+					ruoli.add(ruoli_utente.get(0));
+				else{
+					Ruolo ruolo = datalayer.creaRuolo();
+					ruolo.setNome("utente non registrato");
+					ruolo.setDescrizione("utente che può solo vedere il catalogo delle opere!");
+					ruoli.add(ruolo);
+				}
+			}
 			
+			//ruoli = datalayer.getTuttiIRuoli();
+	
 			request.setAttribute("utenti", utenti);
-			request.setAttribute("ruolo", ruolo);
 			request.setAttribute("ruoli", ruoli);
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());

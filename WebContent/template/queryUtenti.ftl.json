@@ -1,17 +1,24 @@
-[
-<#if utenti?? && (utenti?size > 0)>
+<#if utenti?? && (utenti?size > 0) && ruoli??>
+	{"utenti":[
 	<#list utenti as utente>
-    {"id": "${utente.ID}",
-    "nome": "${utente.nome!""?js_string}",
-    "cognome": "${utente.cognome!""?js_string}",
-    "email" : "${utente.email!""?js_string}",
-    "nomeutente" : "${utente.username!""?js_string}",
-    "id_ruolo" : "${ruolo.ID!""?js_string}",
-    "nome_ruolo": "${ruolo.nome!""?js_string}",
-    "descrizione_ruolo": "${ruolo.descrizione!""?js_string}"
-    
-    }
+    	{"id": "${utente.ID}",
+    	"nome": "${strip_slashes(utente.nome)!""?js_string}",
+    	"cognome": "${strip_slashes(utente.cognome)!""?js_string}",
+    	"email" : "${strip_slashes(utente.email)!""?js_string}",
+    	"nomeutente" : "${strip_slashes(utente.username)!""?js_string}"
+    	}
     <#sep>, </#sep>
     </#list>
-    </#if>
-]
+    ]
+    ,"ruoli":[
+    <#list ruoli as ruolo>
+    	{
+    	"id_ruolo" : "${ruolo.ID!""?js_string}",
+    	"nome_ruolo": "${strip_slashes(ruolo.nome)!""?js_string}",
+    	"descrizione_ruolo": "${strip_slashes(ruolo.descrizione)!""?js_string}"
+    	}
+    <#sep>, </#sep>
+    </#list>
+    ]}
+<#else>[]
+</#if>

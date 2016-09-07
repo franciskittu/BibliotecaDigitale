@@ -45,7 +45,7 @@ public class UtenteImpl implements Utente {
 		username = dati.getString("username");
 		password = dati.getString("password");
 		nome = dati.getString("nome");
-		cognome = SecurityLayer.stripSlashes(dati.getString("cognome")) ;
+		cognome = dati.getString("cognome") ;
 		email = dati.getString("email");
 		this.datalayer = datalayer;
 	}

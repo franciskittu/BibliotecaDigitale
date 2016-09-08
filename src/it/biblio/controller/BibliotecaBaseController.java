@@ -21,17 +21,25 @@ import it.biblio.framework.result.*;
  * servlet astratta che permette di inizializzare la connessione al DB.
  * Implementata da tutte le servlet che vogliono accedere al DB.
  * 
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 @SuppressWarnings("serial")
 public abstract class BibliotecaBaseController extends HttpServlet {
-	
+	/**
+	 * risorsa definita in web.xml
+	 */
 	@Resource(name = "jdbc/bibliodb")
 	private DataSource ds;
 	
 	
-	
+	/**
+	 * Punto di partenza della servlet per gestire le sue richieste.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException
+	 */
 	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException;
 	
 	/**
@@ -53,7 +61,7 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 	
 	/**
 	 * Istanzia il modello dei dati da passare a Freemarker e chiama i metodi del package framework.result
-	 * per attivare la response e inviare le pagine come output
+	 * per attivare la response e inviare le pagine come output.
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response

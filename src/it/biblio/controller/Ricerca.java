@@ -107,10 +107,11 @@ public class Ricerca extends BibliotecaBaseController {
 				}
 			}
 			
-			//ruoli = datalayer.getTuttiIRuoli();
+			List<Ruolo> ruoli_db = datalayer.getTuttiIRuoli();
 	
 			request.setAttribute("utenti", utenti);
 			request.setAttribute("ruoli", ruoli);
+			request.setAttribute("ruoli_db", ruoli_db);
 			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("contentType", "text/json");

@@ -13,14 +13,23 @@ import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
+/**
+ * Servlet che gestisce le richieste di aggiornamento delle entità
+ * presenti nella base di dati.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 @WebServlet(name="Aggiorna", urlPatterns={"/Aggiorna"})
 public class Aggiorna extends BibliotecaBaseController {
 
 	/**
+	 * Funzione che aggiorna i privilegi utente rimuovendo quelli già presenti 
+	 * per inserire quelli ricevuti dalla richiesta.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException errore nella logica del template manager 
 	 */
 	private void action_aggiorna_privilegi_utente(HttpServletRequest request, HttpServletResponse response) throws ControllerException, TemplateManagerException{
 		
@@ -56,6 +65,9 @@ public class Aggiorna extends BibliotecaBaseController {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		if(request.getParameter("tipoAggiornamento") != null){

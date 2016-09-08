@@ -1,9 +1,11 @@
 package it.biblio.framework.data;
 
 /**
+ * Eccezione sollevata quando ci sono problemi durante le
+ * query alla base di dati.
  * 
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 @SuppressWarnings("serial")
 public class DataLayerException extends Exception {

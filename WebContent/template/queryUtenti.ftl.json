@@ -1,4 +1,4 @@
-<#if utenti?? && (utenti?size > 0) && ruoli??>
+<#if utenti?? && (utenti?size > 0) && ruoli?? && ruoli_db??>
 	{"utenti":[
 	<#list utenti as utente>
     	{"id": "${utente.ID}",
@@ -19,6 +19,17 @@
     	}
     <#sep>, </#sep>
     </#list>
-    ]}
+    ]
+    ,"ruoli_db":[
+    <#list ruoli_db as ruolo>
+    	{
+    	"id_ruolo" : "${ruolo.ID!""?js_string}",
+    	"nome_ruolo": "${strip_slashes(ruolo.nome)!""?js_string}",
+    	"descrizione_ruolo": "${strip_slashes(ruolo.descrizione)!""?js_string}"
+    	}
+    <#sep>, </#sep>
+    </#list>
+    ]
+    }
 <#else>[]
 </#if>

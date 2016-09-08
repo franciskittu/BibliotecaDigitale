@@ -23,11 +23,13 @@ import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.data.DataLayerPgsqlImpl;
 
-
 /**
+ * Classe che funge da oggetto DAO di riferimento per le servlet.
  * 
- * @author francesco
- *
+ * @see it.biblio.data.model.BibliotecaDataLayer
+ * @see it.biblio.framework.data.DataLayerPgsqlImpl
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements BibliotecaDataLayer {
 
@@ -45,7 +47,11 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		super(ds);
 	}
 	
-	
+	/**
+	 * Inizializza la connessione al DB e prepara tutte le query predefinite.
+	 * 
+	 * @see it.biblio.framework.data.DataLayerPgsqlImpl#init()
+	 */
 	@Override
 	public void init() throws DataLayerException {
 		try{
@@ -657,6 +663,11 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		return null;
 	}
 
+	/**
+	 * chiude tutti gli statement e chiude la connessione al DB.
+	 * 
+	 * @see it.biblio.framework.data.DataLayerPgsqlImpl#destroy()
+	 */
 	@Override
 	public void destroy() throws DataLayerException {
 		try {

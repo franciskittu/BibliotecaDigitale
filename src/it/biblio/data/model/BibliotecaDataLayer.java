@@ -5,6 +5,14 @@ import java.util.List;
 import it.biblio.framework.data.DataLayer;
 import it.biblio.framework.data.DataLayerException;
 
+/**
+ * Interfaccia che fornisce le funzioni supportate sulla base di dati
+ * e utilizzabili dai controller.
+ * <b>I nomi delle funzioni sono autoesplicativi.</b>
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 public interface BibliotecaDataLayer extends DataLayer{
 	/*Operazioni Utente*/
 	Utente creaUtente() throws DataLayerException;

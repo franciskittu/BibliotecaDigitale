@@ -3,10 +3,10 @@ package it.biblio.data.model;
 /**
  * Interfaccia del Plain Old Java Object della Entità Ruolo.
  * Contiene metodi get e set per ogni attributo dell'entità.
- * Transfer Object del pattern DAO
+ * Implementato dal Transfer Object del pattern DAO
  *  
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 public interface Ruolo {
 

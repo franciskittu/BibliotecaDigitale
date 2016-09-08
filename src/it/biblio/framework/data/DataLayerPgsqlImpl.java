@@ -6,9 +6,11 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 /**
+ * Classe che fornisce metodi per la gestione della
+ * connessione alla base di dati PostgreSQL.
  * 
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 public class DataLayerPgsqlImpl implements DataLayer {
 

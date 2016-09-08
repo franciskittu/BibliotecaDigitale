@@ -7,7 +7,8 @@ import it.biblio.framework.data.DataLayerException;
 * Contiene metodi get e set per ogni attributo dell'entità.
 * Transfer Object del pattern DAO
 *  
-* @author francesco
+* @author Marco D'Ettorre
+* @author Francesco Proietti
 *
 */
 public interface Opera {

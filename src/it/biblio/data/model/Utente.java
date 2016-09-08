@@ -3,10 +3,10 @@ package it.biblio.data.model;
 /**
  * Interfaccia del Plain Old Java Object della Entità Utente.
  * Contiene metodi get e set per ogni attributo dell'entità.
- * Transfer Object del pattern DAO
+ * Implementato dal Transfer Object del pattern DAO
  *  
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 
 public interface Utente {

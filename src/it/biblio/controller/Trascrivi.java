@@ -2,9 +2,7 @@ package it.biblio.controller;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
@@ -17,15 +15,22 @@ import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
 import it.biblio.framework.data.DataLayerException;
 
+/**
+ * Servlet per l'inserimento della trascrizione in formato TEI nel sistema.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 @WebServlet(name="Trascrivi", urlPatterns={"/Trascrivi"})
 public class Trascrivi extends BibliotecaBaseController {
 
 	/**
+	 * funzione che trasforma la trascrizione della pagina in input in formato TEI.
 	 * 
-	 * @param request
-	 * @param response
-	 * @param p
-	 * @return
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @param p pagina di riferimento
+	 * @return testo TEI da inserire nel file
 	 */
 	private String input_to_tei(HttpServletRequest request, HttpServletResponse response, Pagina p){
 		try{
@@ -54,9 +59,10 @@ public class Trascrivi extends BibliotecaBaseController {
 	
 	
 	/**
+	 * Crea e inserisce il file TEI nella base di dati.
 	 * 
-	 * @param request
-	 * @param response
+	 * @param request servlet request
+	 * @param response servlet response
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
 	 */

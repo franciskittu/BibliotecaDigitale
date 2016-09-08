@@ -11,19 +11,24 @@ import javax.servlet.http.HttpServletResponse;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
- * Con questa server si effettua il logout invalidando la sessione esistente.
+ * Servlet che effettua il logout di un utente.
  * 
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 @WebServlet(name="Logout", urlPatterns={"/Logout"})
 public class Logout extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -1503993411303022678L;
 
+	/**
+	 * Invalida la sessione.
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 		SecurityLayer.disposeSession(request);

@@ -17,20 +17,22 @@ import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
+/**
+ * Servlet per la registrazione di un utente al sistema.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 @WebServlet(name="Registrazione", urlPatterns={"/Registrazione"})
 public class Registrazione extends BibliotecaBaseController {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 5016452337535270516L;
 
 	/**
-	 * Metodo per il controllo della correttezza dei parametri della form di
+	 * Funzione per il controllo della correttezza dei parametri della form di
 	 * registrazione.
 	 * 
-	 * @param servlet
-	 *            request per i parametri
+	 * @param servlet request per i parametri
 	 * @return true se il controllo passa, false altrimenti
 	 */
 	private Boolean checkParametriRegistrazione(HttpServletRequest request) {
@@ -43,9 +45,9 @@ public class Registrazione extends BibliotecaBaseController {
 	 * compilazione della form. Il risultato del controllo sarà inviato sotto
 	 * forma di stringa in formato JSON.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_ajax(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
 		try {
@@ -64,8 +66,15 @@ public class Registrazione extends BibliotecaBaseController {
 		}
 	}
 
+	/**
+	 * Metodo che inserisce un nuovo utente senza privilegi nella base di dati. 
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ControllerException se occorre un errore nel redirect alla home page o se risulta impossibile creare una nuova sessione
+	 */
 	private void action_registration(HttpServletRequest request, HttpServletResponse response)
-			throws ControllerException, IOException {
+			throws ControllerException {
 		try {
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 
@@ -104,19 +113,18 @@ public class Registrazione extends BibliotecaBaseController {
 		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
+		} catch (IOException e) {
+			throw new ControllerException("errore nella redirezione alla homepage"+ e.getMessage(), e.getCause());
 		}
 	}
 
 	/**
 	 * Metodo usato per chiamata AJAX per la verifica di username duplicati
 	 * 
-	 * @param datalayer
-	 *            DAO
-	 * @param campousername
-	 *            valore username appena inserito
-	 * @return stringa "false" se lo username non è presente nel DB, "true"
-	 *         altrimenti
-	 * @throws DataLayerException
+	 * @param datalayer  oggetto DAO
+	 * @param campousername  valore username appena inserito
+	 * @return stringa "false" se lo username non è presente nel DB, "true" altrimenti
+	 * @throws DataLayerException se occorre un errore nella logica dei dati
 	 */
 	private String checkUsername(BibliotecaDataLayer datalayer, String username) throws DataLayerException {
 
@@ -126,6 +134,14 @@ public class Registrazione extends BibliotecaBaseController {
 		return "true";
 	}
 
+	/**
+	 *  Richiama i metodi per la gestione delle richieste generate dalla form di registrazione.
+	 *  
+	 *  @param request servlet request
+	 *  @param response servlet response
+	 *  @throws ServletException servlet exception
+	 */
+	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try {
 			/* gestione richiesta AJAX */
@@ -145,7 +161,7 @@ public class Registrazione extends BibliotecaBaseController {
 
 			}
 
-		} catch (IOException | ControllerException | TemplateManagerException ex) {
+		} catch (ControllerException | TemplateManagerException ex) {
 			request.setAttribute("exception", ex);
 			action_error(request, response);
 		}

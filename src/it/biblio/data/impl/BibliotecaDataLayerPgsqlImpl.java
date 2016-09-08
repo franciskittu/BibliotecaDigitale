@@ -68,8 +68,8 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gRuoloNome = c.prepareStatement("SELECT * FROM Ruolo WHERE LOWER(nome) = LOWER(?)");
 			gRuoliUtente = c.prepareStatement("SELECT Ruolo.* FROM Ruolo,Utente,Privilegi WHERE username = ? AND Utente.id = Privilegi.utente AND Privilegi.ruolo = Ruolo.id");
 			gRuoli = c.prepareStatement("SELECT * FROM Ruolo");
-			gPrivilegi = c.prepareStatement("SELECT * FROM Privilegi WHERE id = ?");
-			aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING ID");
+			gPrivilegi = c.prepareStatement("SELECT * FROM Privilegi WHERE progressivo = ?");
+			aPrivilegi = c.prepareStatement("INSERT INTO Privilegi(utente,ruolo) VALUES(?,?) RETURNING progressivo");
 			rPrivilegiUtente = c.prepareStatement("DELETE FROM privilegi WHERE utente = ?");
 			gOpera = c.prepareStatement("SELECT * FROM Opera WHERE id = ?");
 			aOpera = c.prepareStatement("INSERT INTO Opera(titolo,lingua,anno,editore,descrizione,immagini_pubblicate, trascrizioni_pubblicate,acquisitore, trascrittore,numero_pagine, autore) VALUES(?,?,?,?,?,?,?,?,?,?,?) RETURNING ID");

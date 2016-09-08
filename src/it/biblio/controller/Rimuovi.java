@@ -15,26 +15,31 @@ import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
 
+/**
+ * Servlet che gestisce le richieste di rimozione dei record delle entità
+ * presenti nella base di dati.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 @WebServlet(name="Rimuovi", urlPatterns={"/Rimuovi"})
 public class Rimuovi extends BibliotecaBaseController {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 3263374695997268057L;
 
 	/**
+	 * Gestisce la rimozione di un utente dal sistema.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_rimuovi_utente(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
 		try{
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 			Boolean successo = true;
 			Utente U = datalayer.getUtente(Long.parseLong(request.getParameter("id_utente")));
-			List<Utente> utenti = datalayer.getTuttiGliUtenti();
+			datalayer.rimuoviPrivilegiUtente(U.getID());
 			if(datalayer.rimuoviUtente(U) == null){
 				successo = false;
 			}
@@ -49,10 +54,11 @@ public class Rimuovi extends BibliotecaBaseController {
 		}
 	}
 	/**
+	 * Gestisce la rimozione di un'opera dal sistema
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_rimuovi_opera(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
 		try{
@@ -80,7 +86,13 @@ public class Rimuovi extends BibliotecaBaseController {
 		}
 	}
 	
-	
+	/**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try{

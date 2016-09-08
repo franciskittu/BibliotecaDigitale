@@ -12,6 +12,11 @@ import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
+/**
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 @WebServlet(name="AggiungiOpera", urlPatterns={"/AggiungiOpera"})
 public class AggiungiOpera extends BibliotecaBaseController {
 

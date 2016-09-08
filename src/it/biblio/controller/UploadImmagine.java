@@ -28,13 +28,19 @@ import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.ControllerException;
 
+/**
+ * Servlet per l'upload del file d'immagine di una pagina
+ * del manuscritto.
+ * <i>Sfrutta MultipartConfig di Java 7.</i>
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ * 
+ */
 @WebServlet(name="UploadImmagine", description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
 @MultipartConfig
 public class UploadImmagine extends BibliotecaBaseController {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -2649569830853593682L;
 
 	/**
@@ -55,13 +61,14 @@ public class UploadImmagine extends BibliotecaBaseController {
 	}
 
 	/**
-	 * Funzione che gestisce la richiesta AJAX
+	 * Funzione che verifica se il numero della pagina è presente nella 
+	 * base di dati.
 	 * 
-	 * @param datalayer
-	 * @param numero
-	 * @param b
-	 * @return
-	 * @throws DataLayerException 
+	 * @param datalayer oggetto DAO
+	 * @param numero numero pagina inserito nella form
+	 * @param opera id dell'opera di cui si vuole inserire la pagina 
+	 * @return "true" se la pagina non è presente nella base dati, "false" altrimenti
+	 * @throws DataLayerException se occorre un errore nella logica dei dati
 	 */
 	private String checkNumeroPagina(BibliotecaDataLayer datalayer, String numero, long opera) throws DataLayerException {
 		List<Pagina> pagine = datalayer.getPagineOpera(opera);
@@ -76,10 +83,12 @@ public class UploadImmagine extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che gestisce la richiesta AJAX per la verifica dell'inserimento
+	 * di una pagina relativa all'opera che non sia già presente nella base dati.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_ajax(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
 		try {
@@ -100,11 +109,23 @@ public class UploadImmagine extends BibliotecaBaseController {
 		}
 	}
 	
-	
-	private void action_upload(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, TemplateManagerException, ControllerException {
+	/**
+	 * 
+	 * @param request Servlet request
+	 * @param response servlet response
+	 * @throws IOException se occorre un errore nelle operazione di gestione di Files
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 * @throws ControllerException se ci sono errori nei campi della form ricevuti o se non esiste l'algoritmo SHA1
+	 */
+	private void action_upload(HttpServletRequest request, HttpServletResponse response) throws IOException, TemplateManagerException, ControllerException {
 		BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 		final long id_opera = Long.parseLong(request.getParameter("opera"));
-		final Part filePart = request.getPart("fileToUpload");
+		Part filePart;
+		try {
+			filePart = request.getPart("fileToUpload");
+		} catch (ServletException ex) {
+			throw new ControllerException("errore nel reperire il campo del file da caricare.",ex.getCause());
+		}
 		final String nomeFile = getFileName(filePart);
 		final String path = getServletContext().getInitParameter("system.directory_immagini");
 		final String numero = (String) request.getParameter("numero_pagina");
@@ -165,6 +186,14 @@ public class UploadImmagine extends BibliotecaBaseController {
 		}
 	}
 
+	/**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
+	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException {
 

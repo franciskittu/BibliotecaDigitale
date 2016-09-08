@@ -14,7 +14,7 @@ import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
- * Servlet che gestisce le richieste di aggiornamento delle entità
+ * Servlet che gestisce le richieste di aggiornamento dei record delle entità
  * presenti nella base di dati.
  * 
  * @author Marco D'Ettorre
@@ -66,7 +66,11 @@ public class Aggiorna extends BibliotecaBaseController {
 	}
 	
 	/**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
 	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {

@@ -19,6 +19,13 @@ import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.SecurityLayer;
 
+/**
+ * Servlet che gestisce le richieste di selezione delle entità
+ * presenti nella base di dati.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 @WebServlet(name="Ricerca", urlPatterns={"/Ricerca"})
 public class Ricerca extends BibliotecaBaseController {
 

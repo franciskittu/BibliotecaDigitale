@@ -19,9 +19,6 @@ import it.biblio.framework.utility.SecurityLayer;
 @WebServlet("/OpenSeaDragon")
 public class OpenSeaDragon extends BibliotecaBaseController {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3999174379443972231L;
 
 	@Override

@@ -19,7 +19,11 @@ public class SplitSlashesFmkExt implements TemplateMethodModelEx {
 	@Override
 	public Object exec(List arg0) throws TemplateModelException {
 		//la lista contiene i parametri passati alla funzione nel template
-		if(!arg0.isEmpty()){
+		if(arg0 != null && !arg0.isEmpty()){
+			System.out.println(arg0);
+			if(arg0.get(0) == null){//fix
+				return "";
+			}
 			return SecurityLayer.stripSlashes(arg0.get(0).toString());
 		}else{
 			return "";

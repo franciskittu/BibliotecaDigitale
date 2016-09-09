@@ -1,16 +1,15 @@
-package it.biblio.data.impl;
+package it.biblio.data.impl.pgsql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import it.biblio.data.model.*;
-import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Implementazionde del Plain Old Java Object relativo all'interfaccia Utente
  *  
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 public class UtenteImpl implements Utente {
 
@@ -24,7 +23,8 @@ public class UtenteImpl implements Utente {
 	
 	/**
 	 * Costruttore base che genera un oggetto "vuoto".
-	 * @param datalayer
+	 * 
+	 * @param datalayer oggetto DAO
 	 */
 	public UtenteImpl(BibliotecaDataLayerPgsqlImpl datalayer){
 		ID = 0;
@@ -36,9 +36,9 @@ public class UtenteImpl implements Utente {
 	/**
 	 * costruttore helper che costruisce l'oggetto dai risultati di una query
 	 * 
-	 * @param datalayer
-	 * @param dati
-	 * @throws SQLException
+	 * @param datalayer oggetto DAO
+	 * @param dati record nella base di dati
+	 * @throws SQLException se occorre un errore nel reperire i campi
 	 */
 	public UtenteImpl(BibliotecaDataLayerPgsqlImpl datalayer, ResultSet dati) throws SQLException{
 		ID = dati.getLong("ID");

@@ -1,4 +1,4 @@
-package it.biblio.data.impl;
+package it.biblio.data.impl.pgsql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -7,6 +7,12 @@ import it.biblio.data.model.Opera;
 import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
 
+/**
+ * Implementazionde del Plain Old Java Object relativo all'interfaccia Opera.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 public class OperaImpl implements Opera{
 
 	private long ID, id_trascrittore, id_acquisitore;
@@ -88,7 +94,7 @@ public class OperaImpl implements Opera{
 
 	@Override
 	public void setAnno(String aaaa) {
-		this.anno = anno;
+		this.anno = aaaa;
 	}
 
 	@Override

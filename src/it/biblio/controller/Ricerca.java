@@ -20,7 +20,7 @@ import it.biblio.framework.result.TemplateResult;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
- * Servlet che gestisce le richieste di selezione delle entità
+ * Servlet che gestisce le richieste di selezione delle entit&agrave
  * presenti nella base di dati.
  * 
  * @author Marco D'Ettorre
@@ -50,9 +50,9 @@ public class Ricerca extends BibliotecaBaseController {
 	/**
 	 * Funzione di ricerca delle opere che restituisce un oggetto JSON.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_ricerca_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException{
@@ -90,10 +90,11 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 	
 	/**
+	 * Funzione di ricerca degli utenti che restituisce un oggetto JSON.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_ricerca_utenti_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException{

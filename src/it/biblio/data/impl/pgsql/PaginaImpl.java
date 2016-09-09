@@ -1,4 +1,4 @@
-package it.biblio.data.impl;
+package it.biblio.data.impl.pgsql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -6,14 +6,13 @@ import java.sql.Timestamp;
 
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
-import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
 
 /**
  * Implementazionde del Plain Old Java Object relativo all'interfaccia Pagina
  *  
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 public class PaginaImpl implements Pagina {
 

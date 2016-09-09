@@ -1,4 +1,4 @@
-package it.biblio.data.impl;
+package it.biblio.data.impl.pgsql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +11,8 @@ import it.biblio.framework.data.DataLayerException;
 /**
 * Implementazionde del Plain Old Java Object relativo all'interfaccia Privilegi
 *  
-* @author francesco
-*
+* @author Marco D'Ettorre
+* @author Francesco Proietti
 */
 public class PrivilegiImpl implements Privilegi {
 

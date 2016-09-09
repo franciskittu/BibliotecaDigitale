@@ -1,4 +1,4 @@
-package it.biblio.data.impl;
+package it.biblio.data.impl.pgsql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,8 +8,8 @@ import it.biblio.data.model.Ruolo;
 /**
  * Implementazionde del Plain Old Java Object relativo all'interfaccia Ruolo
  *  
- * @author francesco
- *
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
  */
 public class RuoloImpl implements Ruolo {
 

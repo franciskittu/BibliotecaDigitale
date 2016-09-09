@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
-import it.biblio.data.impl.BibliotecaDataLayerPgsqlImpl;
+import it.biblio.data.impl.pgsql.BibliotecaDataLayerPgsqlImpl;
 import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Utente;

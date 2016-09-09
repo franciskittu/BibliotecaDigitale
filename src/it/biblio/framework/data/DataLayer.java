@@ -1,10 +1,10 @@
 package it.biblio.framework.data;
 
 /**
- * Fornire le funzioni di chiusura da usare 
- * per chiduere il DB. Viene gestita anche la 
+ * Fornisce le funzioni di chiusura da usare 
+ * per terminare le connessioni al DB. Viene gestita anche la 
  * chiusura automatica in blocchi try-with-resources
- * grazie all'ereditarietà di AutoCloseable. * 
+ * grazie all'ereditarietà da AutoCloseable.
  * 
  * @author Marco D'Ettorre
  * @author Francesco Proietti

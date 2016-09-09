@@ -1,4 +1,4 @@
-package it.biblio.data.impl;
+package it.biblio.data.impl.pgsql;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -8,6 +8,12 @@ import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
 
+/**
+ * 
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 public class CommentaImpl implements Commenta {
 
 	private long progressivo, id_utente, id_trascrizione;

@@ -31,57 +31,88 @@ function listaUtenti(){
 }
 
 function gestioneRuoloUtente(data){
+	console.log(ruolo.ruoli_db);
 	var j = 0;
+	var idRuoloUtente=0;
 	var tab = document.getElementById('gestioneRuolo');
 	var tbody = tab.tBodies[0];
-	
+	var tr = tbody.getElementsByTagName('TR');
+	//se la tabella è piena viene azzerata
+	if (tr.length>0){
+		while (tr[0]){
+			tr[0].remove();
+		}	
+	}
 	var id_utente = data.getElementsByTagName('TD')[1].textContent;
+	// scorro l'array dei ruoli
 	for (var i = 0; i<ruolo.ruoli.length; i++){
+		var numeroUtenteArray=0;
 		var riga = document.createElement('TR');
-		if (ruolo.ruoli[i].nome_ruolo == ""){
-			ruolo.ruoli[i].nome_ruolo = "Utente base";
-		}
+		
 		if (ruolo.utenti[i].id == id_utente){
+			numeroUtenteArray = i;
 			document.getElementById("nomeUtenteRuolo").innerHTML= ruolo.utenti[i].nome + " " + ruolo.utenti[i].cognome ;
-			for (j in ruolo.ruoli[i]){	
-				var colonna = document.createElement('TD');
-				colonna.textContent = ruolo.ruoli[i][j];
-				riga.appendChild(colonna);	
+			//scorro l'oggetto i che contiene informazioni sui ruoli e stampo nella tabella 
+			//il ruolo dell'utente selezionato con nome descrizione e id 
+			if (ruolo.ruoli[i].nome_ruolo == ""){
+				ruolo.ruoli[i].nome_ruolo = "Utente base";
+			}	
+			idRuoloUtente=ruolo.ruoli[i].id_ruolo;
+			
 			}
-			var td = document.createElement('TD');
-			var applica = document.createElement('button');
-			applica.className="btn btn-lg";
-			applica.disabled = "disabled";
-			applica.id=id_utente;
-			var testo=document.createTextNode("Applica");
-			applica.appendChild(testo);
-			td.appendChild(applica);
-			riga.appendChild(td);
 		}
-		else {	
-			for (j in ruolo.ruoli_db[i]){
-				var colonna = document.createElement('TD');
-				colonna.textContent = ruolo.ruoli_db[i][j];
-				riga.appendChild(colonna);	
+		//stampo i restanti ruoli
+		for (var i = 0; i<ruolo.ruoli_db.length; i++) {
+			var riga = document.createElement('TR');
+			if(idRuoloUtente == ruolo.ruoli_db[i].id_ruolo){
+				for (j in ruolo.ruoli[i]){	
+					var colonna = document.createElement('TD');
+					colonna.textContent = ruolo.ruoli_db[i][j];
+					riga.appendChild(colonna);	
+				}
+				var td = document.createElement('TD');
+				var applica = document.createElement('button');
+				applica.className="btn btn-lg";
+				applica.disabled = "disabled";
+				applica.id=id_utente;
+				var testo=document.createTextNode("Applica");
+				applica.appendChild(testo);
+				td.appendChild(applica);
+				riga.appendChild(td);
+				riga.className = "riga_tabella";
+				tbody.appendChild(riga);
 			}
+			else{
+				for (j in ruolo.ruoli_db[i]){
+					var colonna = document.createElement('TD');
+					colonna.textContent = ruolo.ruoli_db[i][j];
+					riga.appendChild(colonna);	
+				}
 			var td = document.createElement('TD');
 			var applica = document.createElement('button');
-			applica.className="btn btn-success btn-lg";
+			applica.className="btn btn-primary btn-lg";
 			applica.id = ruolo.ruoli_db[i].nome_ruolo; 
 			applica.onclick = function(){
 				self = this;
-				console.log(self.id);
 				$.ajax({
 			         url: 'Aggiorna',
 			         type: 'GET',
 			         data: 'tipoAggiornamento=aggiorna_privilegi_utente&nome_ruolo='+self.id+'&id_utente='+id_utente,
-			             success: function(data) {
-			            	 if(eval(data)){
-			            		 console.log(data);
-			            		 
+			             success: function(response) {
+			            	 if(eval(response)){
+			            		 for (var i=0; i <ruolo.ruoli_db.length; i++){
+			            			 if (ruolo.ruoli_db[i].nome_ruolo == self.id){
+			            				 ruolo.ruoli[numeroUtenteArray].id_ruolo = ruolo.ruoli_db[i].id_ruolo;
+			            				 ruolo.ruoli[numeroUtenteArray].nome_ruolo = ruolo.ruoli_db[i].nome_ruolo;
+			            				 ruolo.ruoli[numeroUtenteArray].descrizione_ruolo = ruolo.ruoli_db[i].descrizione_ruolo;
+			            			 }
+			            		 }
+			            		 gestioneRuoloUtente(data);
+
+			            		 listaUtenti();
 			            	 }
 			            	 else 
-			            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
+			            		 alert("");
 			             }
 				});
 			}
@@ -89,10 +120,12 @@ function gestioneRuoloUtente(data){
 			applica.appendChild(testo);
 			td.appendChild(applica);
 			riga.appendChild(td);
+			riga.className = "riga_tabella";
+			tbody.appendChild(riga);
+			}
 		}
-		riga.className = "riga_tabella";
-		tbody.appendChild(riga);	
-	}	 
+		
+				 
 	
 	document.getElementById("gestioneRuoloUtenti").style.visible="yes";
 	document.getElementById("gestioneRuoloUtenti").style.display="block";	

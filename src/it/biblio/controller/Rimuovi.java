@@ -14,6 +14,7 @@ import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
+import it.biblio.framework.utility.ControllerException;
 
 /**
  * Servlet che gestisce le richieste di rimozione dei record delle entità
@@ -87,11 +88,43 @@ public class Rimuovi extends BibliotecaBaseController {
 	}
 	
 	/**
-	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * Gestisce la rimozione di una pagina nel sistema.
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 * @throws ControllerException se occorre un errore nella rimozione della pagina
+	 */
+	private void action_rimuovi_pagina(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, ControllerException{
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			Boolean successo = true;
+			Pagina P = datalayer.getPagina(Long.parseLong(request.getParameter("id_pagina")));
+			if(P == null){
+				throw new ControllerException("Attenzione! La pagina che si vuol rimuovere non è presente nella base di dati!!!");
+			}
+			if(datalayer.rimuoviPagina(P) == null){
+				successo = false;
+			}
+			
+			request.setAttribute("risultato", successo.toString());
+			request.setAttribute("outline_tpl", "");
+			
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", request, response);
+		}catch(Exception ex){
+			request.setAttribute("message", ex.getMessage());
+			action_error_ajax(request, response);
+		}
+	}
+			
+	/**
+	 * /**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException se occore un errore non gestito dall'applicazione.
 	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
@@ -100,8 +133,10 @@ public class Rimuovi extends BibliotecaBaseController {
 				action_rimuovi_opera(request,response);
 			}else if(request.getParameter("id_utente") != null){
 				action_rimuovi_utente(request,response);
+			}else if(request.getParameter("id_pagina") != null){
+				action_rimuovi_pagina(request,response);
 			}
-		}catch(TemplateManagerException ex){
+		}catch(TemplateManagerException | ControllerException ex){
 			request.setAttribute("exception", ex);
 			action_error(request, response);
 		}

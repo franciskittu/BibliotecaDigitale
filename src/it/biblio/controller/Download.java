@@ -16,8 +16,8 @@ import it.biblio.framework.result.StreamResult;
 import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
-@WebServlet("/OpenSeaDragon")
-public class OpenSeaDragon extends BibliotecaBaseController {
+@WebServlet("/Download")
+public class Download extends BibliotecaBaseController {
 
 	private static final long serialVersionUID = -3999174379443972231L;
 
@@ -27,13 +27,13 @@ public class OpenSeaDragon extends BibliotecaBaseController {
 		try {
 			sr.activate(new File(getServletContext().getRealPath(File.separator)+File.separator+"template/img/error_osd.jpeg"), request, response);
 		} catch (IOException e) {
-			request.setAttribute("message", "Errore grave nel reperire le immagini delle opere");
+			request.setAttribute("message", "Errore grave nel reperire le immagini delle opere:"+e.getMessage());
 			(new FailureResult(getServletContext())).activate((String) request.getAttribute("message"), request,
 					response);
 		}
 	}
 	
-	private void action_download(HttpServletRequest request, HttpServletResponse response, long imgid)
+	private void action_download_openseadragon(HttpServletRequest request, HttpServletResponse response, long imgid)
 			throws IOException, DataLayerException, ControllerException {
 		StreamResult sr = new StreamResult(getServletContext());
 
@@ -51,15 +51,9 @@ public class OpenSeaDragon extends BibliotecaBaseController {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try{
 			long imgid = SecurityLayer.checkNumeric(request.getParameter("imgid"));
-			action_download(request,response,imgid);
-		}catch (NumberFormatException ex) {
+			action_download_openseadragon(request,response,imgid);
+		}catch (IOException | ControllerException | DataLayerException | NumberFormatException ex) {
             action_error(request, response);
-		} catch (IOException e) {
-			action_error(request,response);
-		} catch (DataLayerException e) {
-			action_error(request,response);
-		} catch (ControllerException e) {
-			action_error(request,response);
 		}
 		
 	}

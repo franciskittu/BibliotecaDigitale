@@ -38,9 +38,27 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response
-	 * @throws ServletException
+	 * @throws ServletException se occorre un errore non gestito
 	 */
 	protected abstract void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException;
+	
+	
+	/**
+	 * Restituisce una stringa di errore da gestire nella funzione success della chiamata AJAX lato client.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
+	protected void action_error_ajax(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException {
+		String messaggio = (String) request.getAttribute("message");
+		
+		request.setAttribute("risultato", messaggio);
+		request.setAttribute("outline_tpl", "");
+		
+		TemplateResult tr = new TemplateResult(getServletContext());
+		tr.activate("controlloAjax.ftl.json", request, response);
+	}
 	
 	/**
 	 * Richiama la pagina di errore specificando li problema riscontrato.

@@ -1,5 +1,11 @@
 package it.biblio.controller;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -265,6 +271,31 @@ public class Ricerca extends BibliotecaBaseController {
 			
 			long id_opera = Long.parseLong(request.getParameter("id_opera"));
 			List<Pagina> pagine = datalayer.getPagineOpera(id_opera);
+			//leggi il file trascrizione in caso di utente trascrittore o revisore.
+			for(Pagina p : pagine){
+				if(! p.getPathTrascrizione().equals("") 
+						&& ( (Boolean)request.getAttribute("trascrittore") == true || (Boolean) request.getAttribute("revisore_trascrizioni") == true )){
+					
+					URL path = new URL(p.getPathTrascrizione());
+					InputStream is = path.openStream();
+					BufferedReader br=new BufferedReader(new InputStreamReader(is));
+					int i;
+					String testo = "";
+					do{
+						i = br.read();
+						testo+= (char)i;
+					}while(i != -1);
+					is.close();
+					if((Boolean) request.getAttribute("revisore_trascrizioni")==true){
+						p.setPathTrascrizione(testo);
+					}else{
+						int beginIndex = testo.indexOf("<body><p>");
+						int endIndex = testo.indexOf("</p></body>");
+						p.setPathTrascrizione(testo.substring(beginIndex, endIndex));
+					}
+					
+				}
+			}
 			request.setAttribute("pagine", pagine);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
@@ -274,6 +305,12 @@ public class Ricerca extends BibliotecaBaseController {
 		} catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
+		} catch (MalformedURLException e) {
+			request.setAttribute("message", "Il path è sbagliato, probabilmente devi aggiustare i path nel DB con quelli del tuo sistema.");
+			action_error(request,response);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 	@SuppressWarnings("unused")

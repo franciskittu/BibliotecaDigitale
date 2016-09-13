@@ -1,5 +1,7 @@
 var vettore_ausiliario=[];
 var ruolo = [];
+var id_opera;
+var pagine_opera = [];
 
 /*VISTA DEFAULT PER L'UTENTE ADMIN*/
 function vistaDefaultAdmin(){
@@ -15,6 +17,11 @@ function listaUtenti(){
 		        type: 'GET',
 		        data: 'tipoRicerca=utenti',
 		            success: function(data) {
+			            	for(var i = 0 ; i<data.ruoli.length; i++){
+			            		if (data.ruoli[i].nome_ruolo == ""){
+			            			data.ruoli[i].nome_ruolo = "Utente base";
+			            		}
+			            	}	
 		            		ruolo = data;
 	    	 				sezione=4;
 	    	 				admin= true;
@@ -31,7 +38,6 @@ function listaUtenti(){
 }
 
 function gestioneRuoloUtente(data){
-	console.log(ruolo.ruoli_db);
 	var j = 0;
 	var idRuoloUtente=0;
 	var tab = document.getElementById('gestioneRuolo');
@@ -54,9 +60,7 @@ function gestioneRuoloUtente(data){
 			document.getElementById("nomeUtenteRuolo").innerHTML= ruolo.utenti[i].nome + " " + ruolo.utenti[i].cognome ;
 			//scorro l'oggetto i che contiene informazioni sui ruoli e stampo nella tabella 
 			//il ruolo dell'utente selezionato con nome descrizione e id 
-			if (ruolo.ruoli[i].nome_ruolo == ""){
-				ruolo.ruoli[i].nome_ruolo = "Utente base";
-			}	
+				
 			idRuoloUtente=ruolo.ruoli[i].id_ruolo;
 			
 			}
@@ -137,8 +141,6 @@ function inserisciOpera(){
 }
 
 function listaPagineOpera(){
-        admin= true;
-        init();
         document.getElementById("pagine_opera").style.visible="yes";
         document.getElementById("pagine_opera").style.display="block";
         window.location.hash='#pagine_opera';
@@ -193,12 +195,6 @@ function errore (){
 		document.getElementById("erroreRicerca").style.visible="visible";
 		document.getElementById("erroreRicerca").style.display="block";
 		window.location.hash='#erroreRicerca';
-}
-function trascrizionePagina(){
-		document.getElementById("openseadragon").style.display="block";
-		document.getElementById("openseadragon").style.visibility="visible";
-		document.getElementById("editortei").style.display="block";
-		document.getElementById("editortei").style.visibility="visible";
 }
 
 
@@ -291,13 +287,13 @@ function controllaNumeroPagina(obj){
     data : {numeroAJAX:obj.value, operaAJAX:id },
     //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
         success: function(data) {
+        			console.log(data);
                     if (eval(data)){
-                        document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Pagina gia' presente, scegline un'altra</li></ul></p>";
+                    	$("#status").remove();
+                        document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                     }
                     else {
-                        $("#status").remove();
-                        document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
-                        
+                    	document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Pagina gia' presente, scegline un'altra</li></ul></p>";
                     }
         }
     });
@@ -345,15 +341,18 @@ function listaOpereTrascrittore(){
 }
 
 function invia_trascrizione(obj){
-	console.log(document.getElementById("editor_tei").id_della_pagina.value);
+	var testo = document.getElementById("testoTrascrizione").value;
+	console.log(document.getElementById("editor_tei").id_della_pagina.value); 
+	console.log(testo);
+	debugger;
 	$.ajax({
 	    url: 'Trascrivi',
 	    type: 'GET',
-	    data : "id_pagina="+obj.id,//anche tutte le input della form 
+	    data : "id_pagina="+obj.id+"&testo="+testo,//anche tutte le input della form 
 	    //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
 	        success: function(data) {
 	                    if (eval(data)){
-	                        alert("ok");
+	                        alert("Trascrizione salvata correttamente");
 	                    }
 	                    else {
 	                        $("#status").remove();
@@ -362,4 +361,88 @@ function invia_trascrizione(obj){
 	                    }
 	        }
 	    });
+}
+
+function trascrizionePagina(idOpera){
+	//id_opera = idOpera;
+	$.ajax({
+		url: 'Ricerca',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=pagine_opera&id_opera='+idOpera,
+        success: function(data) {
+        	console.log(data);
+        	pagine_opera = data;
+            if (data.length > 0){
+	            	if (data[0].trascrizione != ''){
+	            		document.getElementById("testoTrascrizione").innerHTML = data[0].trascrizione;
+	            	}
+	            	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+	            	openseadragon(data[0].id);
+	            	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
+	            	document.getElementById("openseadragon").style.display="block";
+	            	document.getElementById("openseadragon").style.visibility="visible";
+            	
+            }
+            else {
+                alert("Non ci sono pagine da trascrivere!!");
+                
+            }
+        }
+        
+	});
+}
+
+function gestioneTrascrizione(numero_pagina_selezionata){
+	for (var i = 0 ; i<pagine_opera.length; i++){
+		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
+			if (pagine_opera[i].trascrizione != ''){
+				document.getElementById("testoTrascrizione").innerHTML = pagine_opera[i].trascrizione;
+			}
+			document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
+			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;
+			document.getElementById("openseadragon1").remove();
+			var div_creato = document.createElement("DIV");
+			div_creato.setAttribute("style","width: 50%; height: 500px; float:left;");
+			div_creato.id = "openseadragon1";	
+			var body = document.getElementById("viewer_img");
+			body.appendChild(div_creato);
+			openseadragon(pagine_opera[i].id);
+		}
+	}
+}
+
+function stampaErrore(data){
+	document.innerHTML(data);
+}
+
+//OPENSEADRAGON 
+function openseadragon(idImmagine){
+	var viewer = OpenSeadragon({
+	    id: "openseadragon1",
+	    prefixUrl: "template/js/openseadragon/images/",
+	    tileSources: {
+	        type: "image",
+	        url: "Download?imgid="+idImmagine
+	    }
+	});
+}
+function scegliPagina(){
+	document.getElementById("inserimentoNumeroPagina").addEventListener("keyup", function(event) {
+	event.preventDefault();
+	if (event.keyCode == 13) {
+		var pagina_selezionata = document.getElementById('inserimentoNumeroPagina').value;
+		gestioneTrascrizione(pagina_selezionata);
+	}
+	});
+}
+
+function previous(){
+	var pagina = parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)-1;
+	gestioneTrascrizione(pagina);
+}
+
+function next(){
+	var pagina = parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)+1;
+	gestioneTrascrizione(pagina);
 }

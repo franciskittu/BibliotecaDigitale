@@ -3,7 +3,7 @@
 			= 1 VISTA LISTA OPERE 
 			= 2 VISTA LISTA OPERE DA PUBBLICARE (ACQUISIZIONE)
 			= 3 VISTA PAGINE DELL'OPERA
-			= 4 
+			= 4 VISTA UTENTI 
 			= 5 TRASCRITTORE
 			= 6 VISTA PAGINA TRASCRITTORE
 			= 7 INSERISCI OPERA
@@ -18,7 +18,7 @@ function scelta_sezione(caso){
 			sezioni[i].style.display="none";
 		}
 		switch(caso) {
-	    case 1:
+	    case 1:	 
 	    	sezione=1;
 	    	listaOpereAdmin();
 	        break;
@@ -27,9 +27,11 @@ function scelta_sezione(caso){
 	    	opereInPubblicazioneAcquisizioni();
 	        break;
 	    case 3: 
+	    	sezione = 3;
 	    	listaPagineOpera();
 	    	break;
 	    case 4: 
+	    	sezione = 4;
 	    	listaUtenti();
 	    	break;
 	    case 5:
@@ -38,7 +40,7 @@ function scelta_sezione(caso){
 	    	break;
 	    case 6:
 	    	sezione = 6;
-	    	trascrizionePagina();
+	    	
 	    	break;
 	    case 7:
 	    	sezione = 7;

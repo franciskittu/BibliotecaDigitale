@@ -3,6 +3,10 @@
  * Copyright 2013-2016 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
+ 
+.navBarLabel{
+	color:white;
+} 
  .navbar-brand > img{
  	height: 160%;
  	margin-top: -4px;

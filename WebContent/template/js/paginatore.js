@@ -25,6 +25,7 @@ function paginatore(data){
 	 	 		for(j=i; j < i+3 && j < data.length; j++){
 	 		 		 temp.push({riga_tabella:cont++, numero_pagina: data[j].numero_pagina, opera: data[j].opera});                             
 	 		 	}
+	 	 		break;
 	 		case 4:
 	 	 		for(j=i; j < i+3 && j < data.length; j++){
 	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, nomeutente: data[j].nomeutente, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email,ruolo : vettore_ausiliario[j].nome_ruolo});
@@ -32,13 +33,13 @@ function paginatore(data){
 	 		 	break;
 	 		case 5:
 	 			for(j=i; j < i+3 && j < data.length; j++){
-	 		 		 temp.push({riga_tabella:cont++,id:data.utenti[j].id, titolo: data.utenti[j].titolo, descrizione: data.utenti[j].descrizione, numero_pagine: data.utenti[j].numero_pagine,ruolo: data.ruoli[j].ruolo});
+	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
 	 		 	}
 	 			break;
 	 	 }
 	 	 pages[k++] = temp;
 	 	 i = i+3;
-	}
+	}	
 }
 
 //ritorna i dati di una pagina
@@ -75,23 +76,29 @@ function makeRow(datarow) {
 		switch (sezione){
 			case 1:
 				row.onclick = function(){
-					self = this;
+					self=this;
+					var id = self.id;
+					id = id.slice(4,id.length);	
 					$.ajax({
-				        url: 'Rimuovi',
-				        type: 'GET',
-				        data: 'id_opera='+self.id,
-				            success: function(data) {
-				            	sezione = 3;
-				            	if (data==""){
-				        			errore();
-				        		}
-				            	else {
-				            		paginatore(data);
-				            		scelta_sezione(3);
-				            	}
-				            }
+				         url: 'Ricerca',
+				         dataType: 'json',
+				         type: 'GET',
+				         data: 'tipoRicerca=pagine_opera&id_opera='+id,
+				             success: function(data) {
+				            	 if(data.length==0){
+				            		alert("Non ci sono pagine per quest'opera!");
+				            	 }
+				            	 else{
+				            		 console.log(data);
+				            		 admin= true;
+				            		 paginatore(data);
+				                     init();
+				            		 scelta_sezione(3);
+				            	 }
+				             }
 					});
 				}
+				
 				var rimuovi = document.createElement('button');
 				rimuovi.className="btn btn-danger btn-lg";
 				rimuovi.id=datarow.id;
@@ -105,6 +112,7 @@ function makeRow(datarow) {
 				         data: 'id_opera='+this.id,
 				             success: function(data) {
 				            	 if(eval(data)){
+				            		 debugger;
 				            		 for(i=0; i< pages.length; i++){
 				            			 for(j=0; j<pages[i].length; j++){
 					            			 if(pages[i][j].id==self.id){
@@ -113,6 +121,8 @@ function makeRow(datarow) {
 				            			 }
 				            		 }
 				            		 document.getElementById("riga"+self.id).remove();
+
+
 				            	 }
 				            	 else 
 				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
@@ -164,7 +174,22 @@ function makeRow(datarow) {
 				row.appendChild(cell1);
 				break;
 			case 3:
-				alert("caso 3");
+				var rimuovi = document.createElement('button');
+				rimuovi.className="btn btn-danger btn-lg";
+				rimuovi.id=datarow.id;
+				var testo=document.createTextNode("Rimuovi");
+				rimuovi.appendChild(testo);
+				rimuovi.onclick= function(){
+					self=this;
+					$.ajax({
+				         url: 'Rimuovi',
+				         type: 'GET',
+				         data: 'id_pagina='+self.id,
+				             success: function(data) {
+				            	 
+				             }
+					});
+				};
 				break;
 			case 4: 
 				var rimuovi = document.createElement('button');
@@ -215,11 +240,13 @@ function makeRow(datarow) {
 			         type: 'GET',
 			         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 			             success: function(data) {
-			            	 if(data.length==0){
-			            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
+			            	 if(data.length > 0){
+			            		 	scelta_sezione(6)
+				         	    	trascrizionePagina(id);
+				         	    	
 			            	 }
 			            	 else 
-			            		 scelta_sezione(6);
+				            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
 			             }
 				});
 			};
@@ -239,7 +266,7 @@ function updateTable(id,data,hascaption) {
 	if(typeof(hascaption)=='undefined') hascaption = true;
 	//numero di righe da saltare all'inizio della tabella
 	//number of rows skipped from the table head
-	var skip = (hascaption)?1:0; 
+	var skip = 0; 
 
 	//preleviamo l'elemento DOM per la tabella
 	//get the DOM table element
@@ -249,7 +276,7 @@ function updateTable(id,data,hascaption) {
 	//get a reference to the table body
 	var tbody = tab.tBodies[0];
 		
-	//per evitare sfarfallii, sovrascriviamo le righe gi� presenti, 
+	//per evitare sfarfallii, sovrascriviamo le righe già presenti, 
 	//quindi ne aggiungiamo altre o cancelliamo quelle inutili solo se necessario
 	//to avoid flickering, overwrite the displayed rows
 	//and add/remove rows only if strictly needed
@@ -262,7 +289,7 @@ function updateTable(id,data,hascaption) {
 	//create a <tr> representing the data row
 		var newrow = makeRow(data[i]);		
 		if (i<oldrows) {
-			//se esiste gi� un' i-esima riga la sovrascriviamo con i nuovi dati
+			//se esiste già un' i-esima riga la sovrascriviamo con i nuovi dati
 			//if the i-th row already exists, overwrite it with the new data
 			tbody.replaceChild(newrow,tbody.rows[i+skip]);
 		} else {
@@ -271,7 +298,7 @@ function updateTable(id,data,hascaption) {
 			tbody.appendChild(newrow);
 		}
 	}
-	//infine, cancelliamo tutte le righe che non ci servono pi�
+	//infine, cancelliamo tutte le righe che non ci servono più
 	//finally, delete all the unised extra rows
 	for(i=data.length; i<oldrows; ++i) {
 		tbody.removeChild(tbody.rows[data.length+skip]);
@@ -305,11 +332,9 @@ function updatePager(id,page) {
 	var paging = document.getElementById(id);
 	if (!paging) return;
 	var i;
-	
 	//svuotiamo l'elemento
 	//empty the element
 	while(paging.hasChildNodes()) paging.removeChild(paging.firstChild);
-
 	//inseriamo nell'elemento i link di paginazione alle pagine che precedono quella corrente
 	//insert the pagination links for the previous pages
 	for(i=1; i<page; ++i) {
@@ -345,11 +370,12 @@ function switchPage(page) {
 		case 2:
 			updateTable("tableopereacquisizione",data);
 			updatePager("paging1",page);
-			//updateTable("tableOpereTrascrizione",data);
-			//updatePager("paging2",page);
+			updateTable("tableOpereTrascrizione",data);
+			updatePager("paging2",page);
 			break;
 		case 3: 
-			
+			updateTable("listapagine",data);
+			updatePager("paging3",page);
 			break;
 		case 4:
 			updateTable("tableutenti",data);

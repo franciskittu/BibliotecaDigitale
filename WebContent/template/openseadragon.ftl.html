@@ -1,14 +1,44 @@
 <section id="openseadragon">
-		<div id="openseadragon1" style="width: 800px; height: 600px;"></div>
-		<script type="text/javascript">
-		    var viewer = OpenSeadragon({
-		        id: "openseadragon1",
-		        prefixUrl: "template/js/openseadragon/images/",
-		        tileSources: {
-		            type: "image",
-		            //url:  "${url!"template/img/download.jpg"}"
-		            url: "OpenSeaDragon?imgid=15"
-		        }
-		    });
-		</script>
+    
+	<div class="container">
+		<div class="row">
+	                <div class="col-lg-12 text-center">
+	                    <hr class="star-primary">
+	                    <h2>SCRIVI LA PAGINA</h2>
+	                    <h3>Trascrivi la pagina n.<div id="numeroPaginaDaTrascrivere"></div></h3>
+	                    <hr class="star-primary">
+	                </div>
+	     </div>
+	     <div class="row">
+		     <div class="tab-pane" id="tab2">
+			     <center>
+			        <a style="width: 80px;" onclick="previous()" class="btn btn-primary btnPrevious" >Previous</a>
+			        <input onclick="scegliPagina()" id="inserimentoNumeroPagina" type="text" size="3" >
+			        <a style="width: 80px;" onclick="next()" class="btn btn-primary btnNext" >Next</a>
+			    </center>
+		    </div>
+	    </div>
+	    <div id=viewer_img>
+		<div id="openseadragon1" style="width: 50%; height: 500px; float:left;"></div>
+		</div>
+        <div class="col-lg-8 col-lg-offset-2" style="width: 32%; float:right;">
+            <form id="editor_tei" novalidate>
+                <div class="row control-group">
+                    <div class="form-group col-xs-12 floating-label-form-group controls">
+                        <label>Testo</label>
+                        <textarea rows="15" cols="40" class="form-control" placeholder="Testo" id="testoTrascrizione" name="testo"></textarea>
+                    </div>
+                </div>
+                 <br>
+                <input type="hidden" name="id_della_pagina">
+            </form>
+            <div class="row">
+                    <div class="form-group col-xs-12">
+                        <button onclick="invia_trascrizione()" class="btn btn-success btn-lg">Invia</button>
+                    </div>
+            </div>
+        </div>
+            
+     </div>
+
 </section>

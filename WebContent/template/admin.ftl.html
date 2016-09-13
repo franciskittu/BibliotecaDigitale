@@ -6,7 +6,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="#page-top"><img src="template/img/univaq.jpg"/></a>
+                <a class="navbar-brand" onclick="scelta_sezione();" href="#page-top"><img src="template/img/univaq.jpg"/></a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
@@ -31,7 +31,7 @@
                 
                 <form style="margin-top: 10px;" action="Logout" class="form-inline">
                 	<div class="form-group">
-                	<label class="label-nav">Ciao ${nomeutente!"PICCHIO"}</label>
+                	<label class="label-nav"><a class="navBarLabel" onclick="scelta_sezione();" href="#">Ciao ${nomeutente!"UTENTE"}</a></label>
                 	</div>
                 	<input class="btn btn-success" type="submit" value="Logout" />
                 </form>
@@ -65,6 +65,7 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
+                	<hr class="star-primary">
                     <h2>LISTA DELLE OPERE</h2>
                     <hr class="star-primary">
                 </div>
@@ -94,9 +95,7 @@
 							    </tr>
 							  </thead>
 							  <tbody>
-								  	<tr class="riga_tabella_admin" >
-								      	
-								    </tr>
+								  	
 							  </tbody>
 							</table>
   					
@@ -129,19 +128,13 @@
 							  <thead>
 							    <tr class="tabella">
 							      <th>#</th>
-							      <th>ID</th>
+							      <th>Numero pagina</th>
 							      <th>Titolo opera</th>
-							      <th>Descrizione</th>
-							      <th>Numero pagine</th>
-							      <th>Editore</th>
-							      <th>Anno</th>
 							      <th>Rimuovi</th>
 							    </tr>
 							  </thead>
 							  <tbody>
-								  	<tr class="riga_tabella_admin" >
-								      	
-								    </tr>
+								  	
 							  </tbody>
 							</table>
   					
@@ -183,9 +176,7 @@
 							    </tr>
 							  </thead>
 							  <tbody>
-								  	<tr class="riga_tabella_admin" >
-								      	
-								    </tr>
+								  	
 							  </tbody>
 							</table>
   					
@@ -199,7 +190,7 @@
                 </div>
             </div>
     <p>
-    <span id="paging1">
+    <span id="paging2">
       <span class="pagerCurrent">1</span>
       <a class="pagerLink" href="?page=2">2</a>
       <a class="pagerLink" href="?page=3">3</a>
@@ -221,9 +212,7 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                    <tr class="riga_tabella_admin" >
-                                        
-                                    </tr>
+                                    
                               </tbody>
                             </table>
                     
@@ -267,9 +256,7 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                    <tr class="riga_tabella_admin" >
-                                        
-                                    </tr>
+                                    
                               </tbody>
                             </table>
                     
@@ -310,6 +297,7 @@
 	<div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
+                	<hr class="star-primary">
                     <h2>INSERISCI UN' OPERA</h2>
                     <hr class="star-primary">
                 </div>

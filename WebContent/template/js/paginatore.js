@@ -273,7 +273,10 @@ function makeRow(datarow) {
 			            	 }
 			            	 else 
 				            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
-			             }
+			             },
+						error: function(data){
+							console.log(data);
+						}
 				});
 			};
 	}

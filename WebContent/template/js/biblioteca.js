@@ -147,6 +147,8 @@ function listaPagineOpera(){
         document.getElementById("pagine_opera").style.visible="yes";
         document.getElementById("pagine_opera").style.display="block";
         window.location.hash='#pagine_opera';
+        paginatore(vettore_ausiliario);
+        init();
 		
 }
 
@@ -308,7 +310,6 @@ function controllausername(obj){
             
 function controllaNumeroPagina(obj){
 	var id = document.getElementById("opera").value;
-	console.log(id);
     $.ajax({
     url: 'UploadImmagine',
     type: 'POST',

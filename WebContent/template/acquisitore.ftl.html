@@ -6,6 +6,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
+                <a class="navbar-brand" href="#page-top"><img src="template/img/univaq.jpg"/></a>
                 <!--<a class="navbar-brand" href="#page-top">Start Bootstrap</a>-->
             </div>
 
@@ -23,9 +24,9 @@
                     </li>   
                 </ul>
                 
-                <form action="Logout" class="form-inline">
+                <form style="margin-top: 10px;" action="Logout" class="form-inline">
                 	<div class="form-group">
-                	<label class="label-nav">Ciao ${nomeutente!"PICCHIO"}</label>
+                	<label class="label-nav"><a class="navBarLabel"  href="#page-top">Ciao ${nomeutente!"UTENTE"}</a></label>
                 	</div>
                 	<input class="btn btn-success" type="submit" value="Logout" />
                 </form>

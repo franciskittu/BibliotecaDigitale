@@ -23,7 +23,7 @@ function paginatore(data){
 	 	 		break;
 	 	 	case 3:
 	 	 		for(j=i; j < i+3 && j < data.length; j++){
-	 		 		 temp.push({riga_tabella:cont++, numero_pagina: data[j].numero_pagina, opera: data[j].opera});                             
+	 		 		 temp.push({riga_tabella:cont++, id:data[j].id, numero_pagina: data[j].numero, immagine_validata: data[j].immagine_validata});                             
 	 		 	}
 	 	 		break;
 	 		case 4:
@@ -63,9 +63,13 @@ function makeRow(datarow) {
 	row.className = "riga_tabella";
 	var i;
 	var cont=0;
+	var titolo_opera=[];
 	//e inseriamo tante celle quanti sono gli elementi della datarow
 	//and add as many cells as the datarow elements are
-	for(i in datarow) {
+	for(i in datarow) {	
+		if (i == "titolo"){
+			titolo_opera[i]=datarow[i];
+		}
 		var cell = document.createElement('td');
 		cell.textContent = datarow[i];
 		row.appendChild(cell);
@@ -97,10 +101,11 @@ function makeRow(datarow) {
 				            		alert("Non ci sono pagine per quest'opera!");
 				            	 }
 				            	 else{
+				            		 document.getElementById("titoloListaPagineOpera").innerHTML=titolo_opera.titolo;
 				            		 admin= true;
-				            		 paginatore(data);
-				                     init();
+				            		 vettore_ausiliario = data;
 				            		 scelta_sezione(3);
+				            		 
 				            	 }
 				             }
 					});
@@ -206,10 +211,11 @@ function makeRow(datarow) {
 				         type: 'GET',
 				         data: 'id_pagina='+self.id,
 				             success: function(data) {
-				            	 
+				            	 alert("Pagina rimossa correttamente");
 				             }
 					});
 				};
+				row.appendChild(rimuovi);
 				break;
 			case 4: 
 				var rimuovi = document.createElement('button');

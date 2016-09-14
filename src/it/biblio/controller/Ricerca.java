@@ -21,6 +21,7 @@ import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.SplitSlashesFmkExt;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
+import it.biblio.framework.utility.ParserTEI;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
@@ -284,9 +285,11 @@ public class Ricerca extends BibliotecaBaseController {
 					if((Boolean) request.getAttribute("revisore_trascrizioni")==true){
 						p.setPathTrascrizione(testo);
 					}else{
-						int beginIndex = testo.indexOf("<body><p>");
-						int endIndex = testo.indexOf("</p></body>");
-						p.setPathTrascrizione(testo.substring(beginIndex, endIndex));
+						/*int beginIndex = testo.indexOf("<body>")-6;
+						int endIndex = testo.indexOf("</body>");
+						p.setPathTrascrizione(testo.substring(beginIndex, endIndex));*/
+						testo = ParserTEI.tei_to_txt(testo);
+						p.setPathTrascrizione(testo);
 					}
 					
 				}

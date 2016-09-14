@@ -14,11 +14,14 @@ import javax.servlet.http.HttpSession;
 
 public final class SecurityLayer {
 
-    //--------- SESSION SECURITY ------------    
-     //questa funzione esegue una serie di controlli di sicurezza
-    //sulla sessione corrente. Se la sessione non è valida, la cancella
-    //e ritorna null, altrimenti la aggiorna e la restituisce
-    
+    /**
+     * questa funzione esegue una serie di controlli di sicurezza
+     * sulla sessione corrente. Se la sessione non è valida, la cancella
+     * ritorna null, altrimenti la aggiorna e la restituisce
+     * 
+     * @param r
+     * @return
+     */
     public static HttpSession checkSession(HttpServletRequest r) {
         boolean check = true;
 

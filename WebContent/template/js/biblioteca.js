@@ -422,6 +422,9 @@ function trascrizionePagina(idOpera){
                 alert("Non ci sono pagine da trascrivere!!");
                 
             }
+        },
+        error: function(data){
+        	console.log(data);
         }
         
 	});

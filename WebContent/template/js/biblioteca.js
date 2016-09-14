@@ -162,12 +162,34 @@ function opereInPubblicazioneAcquisizioni(){
 		    	 			paginatore(data);
 		    	 			admin= true;
 		    	 			init();
-			                document.getElementById("tableOpereInPubbAcqu").style.display="block";
-			                document.getElementById("tableOpereInPubbAcqu").style.visibility="visible";
+			                document.getElementById("opereInPubblicazioneAcquisizione").style.display="block";
+			                document.getElementById("opereInPubblicazioneAcquisizione").style.visibility="visible";
 			                
 		    	 		}
 		            }
 			});
+}
+
+function opereInPubblicazioneAcquisizioni(){
+	$.ajax({
+        url: 'Ricerca',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=opereInPubblicazioneTrascrizioni',
+            success: function(data) {
+    	 		if (data==""){
+    	 			errore();
+    	 		}
+    	 		else {         	 			
+    	 			paginatore(data);
+    	 			admin= true;
+    	 			init();
+	                document.getElementById("opereInPubblicazioneTrascrizione").style.display="block";
+	                document.getElementById("opereInPubblicazioneTrascrizione").style.visibility="visible";
+	                
+    	 		}
+            }
+	});
 }
 
 

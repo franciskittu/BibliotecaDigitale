@@ -66,11 +66,13 @@ function makeRow(datarow) {
 	//e inseriamo tante celle quanti sono gli elementi della datarow
 	//and add as many cells as the datarow elements are
 	for(i in datarow) {
+		console.log(i);
+		debugger;
 		var cell = document.createElement('td');
 		cell.textContent = datarow[i];
 		row.appendChild(cell);
-		row.id = "riga"+datarow.id;
 	}
+	row.id = "riga"+datarow.id;
 	//se sono admin inserisco il bottone rimuovi nella tabella 
 	if (admin){
 		switch (sezione){
@@ -89,7 +91,6 @@ function makeRow(datarow) {
 				            		alert("Non ci sono pagine per quest'opera!");
 				            	 }
 				            	 else{
-				            		 console.log(data);
 				            		 admin= true;
 				            		 paginatore(data);
 				                     init();
@@ -98,7 +99,6 @@ function makeRow(datarow) {
 				             }
 					});
 				}
-				
 				var rimuovi = document.createElement('button');
 				rimuovi.className="btn btn-danger btn-lg";
 				rimuovi.id=datarow.id;
@@ -121,8 +121,6 @@ function makeRow(datarow) {
 				            			 }
 				            		 }
 				            		 document.getElementById("riga"+self.id).remove();
-
-
 				            	 }
 				            	 else 
 				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
@@ -164,6 +162,19 @@ function makeRow(datarow) {
 				var pubblica = document.createElement('button');
 				pubblica.className="btn btn-primary btn-lg";
 				pubblica.id=datarow.id;
+				pubblica.onclick = function(){
+					self=this;
+					$.ajax({
+				         url: 'Pubblica',
+				         type: 'GET',
+				         data: 'id_pagina='+self.id,
+				             success: function(data) {
+				            	 if(eval(data)){
+				            		 alert("Opera pubblicata!!")
+				            	 }
+				             }
+					});
+				};
 				var testo=document.createTextNode("Pubblica");
 				pubblica.appendChild(testo);
 				var cell = document.createElement('td');

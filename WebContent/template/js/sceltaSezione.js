@@ -25,6 +25,7 @@ function scelta_sezione(caso){
 	    case 2:
 	    	sezione=2;
 	    	opereInPubblicazioneAcquisizioni();
+	    	opereInPubblicazioneTrascrizioni();
 	        break;
 	    case 3: 
 	    	sezione = 3;

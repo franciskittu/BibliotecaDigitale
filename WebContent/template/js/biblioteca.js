@@ -170,7 +170,7 @@ function opereInPubblicazioneAcquisizioni(){
 			});
 }
 
-function opereInPubblicazioneAcquisizioni(){
+function opereInPubblicazioneTrascrizioni(){
 	$.ajax({
         url: 'Ricerca',
         dataType: "json",

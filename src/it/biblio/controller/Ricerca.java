@@ -1,11 +1,9 @@
 package it.biblio.controller;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -276,16 +274,13 @@ public class Ricerca extends BibliotecaBaseController {
 				if(! p.getPathTrascrizione().equals("") 
 						&& ( (Boolean)request.getAttribute("trascrittore") == true || (Boolean) request.getAttribute("revisore_trascrizioni") == true )){
 					
-					URL path = new URL(p.getPathTrascrizione());
-					InputStream is = path.openStream();
-					BufferedReader br=new BufferedReader(new InputStreamReader(is));
-					int i;
-					String testo = "";
-					do{
-						i = br.read();
-						testo+= (char)i;
-					}while(i != -1);
-					is.close();
+					BufferedReader in = new BufferedReader(new FileReader(p.getPathTrascrizione()));
+					String testo, riga;
+					testo = riga = "";
+					while( (riga = in.readLine()) != null){
+						testo += riga + System.lineSeparator();
+					}
+					in.close();
 					if((Boolean) request.getAttribute("revisore_trascrizioni")==true){
 						p.setPathTrascrizione(testo);
 					}else{

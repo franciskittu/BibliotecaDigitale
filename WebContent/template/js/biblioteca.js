@@ -367,12 +367,12 @@ function listaOpereTrascrittore(){
 
 function invia_trascrizione(obj){
 	var testo = document.getElementById("testoTrascrizione").value;
-	console.log(document.getElementById("editor_tei").id_della_pagina.value); 
+	var id_pagina = document.getElementById("editor_tei").id_della_pagina.value; 
 	console.log(testo);
 	$.ajax({
 	    url: 'Trascrivi',
 	    type: 'GET',
-	    data : "id_pagina="+obj.id+"&testo="+testo,//anche tutte le input della form 
+	    data : "id_pagina="+id_pagina+"&testo="+testo,//anche tutte le input della form 
 	    //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
 	        success: function(data) {
 	                    if (eval(data)){

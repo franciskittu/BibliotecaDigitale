@@ -84,7 +84,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			aCommenta = c.prepareStatement("");
 			gOpereByQuery = c.createStatement();
 			gOpereDaTrascrivere = c.createStatement();
-			gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ?");
+			gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ? ORDER BY(numero)");
 			rOpera = c.prepareStatement("DELETE FROM Opera WHERE id = ?");
 			gOpereInPubblicazioneAcquisizioni = c.createStatement();
 			gOpereInPubblicazioneTrascrizioni = c.createStatement();

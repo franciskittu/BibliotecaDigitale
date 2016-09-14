@@ -1,9 +1,13 @@
 package it.biblio.controller;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringReader;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -25,6 +29,11 @@ import it.biblio.framework.data.DataLayerException;
 public class Trascrivi extends BibliotecaBaseController {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -910206917014384364L;
+
+	/**
 	 * funzione che trasforma la trascrizione della pagina in input in formato TEI.
 	 * 
 	 * @param request servlet request
@@ -39,17 +48,17 @@ public class Trascrivi extends BibliotecaBaseController {
 			String editore= o.getEditore();
 			String descrizione= o.getDescrizione();
 			String testo= request.getParameter("testo");testo.split("\n");
-			String intestazione = "<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\"?>"
-					+ "<?xml-model href=\\\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_lite.rng\\\" type=\\\"application/xml\\\" schematypens=\\\"http://relaxng.org/ns/structure/1.0\\\"?>"
-					+ "<?xml-model href=\\\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_lite.rng\\\" type=\\\"application/xml\\\""
-					+ "schematypens=\\\"http://purl.oclc.org/dsdl/schematron\\\"?>"
-					+ "<TEI xmlns=\\\"http://www.tei-c.org/ns/1.0\\\">";
+			String intestazione = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"+System.lineSeparator()
+					+ "<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_lite.rng\" type=\"application/xml\" schematypens=\"http://relaxng.org/ns/structure/1.0\"?>"+System.lineSeparator()
+					+ "<?xml-model href=\"http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_lite.rng\" type=\"application/xml\""+System.lineSeparator()
+					+ "schematypens=\"http://purl.oclc.org/dsdl/schematron\"?>"+System.lineSeparator()
+					+ "<TEI xmlns=\"http://www.tei-c.org/ns/1.0\">";
 			String header = "<teiHeader><fileDesc><titleStmt><title>"+
 					titolo+"</title></titleStmt><publicationStmt><p>"+
 					editore+"</p></publicationStmt><sourceDesc><p>"+
 					descrizione+"</p></sourceDesc></fileDesc></teiHeader>";
 			String body = "<text><body><p>"+testo+"</p></body></text></TEI>";
-			return intestazione + header + body;
+			return intestazione + System.lineSeparator() + header + System.lineSeparator() + body;
 		}catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
@@ -68,13 +77,25 @@ public class Trascrivi extends BibliotecaBaseController {
 	 */
 	private void action_memorizza_file(HttpServletRequest request, HttpServletResponse response, Pagina p) throws FileNotFoundException, IOException{
 		final String path = getServletContext().getInitParameter("system.directory_trascrizioni");
-		
-		try(PrintWriter out = new PrintWriter(new File(path + File.separator + p.getOpera().getTitolo() + p.getNumero()+".xml"))){
-			out.println(input_to_tei(request, response, p));
-			
-			p.setPathTrascrizione(path + File.separator + p.getOpera().getTitolo() + p.getNumero()+".xml");
+		final String contenuto_file_tei = input_to_tei(request, response, p);
+		try(BufferedReader in = new BufferedReader(new StringReader(contenuto_file_tei));
+				PrintWriter out = new PrintWriter( new BufferedWriter(new FileWriter(path + File.separator + p.getOpera().getTitolo().replace(' ', '_') + p.getNumero()+".xml")))){
+			String s;
+			while( (s=in.readLine()) != null){
+				out.println(s);
+			}
 			
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			Opera O = datalayer.getOpera(p.getOpera().getID());
+			// se l'opera non ha ancora un acquisitore l'utente attuale gli sarà
+			// attribuito
+			if (O.getTrascrittore() == null) {
+				O.setTrascrittore(datalayer.getUtente((Long)request.getAttribute("userid")));
+				datalayer.aggiornaOpera(O);
+			}
+			p.setPathTrascrizione(path + File.separator + p.getOpera().getTitolo().replace(' ', '_') + p.getNumero()+".xml");
+			
+			
 			datalayer.aggiornaPagina(p);
 			
 		} catch (DataLayerException ex) {
@@ -88,10 +109,16 @@ public class Trascrivi extends BibliotecaBaseController {
 		try{
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 			Pagina p = datalayer.getPagina(Long.parseLong(request.getParameter("id_pagina")));
-			
+			action_memorizza_file(request,response, p);
 		} catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
 			action_error(request, response);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}

@@ -66,7 +66,6 @@ function makeRow(datarow) {
 	//e inseriamo tante celle quanti sono gli elementi della datarow
 	//and add as many cells as the datarow elements are
 	for(i in datarow) {
-		console.log(i);
 		var cell = document.createElement('td');
 		cell.textContent = datarow[i];
 		row.appendChild(cell);
@@ -111,7 +110,6 @@ function makeRow(datarow) {
 				         data: 'id_opera='+this.id,
 				             success: function(data) {
 				            	 if(eval(data)){
-				            		 debugger;
 				            		 for(i=0; i< pages.length; i++){
 				            			 for(j=0; j<pages[i].length; j++){
 					            			 if(pages[i][j].id==self.id){
@@ -128,6 +126,10 @@ function makeRow(datarow) {
 				};
 				var cell = document.createElement('td');
 				cell.appendChild(rimuovi);
+				cell.onclick = function(){
+					console.log("onclick");
+					return false;
+				};
 				row.appendChild(cell);
 				break;
 			case 2:

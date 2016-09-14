@@ -2,7 +2,7 @@ var vettore_ausiliario=[];
 var ruolo = [];
 var id_opera;
 var pagine_opera = [];
-
+var table_opere_in_trascrizione=false;
 /*VISTA DEFAULT PER L'UTENTE ADMIN*/
 function vistaDefaultAdmin(){
 	document.getElementById("admindefault").style.display="block";
@@ -309,7 +309,6 @@ function controllaNumeroPagina(obj){
     data : {numeroAJAX:obj.value, operaAJAX:id },
     //data: 'numeroAJAX='+obj.value+'&operaAJAX='+id,
         success: function(data) {
-        			console.log(data);
                     if (eval(data)){
                     	$("#status").remove();
                         document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
@@ -335,6 +334,9 @@ function listaOpereTrascrittore(){
     	 		else {
     	 			document.getElementById("lista_opere_in_trascrizione").style.display="block";
     	 			document.getElementById("lista_opere_in_trascrizione").style.visibility="visible";
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
+    	 			table_opere_in_trascrizione = true;
     	 			paginatore(data);
     	 			init();
     	 		}
@@ -354,6 +356,7 @@ function listaOpereTrascrittore(){
     	 			document.getElementById("lista_opere_da_trascrivere").style.visibility="visible";
     	 			document.getElementById("ricerca").style.display="block";
     	 			document.getElementById("ricerca").style.visibility="visible";
+    	 			table_opere_in_trascrizione=false;
     	 			paginatore(data);
     	 			init();
     	 		}
@@ -366,7 +369,6 @@ function invia_trascrizione(obj){
 	var testo = document.getElementById("testoTrascrizione").value;
 	console.log(document.getElementById("editor_tei").id_della_pagina.value); 
 	console.log(testo);
-	debugger;
 	$.ajax({
 	    url: 'Trascrivi',
 	    type: 'GET',
@@ -393,7 +395,6 @@ function trascrizionePagina(idOpera){
         type: 'GET',
         data: 'tipoRicerca=pagine_opera&id_opera='+idOpera,
         success: function(data) {
-        	console.log(data);
         	pagine_opera = data;
             if (data.length > 0){
 	            	if (data[0].trascrizione != ''){

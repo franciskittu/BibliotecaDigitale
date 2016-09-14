@@ -76,6 +76,14 @@ function makeRow(datarow) {
 		switch (sezione){
 			case 1:
 				row.onclick = function(){
+					
+				}
+				var visualizza = document.createElement('button');
+				visualizza.className = "btn btn-primary btn-lg";
+				var testoVisualizza= document.createTextNode("Visualizza");
+				visualizza.appendChild(testoVisualizza);
+				visualizza.id="visu"+datarow.id;
+				visualizza.onclick = function(){
 					self=this;
 					var id = self.id;
 					id = id.slice(4,id.length);	
@@ -97,6 +105,10 @@ function makeRow(datarow) {
 				             }
 					});
 				}
+				var cell1 = document.createElement('td');
+				cell1.appendChild(visualizza);
+				row.appendChild(cell1);
+				
 				var rimuovi = document.createElement('button');
 				rimuovi.className="btn btn-danger btn-lg";
 				rimuovi.id=datarow.id;
@@ -126,10 +138,6 @@ function makeRow(datarow) {
 				};
 				var cell = document.createElement('td');
 				cell.appendChild(rimuovi);
-				cell.onclick = function(){
-					console.log("onclick");
-					return false;
-				};
 				row.appendChild(cell);
 				break;
 			case 2:
@@ -380,10 +388,14 @@ function switchPage(page) {
 			updatePager("paging",page);
 			break;
 		case 2:
+			if(table_opere_acquisizione){
 			updateTable("tableopereacquisizione",data);
 			updatePager("paging1",page);
+			}
+			else{
 			updateTable("tableOpereTrascrizione",data);
 			updatePager("paging2",page);
+			}
 			break;
 		case 3: 
 			updateTable("listapagine",data);
@@ -397,10 +409,14 @@ function switchPage(page) {
 	}
 	}
 	else if (sezione==5){
+		if(table_opere_in_trascrizione){
 		updateTable("table_opere_in_trascrizione",data);
 		updatePager("paging",page);
+		}
+		else{
 		updateTable("table_opere_da_trascrivere",data);
 		updatePager("paging1",page);
+		}
 	}
 	else {
 		updateTable("tableopere",data);

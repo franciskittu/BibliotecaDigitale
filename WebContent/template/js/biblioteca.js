@@ -3,6 +3,9 @@ var ruolo = [];
 var id_opera;
 var pagine_opera = [];
 var table_opere_in_trascrizione=false;
+var table_opere_acquisizione=false;
+
+
 /*VISTA DEFAULT PER L'UTENTE ADMIN*/
 function vistaDefaultAdmin(){
 	document.getElementById("admindefault").style.display="block";
@@ -158,7 +161,8 @@ function opereInPubblicazioneAcquisizioni(){
 		    	 		if (data.length == 0){
 		    	 			errore();
 		    	 		}
-		    	 		else {         	 			
+		    	 		else {  
+		    	 			table_opere_acquisizione=true;
 		    	 			paginatore(data);
 		    	 			admin= true;
 		    	 			init();
@@ -180,7 +184,8 @@ function opereInPubblicazioneTrascrizioni(){
     	 		if (data.length == 0){
     	 			errore();
     	 		}
-    	 		else {         	 			
+    	 		else {         	 	
+    	 			table_opere_acquisizione=false;
     	 			paginatore(data);
     	 			admin= true;
     	 			init();
@@ -303,6 +308,7 @@ function controllausername(obj){
             
 function controllaNumeroPagina(obj){
 	var id = document.getElementById("opera").value;
+	console.log(id);
     $.ajax({
     url: 'UploadImmagine',
     type: 'POST',
@@ -314,6 +320,7 @@ function controllaNumeroPagina(obj){
                         document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                     }
                     else {
+                    	$("#status").remove();
                     	document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Pagina gia' presente, scegline un'altra</li></ul></p>";
                     }
         }
@@ -342,6 +349,9 @@ function listaOpereTrascrittore(){
     	 		}
             }
 	});
+}
+
+function listaOpereTrascrittoreDaTrascrivere(){
 	$.ajax({
         url: 'Ricerca',
         dataType: "json",
@@ -398,7 +408,7 @@ function trascrizionePagina(idOpera){
         	pagine_opera = data;
             if (data.length > 0){
 	            	if (data[0].trascrizione != ''){
-	            		document.getElementById("testoTrascrizione").innerHTML = data[0].trascrizione;
+	            		document.getElementById("testoTrascrizione").value = data[0].trascrizione;
 	            	}
 	            	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
 	            	openseadragon(data[0].id);
@@ -420,7 +430,10 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
 			if (pagine_opera[i].trascrizione != ''){
-				document.getElementById("testoTrascrizione").innerHTML = pagine_opera[i].trascrizione;
+				document.getElementById("testoTrascrizione").value = pagine_opera[i].trascrizione;
+			}
+			else{
+				document.getElementById("testoTrascrizione").value = "";
 			}
 			document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
 			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;

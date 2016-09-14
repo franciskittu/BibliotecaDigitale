@@ -49,10 +49,10 @@
 					<form action="UploadImmagine" method="POST" enctype="multipart/form-data">
 					<div class="row control-group">
 						
-						<div class="form-group col-xs-12 floating-label-form-group controls">					
+						<div class="form-group col-xs-12">					
 					        <#if (opere_non_pubblicate?size > 0)>
 								<label>Seleziona l'opera da acquisire:</label>
-								<select class="form-control" name="opera" value="">
+								<select id="opera" class="form-control" name="opera" value="">
 								<#list opere_non_pubblicate as opera>
 									<option value="${opera.ID}">${opera.titolo} - ${opera.editore}</option>
 								</#list>
@@ -63,7 +63,7 @@
 							<label>Numero di pagina inserita:</label> 
 							<input class="form-control" placeholder="Numero di pagina inserita" onBlur="controllaNumeroPagina(this)" type="text" name="numero_pagina"/><div id="paginacheck"></div>
 						</div>
-					    <div style="border-left: none; class="form-group col-xs-12 floating-label-form-group controls">  	
+					    <div style="border-left: none;" class="form-group col-xs-12 floating-label-form-group controls">  	
 							<label>Scegli file:</label>
 					        <input style="font-size: 16px;" class="form-control" type="file" name="fileToUpload" id=" fileToUpload">
 					    </div>

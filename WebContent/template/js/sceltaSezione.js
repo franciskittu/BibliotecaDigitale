@@ -5,7 +5,7 @@
 			= 3 VISTA PAGINE DELL'OPERA
 			= 4 VISTA UTENTI 
 			= 5 TRASCRITTORE
-			= 6 VISTA PAGINA TRASCRITTORE
+			= 6 VISTA PAGINA TRASCRITTORE 
 			= 7 INSERISCI OPERA
 */
 var admin=false;
@@ -38,6 +38,7 @@ function scelta_sezione(caso){
 	    case 5:
 	    	sezione = 5;
 	    	listaOpereTrascrittore();
+	    	listaOpereTrascrittoreDaTrascrivere();
 	    	break;
 	    case 6:
 	    	sezione = 6;

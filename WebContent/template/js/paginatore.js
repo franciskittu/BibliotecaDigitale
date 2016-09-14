@@ -67,7 +67,6 @@ function makeRow(datarow) {
 	//and add as many cells as the datarow elements are
 	for(i in datarow) {
 		console.log(i);
-		debugger;
 		var cell = document.createElement('td');
 		cell.textContent = datarow[i];
 		row.appendChild(cell);
@@ -165,9 +164,9 @@ function makeRow(datarow) {
 				pubblica.onclick = function(){
 					self=this;
 					$.ajax({
-				         url: 'Pubblica',
+				         url: 'Aggiorna',
 				         type: 'GET',
-				         data: 'id_pagina='+self.id,
+				         data: 'tipoAggiornamento = pubblicazione_acquisizione&id_opera='+self.id,
 				             success: function(data) {
 				            	 if(eval(data)){
 				            		 alert("Opera pubblicata!!")

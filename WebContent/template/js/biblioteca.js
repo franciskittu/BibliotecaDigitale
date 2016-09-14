@@ -155,7 +155,7 @@ function opereInPubblicazioneAcquisizioni(){
 		        type: 'GET',
 		        data: 'tipoRicerca=opereInPubblicazioneAcquisizioni',
 		            success: function(data) {
-		    	 		if (data==""){
+		    	 		if (data.length == 0){
 		    	 			errore();
 		    	 		}
 		    	 		else {         	 			
@@ -177,7 +177,7 @@ function opereInPubblicazioneAcquisizioni(){
         type: 'GET',
         data: 'tipoRicerca=opereInPubblicazioneTrascrizioni',
             success: function(data) {
-    	 		if (data==""){
+    	 		if (data.length == 0){
     	 			errore();
     	 		}
     	 		else {         	 			

@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import it.biblio.data.model.BibliotecaDataLayer;
+import it.biblio.data.model.Opera;
 import it.biblio.data.model.Privilegi;
 import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.TemplateManagerException;
@@ -22,6 +23,42 @@ import it.biblio.framework.utility.SecurityLayer;
  */
 @WebServlet(name="Aggiorna", urlPatterns={"/Aggiorna"})
 public class Aggiorna extends BibliotecaBaseController {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4549029224361299450L;
+
+	/**
+	 * Funzione che aggiorna i privilegi utente rimuovendo quelli già presenti 
+	 * per inserire quelli ricevuti dalla richiesta.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException errore nella logica del template manager 
+	 */
+	private void action_pubblica_acquisizioni(HttpServletRequest request, HttpServletResponse response) throws ControllerException, TemplateManagerException{
+		try{
+			long id_opera = SecurityLayer.checkNumeric(request.getParameter("id_opera"));
+			Boolean successo = true;
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			Opera O = datalayer.getOpera(id_opera);
+			O.setImmaginiPubblicate(true);
+			if(datalayer.aggiornaOpera(O) == null){
+				successo = false;
+			}
+			request.setAttribute("risultato", successo.toString());
+			request.setAttribute("outline_tpl", "");
+			
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", request, response);
+		} catch(DataLayerException ex){
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		} catch(NumberFormatException ex){
+			throw new ControllerException(ex.getMessage());
+		}
+	}
 
 	/**
 	 * Funzione che aggiorna i privilegi utente rimuovendo quelli già presenti 
@@ -78,6 +115,8 @@ public class Aggiorna extends BibliotecaBaseController {
 			try{
 				switch(request.getParameter("tipoAggiornamento")){
 				case "aggiorna_privilegi_utente": action_aggiorna_privilegi_utente(request,response);
+					break;
+				case "pubblicazione_acquisizione":	action_pubblica_acquisizioni(request,response);
 					break;
 				default: action_aggiorna_privilegi_utente(request,response);
 				}

@@ -166,7 +166,7 @@ function makeRow(datarow) {
 					$.ajax({
 				         url: 'Aggiorna',
 				         type: 'GET',
-				         data: 'tipoAggiornamento = pubblicazione_acquisizione&id_opera='+self.id,
+				         data: 'tipoAggiornamento=pubblicazione_acquisizione&id_opera='+self.id,
 				             success: function(data) {
 				            	 if(eval(data)){
 				            		 alert("Opera pubblicata!!")

@@ -18,7 +18,7 @@ import it.biblio.framework.result.FailureResult;
 /**
  * Servlet Filter implementation class FiltroSessione
  */
-@WebFilter(description = "Protegge le servlet accessibili solo da utenti autorizzati", urlPatterns = { "/UploadImmagine" })
+@WebFilter(description = "Protegge le servlet accessibili solo da utenti autorizzati", urlPatterns = { "/UploadImmagine", "/Trascrivi" })
 public class FiltroSessione implements Filter {
 
 	FilterConfig config;
@@ -42,7 +42,19 @@ public class FiltroSessione implements Filter {
 	@SuppressWarnings("unchecked")
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
 		List<String> ruoli = (List<String>) request.getAttribute("ruoli");
-		if(ruoli == null || !ruoli.contains("acquisitore")){
+		Boolean ok = true;
+		if(ruoli == null){
+			ok = false;
+		}
+		switch(((HttpServletRequest)request).getServletPath()){
+			case "/UploadImmagine": if(ok && (Boolean)request.getAttribute("acquisitore")){ok = true;}
+				break;
+			case "/Trascrivi": if(ok && (Boolean)request.getAttribute("trascrittore")){ok = true;}
+				break;
+			default: ok = true;
+		}
+		
+		if(!ok){
 			FailureResult res = new FailureResult(this.config.getServletContext());
 			res.activate("Accesso non autorizzato dal filtro", (HttpServletRequest)request, (HttpServletResponse)response);
 		}

@@ -54,7 +54,7 @@
 								<label>Seleziona l'opera da acquisire:</label>
 								<select class="form-control" name="opera" value="">
 								<#list opere_non_pubblicate as opera>
-									<option id="opera" name="opera" value="${opera.ID}">${opera.titolo} - ${opera.editore}</option>
+									<option value="${opera.ID}">${opera.titolo} - ${opera.editore}</option>
 								</#list>
 								</select><br/>
 							</#if>

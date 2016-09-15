@@ -344,6 +344,23 @@ public class Ricerca extends BibliotecaBaseController {
 		}
 
 	}
+	
+	private void action_opere_con_acquisizioni_da_convalidare(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
+		try {
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			List<Opera> opere = datalayer.getOpereConImmaginiNonValidate();
+			
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		}catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
 
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
@@ -365,6 +382,8 @@ public class Ricerca extends BibliotecaBaseController {
 				case "opere_in_trascrizione": action_opere_in_trascrizione(request,response);
 					break;
 				case "opere_da_trascrivere": action_opere_da_trascrivere(request,response);
+					break;
+				case "opere_con_acquisizioni_da_convalidare": action_opere_con_acquisizioni_da_convalidare(request,response);
 					break;
 				case "pagine_opera": action_pagine_opera(request,response);
 					break;

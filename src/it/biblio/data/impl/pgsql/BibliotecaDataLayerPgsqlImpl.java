@@ -40,7 +40,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	private PreparedStatement gPagina, aPagina, gPagineOpera, rPagina, aggiornaPagina;
 	private PreparedStatement gCommenta, aCommenta;
 	
-	private Statement gOpereByQuery,gOpereDaTrascrivere, gOpereInPubblicazioneAcquisizioni, gOpereInPubblicazioneTrascrizioni;
+	private Statement gOpereByQuery,gOpereDaTrascrivere, gOpereInPubblicazioneAcquisizioni, gOpereInPubblicazioneTrascrizioni, gOpereConImmaginiNonValidate;
 	
 	
 	public BibliotecaDataLayerPgsqlImpl(DataSource ds) {
@@ -88,6 +88,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			rOpera = c.prepareStatement("DELETE FROM Opera WHERE id = ?");
 			gOpereInPubblicazioneAcquisizioni = c.createStatement();
 			gOpereInPubblicazioneTrascrizioni = c.createStatement();
+			gOpereConImmaginiNonValidate = c.createStatement();
 		} catch(SQLException ex){
 			throw new DataLayerException("Errore nell'inizializzazione del datalayer della biblioteca", ex);
 		}
@@ -658,9 +659,25 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 				return U;
 			}
 		}catch (SQLException ex) {
-			throw new DataLayerException("Incapace di eliminare l'opera richiesta", ex);
+			throw new DataLayerException("Incapace di eliminare l'utente richiesto", ex);
 		}
 		return null;
+	}
+	
+
+	@Override
+	public List<Opera> getOpereConImmaginiNonValidate() throws DataLayerException {
+		List<Opera> result = new ArrayList<>();
+		String query = "SELECT Opera.* FROM pagina JOIN opera ON (pagina.opera=opera.id) "
+		+ "WHERE pagina.immagine_validata = false GROUP BY(opera.id) ORDER BY(opera.titolo)";
+		try(ResultSet rs = this.gOpereConImmaginiNonValidate.executeQuery(query)){
+			while(rs.next()){
+				result.add(this.getOpera(rs.getLong("id")));
+			}
+		} catch (SQLException ex) {
+			throw new DataLayerException("Incapace di ottenere le opere con immagini non validate", ex);
+		}
+		return result;
 	}
 
 	/**
@@ -685,6 +702,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.gOpere.close();
 			this.gOpereInPubblicazioneAcquisizioni.close();
 			this.gOpereInPubblicazioneTrascrizioni.close();
+			this.gOpereConImmaginiNonValidate.close();
 			this.gPagina.close();
 			this.gPagineOpera.close();
 			this.gPrivilegi.close();

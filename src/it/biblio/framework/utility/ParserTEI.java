@@ -2,14 +2,22 @@ package it.biblio.framework.utility;
 
 import java.io.IOException;
 
+/**
+ * Classe che supporta operazioni di analisi di codice TEI.
+ * 
+ * @author Marco D'Ettorre
+ * @author Francesco Proietti
+ */
 public final class ParserTEI {
 
 	/**
+	 * Funzione di validazione. Al momento richiama un eseguibile
+	 * scaricabile ed installabile da https://github.com/TEIC/Stylesheets tramite 
+	 * un comando Bash.
 	 * 
-	 * @param doc
-	 * @param path_doc
-	 * @return
-	 * @throws IOException
+	 * @param path_doc path al documento in formato TEI
+	 * @return true se valido, false altrimenti
+	 * @throws IOException se ci sono problemi nel reperire il file dal path passato come parametro
 	 */
 	public static boolean valida(String path_doc) throws IOException{
 		String comando = new String("bash -c \"teitotxt "+path_doc+"\"");
@@ -27,9 +35,11 @@ public final class ParserTEI {
 	}
 	
 	/**
+	 * Funzione che elimina, dal testo passato come argomento, ogni sorta di tag TEI e XML supportato.
+	 * Il tag <br /> non viene rimosso per permettere la corretta renderizzazione su pagine HTML.
 	 * 
-	 * @param doc
-	 * @return
+	 * @param doc testo in formato TEI
+	 * @return testo privo di ogni tag XML e TEI
 	 */
 	public static String tei_to_txt(String doc){
 		final String[] tags={"<?xml","<TEI","</TEI","<body","</body","<p","</p","<div","</div","<figure","</figure","<hi","</hi","<q","</q","<text","</text"};
@@ -60,6 +70,6 @@ public final class ParserTEI {
 			//occorrenza = doc.indexOf(System.lineSeparator());
 			//doc = doc.substring(doc.indexOf(System.lineSeparator())+System.lineSeparator().length());
 		//}
-		return doc.replaceAll(System.lineSeparator(), "");
+		return doc.replaceAll(System.lineSeparator(), "");// per ragioni di compatibilità
 	}
 }

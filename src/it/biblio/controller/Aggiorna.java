@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
+import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Privilegi;
 import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.TemplateManagerException;
@@ -103,6 +104,41 @@ public class Aggiorna extends BibliotecaBaseController {
 	}
 	
 	/**
+	 * Imposta l'immagine o la trascrizione come validata nella base di dati.
+	 * 
+	 * @param request
+	 * @param response
+	 * @param acquisizione_o_trascrizione
+	 * @throws TemplateManagerException 
+	 */
+	private void action_valida_pagina(HttpServletRequest request, HttpServletResponse response, String acquisizione_o_trascrizione) throws TemplateManagerException{
+		try{
+			long id_pagina = SecurityLayer.checkNumeric(request.getParameter("id_pagina"));
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			
+			Pagina p = datalayer.getPagina(id_pagina);
+			Boolean successo = true;
+			if(acquisizione_o_trascrizione.equals("acquisizione")){
+				p.setImmagineValidata(true);
+			}else{
+				p.setTrascrizioneValidata(true);
+			}
+			if(datalayer.aggiornaPagina(p) == null){
+				successo = false;
+			}
+			request.setAttribute("risultato", successo.toString());
+			request.setAttribute("outline_tpl", "");
+			
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", request, response);
+
+		}catch(DataLayerException ex){
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+	
+	/**
 	 * Analizza e smista le richieste ai dovuti metodi della classe.
 	 * 
 	 * @param request servlet request
@@ -117,6 +153,10 @@ public class Aggiorna extends BibliotecaBaseController {
 				case "aggiorna_privilegi_utente": action_aggiorna_privilegi_utente(request,response);
 					break;
 				case "pubblicazione_acquisizione":	action_pubblica_acquisizioni(request,response);
+					break;
+				case "valida_acquisizione": action_valida_pagina(request,response,"acquisizione");
+					break;
+				case "valida_trascrizione": action_valida_pagina(request,response,"trascrizione");
 					break;
 				default: action_aggiorna_privilegi_utente(request,response);
 				}

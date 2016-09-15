@@ -378,6 +378,9 @@ function listaOpereTrascrittoreDaTrascrivere(){
 
 function invia_trascrizione(obj){
 	var testo = document.getElementById("testoTrascrizione").value;
+	console.log(testo);
+	testo = testo.replace(/\n/g,'<br />');
+	console.log(testo);
 	var id_pagina = document.getElementById("editor_tei").id_della_pagina.value; 
 	console.log(testo);
 	$.ajax({
@@ -409,7 +412,10 @@ function trascrizionePagina(idOpera){
         	pagine_opera = data;
             if (data.length > 0){
 	            	if (data[0].trascrizione != ''){
-	            		document.getElementById("testoTrascrizione").value.html = data[0].trascrizione;
+	            		var testo = data[0].trascrizione.replace(/<br \/>/g,'\n');
+	            		console.log(testo);
+	            		document.getElementById("testoTrascrizione").value = testo;
+	            		
 	            	}
 	            	console.log(data[0].trascrizione);
 	            	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
@@ -435,10 +441,10 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
 			if (pagine_opera[i].trascrizione != ''){
-				document.getElementById("testoTrascrizione").value.html = pagine_opera[i].trascrizione;
+				document.getElementById("testoTrascrizione").value = pagine_opera[i].trascrizione;
 			}
 			else{
-				document.getElementById("testoTrascrizione").value.html = "";
+				document.getElementById("testoTrascrizione").value = "";
 			}
 			document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
 			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;

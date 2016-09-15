@@ -4,7 +4,7 @@
     {"id": "${pagina.ID}",
     "numero": "${strip_slashes(pagina.numero)!""?js_string}",
     "path_immagine": "${pagina.pathImmagine!""?js_string}",
-    "trascrizione" : "${strip_slashes(pagina.pathTrascrizione)!""?string?js_string}",
+    "trascrizione" : "${strip_slashes(pagina.pathTrascrizione)!""?js_string}",
     "upload_immagine" : "${pagina.uploadImmagine!""?js_string}",
     "immagine_validata" : "${pagina.immagineValidata?then('true','false')?js_string}",
     "trascrizione_validata" : "${pagina.trascrizioneValidata?then('true','false')?js_string}",

@@ -60,7 +60,7 @@ public final class ParserTEI {
 			occorrenza = doc.indexOf(System.lineSeparator());
 			doc = doc.substring(occorrenza+System.lineSeparator().length());
 		}
-		doc = doc.replaceAll(System.lineSeparator(), "<br/>");
+		doc = doc.replaceAll(System.lineSeparator(), "<br />");
 		return doc;
 	}
 }

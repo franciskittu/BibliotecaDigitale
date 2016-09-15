@@ -55,12 +55,11 @@ public final class ParserTEI {
 		int fineIntetazione = doc.indexOf(tag_fine_header, inizioIntestazione);
 		String intestazione = doc.substring(inizioIntestazione, fineIntetazione+tag_fine_header.length());
 		doc = doc.replace(intestazione, "");
-		int occorrenza = 0;
-		while(doc.indexOf(System.lineSeparator()) < occorrenza + 2){
-			occorrenza = doc.indexOf(System.lineSeparator());
-			doc = doc.substring(occorrenza+System.lineSeparator().length());
-		}
-		doc = doc.replaceAll(System.lineSeparator(), "<br />");
-		return doc;
+		//int occorrenza = 0;
+		//while(doc.indexOf(System.lineSeparator()) != -1){
+			//occorrenza = doc.indexOf(System.lineSeparator());
+			//doc = doc.substring(doc.indexOf(System.lineSeparator())+System.lineSeparator().length());
+		//}
+		return doc.replaceAll(System.lineSeparator(), "");
 	}
 }

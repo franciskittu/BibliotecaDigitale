@@ -441,7 +441,8 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
 			if (pagine_opera[i].trascrizione != ''){
-				document.getElementById("testoTrascrizione").value = pagine_opera[i].trascrizione;
+				var testo = pagine_opera[i].trascrizione.replace(/<br \/>/g,'\n');
+				document.getElementById("testoTrascrizione").value = testo;
 			}
 			else{
 				document.getElementById("testoTrascrizione").value = "";

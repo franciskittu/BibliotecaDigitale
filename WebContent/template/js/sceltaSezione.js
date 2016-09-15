@@ -7,6 +7,8 @@
 			= 5 TRASCRITTORE
 			= 6 VISTA PAGINA TRASCRITTORE 
 			= 7 INSERISCI OPERA
+			= 8 GESTIONE UTENTE 
+			= 9 REVISORE ACQUISIZIONI
 */
 var admin=false;
 var sezione=0;
@@ -52,7 +54,14 @@ function scelta_sezione(caso){
 	    	sezione = 8;
 	    	gestisciUtente();
 	    	break;
+	    case 9:
+	    	sezione = 9;
+	    	revisoreAcquisizioni();
+	    	break;
+	    case 10:
+	    	sezione = 10;
 	    	
+	    	break;
 	    default:
 	    	sezione=0
 	    	vistaDefaultAdmin();

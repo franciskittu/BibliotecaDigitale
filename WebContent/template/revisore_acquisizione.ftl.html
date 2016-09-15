@@ -1,3 +1,4 @@
+
 <nav id="mainNav" class="navbar navbar-default navbar-fixed-top navbar-custom">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
@@ -5,7 +6,7 @@
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span> Menu <i class="fa fa-bars"></i>
                 </button>
-                <a class="navbar-brand" href="Home"><img src="template/img/univaq.jpg"/></a>
+                <a class="navbar-brand" href="Home#page-top"><img src="template/img/univaq.jpg"/></a>
                 <!--<a class="navbar-brand" href="#page-top">Start Bootstrap</a>-->
             </div>
 
@@ -16,19 +17,16 @@
                         <a href="#page-top"></a>
                     </li>
                    	<li class="page-scroll">
-                       	<a href="#lista_opere_in_trascrizione">In trascrizione</a>
+                       	<a href="#uploadImmagine">Carica Immagine</a>
                    	</li>
                     <li class="page-scroll">
-                        <a href="#lista_opere_da_trascrivere">Da trascrivere</a>
-                    </li>
-                    <li class="page-scroll">
-                       	<a href="#ricerca">Ricerca</a>
-                   	</li>  
+                        <a href="#ricerca">Ricerca</a>
+                    </li>   
                 </ul>
                 
                 <form style="margin-top: 10px;" action="Logout" class="form-inline">
                 	<div class="form-group">
-                	<label class="label-nav"><a class="navBarLabel" href="Home">Ciao ${nomeutente!"UTENTE"}</a></label>
+                	<label class="label-nav"><a class="navBarLabel"  href="#page-top">Ciao ${nomeutente!"UTENTE"}</a></label>
                 	</div>
                 	<input class="btn btn-success" type="submit" value="Logout" />
                 </form>
@@ -40,16 +38,16 @@
         <!-- /.container-fluid -->
     </nav>
 
-<section id="lista_opere_in_trascrizione">
+<section id="lista_opere_da_convalidare">
 	<div class="container">
             <div class="row">
                 <div class="col-lg-12 text-center">
-                    <h2>LISTA DELLE OPERE IN TRASCRIZIONE</h2>
+                    <h2>LISTA DELLE DA CONVALIDARE</h2>
                     <hr class="star-primary">
                 </div>
             </div>
             <p>
-    <span id="paging">
+    <span id="paging2">
       <span class="pagerCurrent">1</span>
       <a class="pagerLink" href="?page=2">2</a>
       <a class="pagerLink" href="?page=3">3</a>
@@ -58,53 +56,7 @@
     </span></p>
                     <div class="list-group">
                     
-                        <table id="table_opere_in_trascrizione" class="table ">
-							  <thead>
-							    <tr class="tabella">
-							      <th>#</th>
-							      <th>ID</th>
-							      <th>Titolo opera</th>
-							      <th>Descrizione opera</th>
-							   	  <th>Numero pagine</th>
-							    </tr>
-							  </thead>
-							  <tbody>
-                    
-                        
-							  
-								  	<tr class="riga_tabella" >
-								      
-								    </tr>
-							  
-  						
-  							</tbody>
-								</table>
-                        
-                    </div>
-        </div>
-
-
-</section>
-
-<section id="lista_opere_da_trascrivere">
-	<div class="container">
-            <div class="row">
-                <div class="col-lg-12 text-center">
-                    <h2>LISTA DELLE OPERE DA TRASCRIVERE</h2>
-                    <hr class="star-primary">
-                </div>
-            </div>
-            <p>
-    <span id="paging1">
-      <span class="pagerCurrent">1</span>
-      <a class="pagerLink" href="?page=2">2</a>
-      <a class="pagerLink" href="?page=3">3</a>
-      <a class="pagerLink" href="?page=4">4</a>
-      <a class="pagerLink" href="?page=5">5</a>
-    </span></p>
-                    <div class="list-group">
-                    
-                        <table id="table_opere_da_trascrivere" class="table ">
+                        <table id="table_opere_da_convalidare" class="table ">
 							  <thead>
 							    <tr class="tabella">
 							      <th>#</th>
@@ -116,12 +68,6 @@
 							  </thead>
 							  <tbody>
                         
-							  
-								  	<tr class="riga_tabella" >
-								      
-								    </tr>
-							  
-  						
   							</tbody>
 						</table>
   						
@@ -134,8 +80,35 @@
 <#include "ricerca.ftl.html">
 <#include "listaopere.ftl.html">
 
-<#include "openseadragon.ftl.html">
-
+<section id="openseadragon">
+    
+	<div class="container">
+		<div class="row">
+	                <div class="col-lg-12 text-center">
+	                    <hr class="star-primary">
+	                    <h2>SCRIVI LA PAGINA</h2>
+	                    <h3>Convalida la pagina n.<div id="numeroPaginaDaTrascrivere"></div></h3>
+	                    <hr class="star-primary">
+	                </div>
+	     </div>
+	     <div class="row">
+		     <div class="tab-pane" id="tab2">
+			     <center>
+			        <a style="width: 80px;" onclick="previous()" class="btn btn-primary btnPrevious" >Previous</a>
+			        <input onclick="scegliPagina()" id="inserimentoNumeroPagina" type="text" size="3" >
+			        <a style="width: 80px;" onclick="next()" class="btn btn-primary btnNext" >Next</a>
+			    </center>
+		    </div>
+	    </div>
+	    <div id=viewer_img>
+		<div id="openseadragon1" style="width: 100%; height: 500px; float:left;"></div>
+		</div>
+		<center> 
+			<button onclick="convalidaLaPagina()" class="btn btn-primary btn-lg">Convalida</button>
+			<button onclick="nonConvalidarePagina()" class="btn btn-danger btn-lg">Rimuovi</button>
+		</center>
+	</div>
+</section>
  <section id="erroreRicerca">
 	<div class="container">
         <div class="row">
@@ -147,11 +120,9 @@
         </div>
 	</div>
 </section>
+
 <script type="text/javascript">
 
-		scelta_sezione(5);
+		scelta_sezione(9);
 	
 </script>
-
-
-

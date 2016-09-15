@@ -55,6 +55,10 @@
             <#include "trascrittore.ftl.html">
         <#elseif admin?? && admin>
         	<#include "admin.ftl.html">
+        <#elseif revisore_acquisizioni?? && revisore_acquisizioni>
+        	<#include "revisore_acquisizione.ftl.html">
+        <#elseif revisore_trascrizioni?? && revisore_trascrizioni>
+        	<#include "revisore_acquisizione.ftl.html">
         <#else>
         	<#include "utente_normale.ftl.html">
         </#if>

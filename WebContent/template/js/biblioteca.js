@@ -378,11 +378,8 @@ function listaOpereTrascrittoreDaTrascrivere(){
 
 function invia_trascrizione(obj){
 	var testo = document.getElementById("testoTrascrizione").value;
-	console.log(testo);
 	testo = testo.replace(/\n/g,'<br />');
-	console.log(testo);
-	var id_pagina = document.getElementById("editor_tei").id_della_pagina.value; 
-	console.log(testo);
+	var id_pagina = document.getElementById("editor_tei").id_della_pagina.value;
 	$.ajax({
 	    url: 'Trascrivi',
 	    type: 'GET',
@@ -440,24 +437,87 @@ function trascrizionePagina(idOpera){
 function gestioneTrascrizione(numero_pagina_selezionata){
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
-			if (pagine_opera[i].trascrizione != ''){
-				var testo = pagine_opera[i].trascrizione.replace(/<br \/>/g,'\n');
-				document.getElementById("testoTrascrizione").value = testo;
-			}
-			else{
-				document.getElementById("testoTrascrizione").value = "";
-			}
-			document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
 			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;
 			document.getElementById("openseadragon1").remove();
 			var div_creato = document.createElement("DIV");
-			div_creato.setAttribute("style","width: 50%; height: 500px; float:left;");
+			if (sezione != 10){
+				if (pagine_opera[i].trascrizione != ''){
+					var testo = pagine_opera[i].trascrizione.replace(/<br \/>/g,'\n');
+					document.getElementById("testoTrascrizione").value = testo;
+				}
+				else{
+					document.getElementById("testoTrascrizione").value = "";
+				}
+				document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
+				div_creato.setAttribute("style","width: 50%; height: 500px; float:left;");
+			}
+			else{
+				div_creato.setAttribute("style","width: 100%; height: 500px; float:left;");
+			}
+			
 			div_creato.id = "openseadragon1";	
 			var body = document.getElementById("viewer_img");
 			body.appendChild(div_creato);
 			openseadragon(pagine_opera[i].id);
 		}
 	}
+}
+
+function revisoreAcquisizioni(){
+	$.ajax({
+        url: 'Ricerca',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=opere_con_acquisizioni_da_convalidare',
+            success: function(data) {
+    	 		if (data.length == 0){
+    	 			errore();
+    	 		}
+    	 		else {
+    	 			paginatore(data);
+    	 			init();
+    	 			document.getElementById("lista_opere_da_convalidare").style.display="block";
+    	 			document.getElementById("lista_opere_da_convalidare").style.visibility="visible";
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
+    	 			
+    	 		}
+            }
+	});
+	
+}
+function convalidaPagina(data){
+	pagine_opera= data;
+	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+	openseadragon(data[0].id);
+	document.getElementById("openseadragon").style.display="block";
+	document.getElementById("openseadragon").style.visibility="visible";
+	
+}
+
+function convalidaLaPagina(){
+	for (var i = 0 ; i<pagine_opera.length; i++){
+		if ( pagine_opera[i].numero == parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)){
+			$.ajax({
+		        url: 'Aggiorna',
+		        dataType: "json",
+		        type: 'GET',
+		        data: 'tipoAggiornamento=validaAcquisizione&'+ pagine_opera[i].id,
+		            success: function(data) {
+		    	 		if (!eval(data)){
+		    	 			errore();
+		    	 		}
+		    	 		else {
+		    	 			alert("Pagina validata");
+		    	 		}
+		            }
+			});
+		}
+	}
+}
+
+function nonConvalidarePagina(){
+	
 }
 
 function stampaErrore(data){

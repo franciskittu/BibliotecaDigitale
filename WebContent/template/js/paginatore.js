@@ -36,6 +36,11 @@ function paginatore(data){
 	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
 	 		 	}
 	 			break;
+	 		case 9:
+	 			for(j=i; j < i+3 && j < data.length; j++){
+	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
+	 		 	}
+	 			break;
 	 	 }
 	 	 pages[k++] = temp;
 	 	 i = i+3;
@@ -267,7 +272,7 @@ function makeRow(datarow) {
 			         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 			             success: function(data) {
 			            	 if(data.length > 0){
-			            		 	scelta_sezione(6)
+			            		 	scelta_sezione(6);
 				         	    	trascrizionePagina(id);
 				         	    	
 			            	 }
@@ -280,6 +285,31 @@ function makeRow(datarow) {
 				});
 			};
 	}
+	else if(sezione == 9){	
+		row.onclick = function(){
+			self=this;
+			var id = self.id ;
+			id = id.slice (4, id.length);
+			$.ajax({
+		         url: 'Ricerca',
+		         dataType: 'json',
+		         type: 'GET',
+		         data: 'tipoRicerca=pagine_opera&id_opera='+id,
+		             success: function(data) {
+		            	 if(data.length > 0){
+		            		 	scelta_sezione(10);
+			         	    	convalidaPagina(data);
+			         	    	
+		            	 }
+		            	 else 
+			            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
+		             },
+					error: function(data){
+						console.log(data);
+					}
+			});
+		};
+}
 	//console.log(row);
 	return row;				
 }
@@ -426,6 +456,10 @@ function switchPage(page) {
 		updateTable("table_opere_da_trascrivere",data);
 		updatePager("paging1",page);
 		}
+	}
+	else if (sezione == 9){
+	updateTable("table_opere_da_convalidare",data);
+	updatePager("paging2",page);
 	}
 	else {
 		updateTable("tableopere",data);

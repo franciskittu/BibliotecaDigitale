@@ -409,8 +409,9 @@ function trascrizionePagina(idOpera){
         	pagine_opera = data;
             if (data.length > 0){
 	            	if (data[0].trascrizione != ''){
-	            		document.getElementById("testoTrascrizione").value = data[0].trascrizione;
+	            		document.getElementById("testoTrascrizione").value.html = data[0].trascrizione;
 	            	}
+	            	console.log(data[0].trascrizione);
 	            	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
 	            	openseadragon(data[0].id);
 	            	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
@@ -434,10 +435,10 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
 			if (pagine_opera[i].trascrizione != ''){
-				document.getElementById("testoTrascrizione").value = pagine_opera[i].trascrizione;
+				document.getElementById("testoTrascrizione").value.html = pagine_opera[i].trascrizione;
 			}
 			else{
-				document.getElementById("testoTrascrizione").value = "";
+				document.getElementById("testoTrascrizione").value.html = "";
 			}
 			document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
 			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;

@@ -451,8 +451,19 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 				document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
 				div_creato.setAttribute("style","width: 50%; height: 500px; float:left;");
 			}
+			//sezione revisore acquisizioni 
 			else{
 				div_creato.setAttribute("style","width: 100%; height: 500px; float:left;");
+				if(pagine_opera[i].immagine_validata== "true"){
+					document.getElementById("buttonConvalida").setAttribute("disabled", "");
+					document.getElementById("buttonRimuovi").setAttribute("disabled", "");
+				}
+				else if (document.getElementById("buttonConvalida").disabled){
+					document.getElementById("buttonConvalida").removeAttribute("disabled");
+				document.getElementById("buttonRimuovi").removeAttribute("disabled"); 
+						
+						
+				}
 			}
 			
 			div_creato.id = "openseadragon1";	
@@ -488,6 +499,10 @@ function revisoreAcquisizioni(){
 }
 function convalidaPagina(data){
 	pagine_opera= data;
+	if (pagine_opera[0].immagine_validata == "true"){
+		document.getElementById("buttonConvalida").setAttribute("disabled","");
+		document.getElementById("buttonRimuovi").setAttribute("disabled","");
+	}
 	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
 	openseadragon(data[0].id);
 	document.getElementById("openseadragon").style.display="block";
@@ -497,17 +512,22 @@ function convalidaPagina(data){
 
 function convalidaLaPagina(){
 	for (var i = 0 ; i<pagine_opera.length; i++){
+		var obj=pagine_opera;
+		var j = i;
 		if ( pagine_opera[i].numero == parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)){
 			$.ajax({
 		        url: 'Aggiorna',
 		        dataType: "json",
 		        type: 'GET',
-		        data: 'tipoAggiornamento=validaAcquisizione&'+ pagine_opera[i].id,
+		        data: 'tipoAggiornamento=valida_acquisizione&id_pagina='+ pagine_opera[i].id,
 		            success: function(data) {
 		    	 		if (!eval(data)){
 		    	 			errore();
 		    	 		}
 		    	 		else {
+		    	 			obj[j].immagine_validata="true";
+		    	 			document.getElementById("buttonConvalida").setAttribute("disabled","");
+		    	 			document.getElementById("buttonRimuovi").setAttribute("disabled","");
 		    	 			alert("Pagina validata");
 		    	 		}
 		            }
@@ -517,7 +537,29 @@ function convalidaLaPagina(){
 }
 
 function nonConvalidarePagina(){
-	
+	var obj=pagine_opera;
+	for (var i = 0 ; i<pagine_opera.length; i++){
+		var j = i;
+		if ( pagine_opera[i].numero == parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)){
+		$.ajax({
+		        url: 'Rimuovi',
+		        dataType: "json",
+		        type: 'GET',
+		        data: 'id_pagina='+ pagine_opera[i].id,
+		            success: function(data) {
+		    	 		if (!eval(data)){
+		    	 			errore();
+		    	 		}
+		    	 		else {
+		    	 			pagine_opera.splice(j,1);
+		    	 			document.getElementById("buttonConvalida").setAttribute("disabled","");
+		    	 			document.getElementById("buttonRimuovi").setAttribute("disabled","");
+		    	 			
+		    	 		}
+		            }
+			});
+		}
+	}
 }
 
 function stampaErrore(data){

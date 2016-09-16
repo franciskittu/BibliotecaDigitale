@@ -454,13 +454,13 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 			//sezione revisore acquisizioni 
 			else{
 				div_creato.setAttribute("style","width: 100%; height: 500px; float:left;");
-				if(pagine_opera[i].immagine_validata== "true"){
+				if(pagine_opera[i].immagine_validata == "true"){
 					document.getElementById("buttonConvalida").setAttribute("disabled", "");
 					document.getElementById("buttonRimuovi").setAttribute("disabled", "");
 				}
 				else if (document.getElementById("buttonConvalida").disabled){
 					document.getElementById("buttonConvalida").removeAttribute("disabled");
-				document.getElementById("buttonRimuovi").removeAttribute("disabled"); 
+					document.getElementById("buttonRimuovi").removeAttribute("disabled"); 
 						
 						
 				}
@@ -511,10 +511,13 @@ function convalidaPagina(data){
 }
 
 function convalidaLaPagina(){
+	debugger;
+	var j=0;
 	for (var i = 0 ; i<pagine_opera.length; i++){
-		var obj=pagine_opera;
-		var j = i;
+		console.log(pagine_opera[i].numero);
+		console.log(document.getElementById('numeroPaginaDaTrascrivere').textContent);
 		if ( pagine_opera[i].numero == parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)){
+			j = i;
 			$.ajax({
 		        url: 'Aggiorna',
 		        dataType: "json",
@@ -525,9 +528,11 @@ function convalidaLaPagina(){
 		    	 			errore();
 		    	 		}
 		    	 		else {
-		    	 			obj[j].immagine_validata="true";
+		    	 			pagine_opera[j].immagine_validata="true";
+		    	 			console.log(pagine_opera[j]);
 		    	 			document.getElementById("buttonConvalida").setAttribute("disabled","");
 		    	 			document.getElementById("buttonRimuovi").setAttribute("disabled","");
+		    	 			console.log(pagine_opera);
 		    	 			alert("Pagina validata");
 		    	 		}
 		            }

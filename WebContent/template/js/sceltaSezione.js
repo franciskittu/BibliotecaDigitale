@@ -60,7 +60,10 @@ function scelta_sezione(caso){
 	    	break;
 	    case 10:
 	    	sezione = 10;
-	    	
+	    	break;
+	    case "revisore_trascrizione":
+	    	sezione = "revisore_trascrizione";
+	    	revisione_trascrizione();
 	    	break;
 	    default:
 	    	sezione=0

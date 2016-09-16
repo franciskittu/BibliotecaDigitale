@@ -183,16 +183,30 @@ function makeRow(datarow) {
 				pubblica.id=datarow.id;
 				pubblica.onclick = function(){
 					self=this;
+					if(table_opere_acquisizione == true){
 					$.ajax({
 				         url: 'Aggiorna',
 				         type: 'GET',
-				         data: 'tipoAggiornamento=pubblicazione_acquisizione&id_opera='+self.id,
+				         data: 'tipoAggiornamento=pubblicazione_acquisizioni&id_opera='+self.id,
 				             success: function(data) {
 				            	 if(eval(data)){
 				            		 alert("Opera pubblicata!!")
 				            	 }
 				             }
 					});
+					}
+					else{
+						$.ajax({
+					         url: 'Aggiorna',
+					         type: 'GET',
+					         data: 'tipoAggiornamento=pubblicazione_trascrizioni&id_opera='+self.id,
+					             success: function(data) {
+					            	 if(eval(data)){
+					            		 alert("Opera pubblicata!!")
+					            	 }
+					             }
+						});
+					}
 				};
 				var testo=document.createTextNode("Pubblica");
 				pubblica.appendChild(testo);
@@ -460,6 +474,10 @@ function switchPage(page) {
 	else if (sezione == 9){
 	updateTable("table_opere_da_convalidare",data);
 	updatePager("paging2",page);
+	}
+	else if (sezione == "revisore_trascrizione"){
+		updateTable("table_opere_da_convalidare_trascrittore",data);
+		updatePager("paging3",page);
 	}
 	else {
 		updateTable("tableopere",data);

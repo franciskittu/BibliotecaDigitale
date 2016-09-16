@@ -449,11 +449,11 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 					document.getElementById("testoTrascrizione").value = "";
 				}
 				document.getElementById("editor_tei").id_della_pagina.value = pagine_opera[i].id;
-				div_creato.setAttribute("style","width: 50%; height: 500px; float:left;");
+				div_creato.setAttribute("class","openseadragon1");
 			}
 			//sezione revisore acquisizioni 
 			else{
-				div_creato.setAttribute("style","width: 100%; height: 500px; float:left;");
+				div_creato.setAttribute("class","openseadragon");
 				if(pagine_opera[i].immagine_validata == "true"){
 					document.getElementById("buttonConvalida").setAttribute("disabled", "");
 					document.getElementById("buttonRimuovi").setAttribute("disabled", "");
@@ -565,6 +565,10 @@ function nonConvalidarePagina(){
 			});
 		}
 	}
+}
+
+function revisione_trascrizione(){
+	
 }
 
 function stampaErrore(data){

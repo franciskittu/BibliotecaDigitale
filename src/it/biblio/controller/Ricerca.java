@@ -17,6 +17,7 @@ import it.biblio.data.model.Pagina;
 import it.biblio.data.model.Ruolo;
 import it.biblio.data.model.Utente;
 import it.biblio.framework.data.DataLayerException;
+import it.biblio.framework.result.AddSlashesFmkExt;
 import it.biblio.framework.result.FailureResult;
 import it.biblio.framework.result.SplitSlashesFmkExt;
 import it.biblio.framework.result.TemplateManagerException;
@@ -289,13 +290,13 @@ public class Ricerca extends BibliotecaBaseController {
 					}
 					in.close();
 					if((Boolean) request.getAttribute("revisore_trascrizioni")==true){
-						p.setPathTrascrizione(SecurityLayer.addSlashes(SecurityLayer.removeNewLine(testo)));
+						p.setPathTrascrizione(SecurityLayer.removeNewLine(testo));
 					}else{
 						/*int beginIndex = testo.indexOf("<body>")-6;
 						int endIndex = testo.indexOf("</body>");
 						p.setPathTrascrizione(testo.substring(beginIndex, endIndex));*/
 						testo = ParserTEI.tei_to_txt(testo);
-						p.setPathTrascrizione(SecurityLayer.addSlashes(SecurityLayer.removeNewLine(testo)));
+						p.setPathTrascrizione(SecurityLayer.removeNewLine(testo));
 					}
 					
 				}
@@ -303,6 +304,7 @@ public class Ricerca extends BibliotecaBaseController {
 			request.setAttribute("pagine", pagine);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
+			request.setAttribute("add_slashes", new AddSlashesFmkExt());
 			request.setAttribute("contentType", "text/json");
 			TemplateResult tr = new TemplateResult(getServletContext());
 			tr.activate("queryPagine.ftl.json", request, response);

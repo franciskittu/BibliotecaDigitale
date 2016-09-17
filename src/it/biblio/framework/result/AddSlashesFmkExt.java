@@ -6,14 +6,7 @@ import freemarker.template.TemplateMethodModelEx;
 import freemarker.template.TemplateModelException;
 import it.biblio.framework.utility.SecurityLayer;
 
-/**
- * Classe che definisce una funzione richiamabile all'interno
- * del template di Freemarker.
- * 
- * @author Marco D'Ettorre
- * @author Francesco Proietti
- */
-public class SplitSlashesFmkExt implements TemplateMethodModelEx {
+public class AddSlashesFmkExt implements TemplateMethodModelEx {
 
 	@SuppressWarnings("rawtypes")
 	@Override
@@ -24,7 +17,7 @@ public class SplitSlashesFmkExt implements TemplateMethodModelEx {
 			if(arg0.get(0) == null){//fix
 				return "";
 			}
-			return SecurityLayer.stripSlashes(arg0.get(0).toString());
+			return SecurityLayer.addSlashes(arg0.get(0).toString());
 		}else{
 			return "";
 		}

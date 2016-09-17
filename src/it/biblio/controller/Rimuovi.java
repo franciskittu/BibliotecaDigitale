@@ -1,5 +1,6 @@
 package it.biblio.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -122,6 +123,41 @@ public class Rimuovi extends BibliotecaBaseController {
 			action_error_ajax(request, response);
 		}
 	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 * @throws ControllerException
+	 */
+	private void action_rimuovi_trascrizione(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, ControllerException{
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			Pagina P = datalayer.getPagina(Long.parseLong(request.getParameter("id_trascrizione")));
+			P.setTrascrizioneValidata(false);
+			File f = new File(P.getPathTrascrizione());
+			Boolean successo = f.delete();
+			if(successo){
+				P.setPathTrascrizione("");
+				P = datalayer.aggiornaPagina(P);
+				if(P == null){
+					successo = false;
+				}
+			}
+			
+			request.setAttribute("risultato", successo.toString());
+			request.setAttribute("outline_tpl", "");
+			
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", request, response);
+			
+		}catch(Exception ex){
+			request.setAttribute("message", ex.getMessage());
+			action_error_ajax(request, response);
+		}
+	}
+		
 			
 	/**
 	 * /**
@@ -140,6 +176,8 @@ public class Rimuovi extends BibliotecaBaseController {
 				action_rimuovi_utente(request,response);
 			}else if(request.getParameter("id_pagina") != null){
 				action_rimuovi_pagina(request,response);
+			}else if(request.getParameter("id_trascrizione") != null){
+				action_rimuovi_trascrizione(request,response);
 			}
 		}catch(TemplateManagerException | ControllerException ex){
 			request.setAttribute("exception", ex);

@@ -410,17 +410,18 @@ function trascrizionePagina(idOpera){
             if (data.length > 0){
 	            	if (data[0].trascrizione != ''){
 	            		var testo = data[0].trascrizione.replace(/<br \/>/g,'\n');
-	            		console.log(testo);
 	            		document.getElementById("testoTrascrizione").value = testo;
-	            		
 	            	}
-	            	console.log(data[0].trascrizione);
-	            	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+	            	var div = document.createElement('DIV');
+	            	div.id = "openseadragon1";
+	            	div.setAttribute("class","openseadragon1");
+	            	document.getElementById("viewer_img").appendChild(div);
 	            	openseadragon(data[0].id);
-	            	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
 	            	document.getElementById("openseadragon").style.display="block";
 	            	document.getElementById("openseadragon").style.visibility="visible";
-            	
+	            	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+	            	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
+	            	
             }
             else {
                 alert("Non ci sono pagine da trascrivere!!");
@@ -607,12 +608,15 @@ function pagine_con_trascrizioni_da_convalidare(data){
 	if (data.length > 0){
     	if (data[0].trascrizione != ''){
     		var testo = data[0].trascrizione.replace(/<br \/>/g,'\n');
-    		console.log(testo);
     		document.getElementById("testoTrascrizione").value = testo;
     		
     	}
-    	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+    	var div = document.createElement('DIV');
+    	div.id = "openseadragon1";
+    	div.setAttribute("class","openseadragon1");
+    	document.getElementById("viewer_img").appendChild(div);
     	openseadragon(data[0].id);
+    	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
     	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
     	document.getElementById("editor_tei").setAttribute("disabled","");
     	document.getElementById("openseadragon").style.display="block";

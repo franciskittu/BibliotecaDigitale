@@ -4,10 +4,11 @@
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap/blob/gh-pages/LICENSE)
  */
  .openseadragon1{
- 	border:1px solid #2C3E50; 
- 	width: 50%; 
- 	height: 500px; 
- 	float:left;
+ 	margin: 1%;
+    border: 1px solid #2C3E50;
+    width: 48%;
+    height: 500px;
+    float: left;
  }
  .openseadragon{
  	border:1px solid #2C3E50; 

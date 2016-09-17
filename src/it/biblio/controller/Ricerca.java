@@ -263,6 +263,12 @@ public class Ricerca extends BibliotecaBaseController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
 	private void action_pagine_opera(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
 		try{
@@ -283,13 +289,13 @@ public class Ricerca extends BibliotecaBaseController {
 					}
 					in.close();
 					if((Boolean) request.getAttribute("revisore_trascrizioni")==true){
-						p.setPathTrascrizione(testo);
+						p.setPathTrascrizione(SecurityLayer.addSlashes(SecurityLayer.removeNewLine(testo)));
 					}else{
 						/*int beginIndex = testo.indexOf("<body>")-6;
 						int endIndex = testo.indexOf("</body>");
 						p.setPathTrascrizione(testo.substring(beginIndex, endIndex));*/
 						testo = ParserTEI.tei_to_txt(testo);
-						p.setPathTrascrizione(testo);
+						p.setPathTrascrizione(SecurityLayer.addSlashes(SecurityLayer.removeNewLine(testo)));
 					}
 					
 				}
@@ -311,6 +317,7 @@ public class Ricerca extends BibliotecaBaseController {
 			e.printStackTrace();
 		}
 	}
+	
 	@SuppressWarnings("unused")
 	private void action_ricerca(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
@@ -345,10 +352,42 @@ public class Ricerca extends BibliotecaBaseController {
 
 	}
 	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
 	private void action_opere_con_acquisizioni_da_convalidare(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
 		try {
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 			List<Opera> opere = datalayer.getOpereConImmaginiNonValidate();
+			
+			request.setAttribute("opere", opere);
+			request.setAttribute("outline_tpl", "");
+			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
+			request.setAttribute("contentType", "text/json");
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("queryOpere.ftl.json", request, response);
+		}catch (DataLayerException ex) {
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+	
+	/**
+	 * 
+	 * @param request
+	 * @param response
+	 * @throws TemplateManagerException
+	 */
+	private void action_opere_con_trascrizioni_da_convalidare(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
+		try {
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			Opera O = datalayer.creaOpera();
+			O.setImmaginiPubblicate(true);
+			O.setTrascrizioniPubblicate(false);
+			List<Opera> opere = datalayer.getOpereByQuery(O);
 			
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
@@ -384,6 +423,8 @@ public class Ricerca extends BibliotecaBaseController {
 				case "opere_da_trascrivere": action_opere_da_trascrivere(request,response);
 					break;
 				case "opere_con_acquisizioni_da_convalidare": action_opere_con_acquisizioni_da_convalidare(request,response);
+					break;
+				case "opere_con_trascrizioni_da_convalidare": action_opere_con_trascrizioni_da_convalidare(request,response);
 					break;
 				case "pagine_opera": action_pagine_opera(request,response);
 					break;

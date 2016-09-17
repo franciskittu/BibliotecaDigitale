@@ -103,6 +103,11 @@ public class Rimuovi extends BibliotecaBaseController {
 			if(P == null){
 				throw new ControllerException("Attenzione! La pagina che si vuol rimuovere non è presente nella base di dati!!!");
 			}
+			
+			Opera O = datalayer.getOpera(P.getOpera().getID());
+			O.setImmaginiPubblicate(false);
+			O.setTrascrizioniPubblicate(false);
+			O = datalayer.aggiornaOpera(O);
 			if(datalayer.rimuoviPagina(P) == null){
 				successo = false;
 			}

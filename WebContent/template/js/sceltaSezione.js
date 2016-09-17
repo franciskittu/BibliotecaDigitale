@@ -67,7 +67,7 @@ function scelta_sezione(caso){
 	    	break;
 	    case "pagine_con_trascrizioni_da_convalidare":
 	    	sezione = "pagine_con_trascrizioni_da_convalidare";
-	    	
+	    	break;
 	    default:
 	    	sezione=0
 	    	vistaDefaultAdmin();

@@ -36,11 +36,11 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	private PreparedStatement aUtente, gUtente,gUtenteUsername, gUtenti, rUtente;
 	private PreparedStatement aRuolo, gRuolo, gRuoloNome,gRuoliUtente,gRuoli;
 	private PreparedStatement gPrivilegi, aPrivilegi, rPrivilegiUtente;
-	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera ;
+	private PreparedStatement gOpera, aOpera, aggiornaOpera,gOpere, rOpera;
 	private PreparedStatement gPagina, aPagina, gPagineOpera, rPagina, aggiornaPagina;
 	private PreparedStatement gCommenta, aCommenta;
 	
-	private Statement gOpereByQuery,gOpereDaTrascrivere, gOpereInPubblicazioneAcquisizioni, gOpereInPubblicazioneTrascrizioni, gOpereConImmaginiNonValidate;
+	private Statement gOpereByQuery, gOpereConImmaginiMancanti, gOpereDaTrascrivere, gOpereInPubblicazioneAcquisizioni, gOpereInPubblicazioneTrascrizioni, gOpereConImmaginiNonValidate;
 	
 	
 	public BibliotecaDataLayerPgsqlImpl(DataSource ds) {
@@ -83,6 +83,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			gCommenta = c.prepareStatement("SELECT * FROM Commenta WHERE progressivo = ?");
 			aCommenta = c.prepareStatement("");
 			gOpereByQuery = c.createStatement();
+			gOpereConImmaginiMancanti = c.createStatement();
 			gOpereDaTrascrivere = c.createStatement();
 			gPagineOpera = c.prepareStatement("SELECT * FROM Pagina WHERE opera = ? ORDER BY(numero)");
 			rOpera = c.prepareStatement("DELETE FROM Opera WHERE id = ?");
@@ -600,7 +601,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	public List<Opera> getOpereInPubblicazioneAcquisizioni() throws DataLayerException {
 		List<Opera> ris = new ArrayList<Opera>();
 		String query = "SELECT Opera.* FROM Opera JOIN Pagina ON (Pagina.opera=Opera.id) "
-				+ "WHERE immagini_pubblicate = false "
+				+ "WHERE pagina.immagine_validata = true AND opera.immagini_pubblicate = false "
 				+ "GROUP BY(Opera.id) HAVING COUNT(*) = Opera.numero_pagine";
 		try(ResultSet rs = this.gOpereInPubblicazioneAcquisizioni.executeQuery(query)){
 			while(rs.next()){
@@ -618,6 +619,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		List<Opera> ris = new ArrayList<Opera>();
 		String query = "SELECT Opera.* FROM Opera JOIN Pagina ON (Pagina.opera=Opera.id) "
 				+ "WHERE immagini_pubblicate = true AND trascrizioni_pubblicate = false "
+				+ "AND Pagina.trascrizione_validata = true "
 				+ "GROUP BY(Opera.id) HAVING COUNT(*) = Opera.numero_pagine";
 		try(ResultSet rs = this.gOpereInPubblicazioneAcquisizioni.executeQuery(query)){
 			while(rs.next()){
@@ -679,7 +681,38 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		}
 		return result;
 	}
-
+	
+	@Override
+	public List<Opera> getOpereConImmaginiMancanti() throws DataLayerException {
+		List<Opera> result = new ArrayList<>();
+		String query = "SELECT Opera.* FROM pagina JOIN opera ON (pagina.opera=opera.id) "
+				+"GROUP BY (opera.id) HAVING COUNT(*) < opera.numero_pagine";
+		try(ResultSet rs = this.gOpereConImmaginiMancanti.executeQuery(query)){
+			while(rs.next()){
+				result.add(this.getOpera(rs.getLong("id")));
+			}
+		} catch(SQLException ex){
+			throw new DataLayerException("Incapace di ottenere le opere con immagini mancanti", ex);
+		}
+		return result;
+	}
+	
+/*
+	@Override
+	public List<Opera> getOpereConTrascrizioniNonValidate() throws DataLayerException {
+		List<Opera> result = new ArrayList<>();
+		String query = "SELECT Opera.* FROM pagina JOIN opera ON (pagina.opera=opera.id) "
+		+ "WHERE opera.immagini_pubblicate = true AND opera= false GROUP BY(opera.id) ORDER BY(opera.titolo)";
+		try(ResultSet rs = this.gOpereConImmaginiNonValidate.executeQuery(query)){
+			while(rs.next()){
+				result.add(this.getOpera(rs.getLong("id")));
+			}
+		} catch (SQLException ex) {
+			throw new DataLayerException("Incapace di ottenere le opere con immagini non validate", ex);
+		}
+		return result;
+	}
+*/
 	/**
 	 * chiude tutti gli statement e chiude la connessione al DB.
 	 * 
@@ -703,6 +736,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 			this.gOpereInPubblicazioneAcquisizioni.close();
 			this.gOpereInPubblicazioneTrascrizioni.close();
 			this.gOpereConImmaginiNonValidate.close();
+			this.gOpereConImmaginiMancanti.close();
 			this.gPagina.close();
 			this.gPagineOpera.close();
 			this.gPrivilegi.close();
@@ -723,6 +757,6 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		}
 		super.destroy();
 	}
-	
+
 
 }

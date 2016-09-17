@@ -70,6 +70,6 @@ public final class ParserTEI {
 			//occorrenza = doc.indexOf(System.lineSeparator());
 			//doc = doc.substring(doc.indexOf(System.lineSeparator())+System.lineSeparator().length());
 		//}
-		return doc.replaceAll(System.lineSeparator(), "");// per ragioni di compatibilità
+		return doc;
 	}
 }

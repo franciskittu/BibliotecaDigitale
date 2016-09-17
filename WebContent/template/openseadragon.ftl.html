@@ -32,13 +32,13 @@
                  <br>
                 <input type="hidden" name="id_della_pagina">
             </form>
-            <#if revisore_acquisizioni?? && revisore_acquisizioni>
+            <#if trascrittore?? && trascrittore>
         		<div class="row">
                     <div class="form-group col-xs-12">
                         <button onclick="invia_trascrizione()" class="btn btn-success btn-lg">Invia</button>
                     </div>
             	</div>
-        	<#else if revisore_trascrizioni?? && revisore_trascrizioni >
+        	<#elseif revisore_trascrizioni?? && revisore_trascrizioni >
         		<div class="row">
 	        		<center> 
 						<button id="buttonConvalida" onclick="convalidaLaPagina()" class="btn btn-primary btn-lg">Convalida</button>

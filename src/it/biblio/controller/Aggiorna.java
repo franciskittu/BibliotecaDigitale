@@ -31,20 +31,25 @@ public class Aggiorna extends BibliotecaBaseController {
 	private static final long serialVersionUID = -4549029224361299450L;
 
 	/**
-	 * Funzione che aggiorna i privilegi utente rimuovendo quelli già presenti 
-	 * per inserire quelli ricevuti dalla richiesta.
+	 * Funzione che aggiorna l'opera pubblicandola con tutte le sue acquisizioni
+	 * o trascrizioni, in base alla richiesta
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws TemplateManagerException errore nella logica del template manager 
 	 */
-	private void action_pubblica_acquisizioni(HttpServletRequest request, HttpServletResponse response) throws ControllerException, TemplateManagerException{
+	private void action_pubblica(HttpServletRequest request, HttpServletResponse response, String tipo) throws ControllerException, TemplateManagerException{
 		try{
 			long id_opera = SecurityLayer.checkNumeric(request.getParameter("id_opera"));
 			Boolean successo = true;
 			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 			Opera O = datalayer.getOpera(id_opera);
-			O.setImmaginiPubblicate(true);
+			if(tipo.equals("trascrizioni")){
+				O.setTrascrizioniPubblicate(true);
+			}
+			else{
+				O.setImmaginiPubblicate(true);
+			}
 			if(datalayer.aggiornaOpera(O) == null){
 				successo = false;
 			}
@@ -152,7 +157,9 @@ public class Aggiorna extends BibliotecaBaseController {
 				switch(request.getParameter("tipoAggiornamento")){
 				case "aggiorna_privilegi_utente": action_aggiorna_privilegi_utente(request,response);
 					break;
-				case "pubblicazione_acquisizione":	action_pubblica_acquisizioni(request,response);
+				case "pubblicazione_acquisizioni":	action_pubblica(request,response, "acquisizioni");
+					break;
+				case "pubblicazione_trascrizioni":	action_pubblica(request,response, "trascrizioni");
 					break;
 				case "valida_acquisizione": action_valida_pagina(request,response,"acquisizione");
 					break;

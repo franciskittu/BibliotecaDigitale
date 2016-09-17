@@ -89,9 +89,7 @@ public abstract class BibliotecaBaseController extends HttpServlet {
 	protected void action_result(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, DataLayerException{
 		BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
 		if((Boolean)request.getAttribute("acquisitore") == true){
-			Opera O = datalayer.creaOpera();
-			O.setImmaginiPubblicate(false);
-			List<Opera> opere = datalayer.getOpereByQuery(O);
+			List<Opera> opere = datalayer.getOpereConImmaginiMancanti();
 			request.setAttribute("opere_non_pubblicate", opere);
 		}
 		else if((Boolean)request.getAttribute("trascrittore") == true){

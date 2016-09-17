@@ -72,6 +72,9 @@ public interface BibliotecaDataLayer extends DataLayer{
 	
 	List<Opera> getOpereConImmaginiNonValidate() throws DataLayerException;
 	
+	List<Opera> getOpereConImmaginiMancanti() throws DataLayerException;
+	
+	
 	/*Operazioni Pagina*/
 	
 	Pagina creaPagina()throws DataLayerException;

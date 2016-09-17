@@ -440,7 +440,7 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;
 			document.getElementById("openseadragon1").remove();
 			var div_creato = document.createElement("DIV");
-			if (sezione != 10){
+			if (sezione == 6){
 				if (pagine_opera[i].trascrizione != ''){
 					var testo = pagine_opera[i].trascrizione.replace(/<br \/>/g,'\n');
 					document.getElementById("testoTrascrizione").value = testo;
@@ -452,7 +452,7 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 				div_creato.setAttribute("class","openseadragon1");
 			}
 			//sezione revisore acquisizioni 
-			else{
+			else if (sezione == 10){
 				div_creato.setAttribute("class","openseadragon");
 				if(pagine_opera[i].immagine_validata == "true"){
 					document.getElementById("buttonConvalida").setAttribute("disabled", "");
@@ -465,7 +465,17 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 						
 				}
 			}
-			
+			else if (sezione == "pagine_con_trascrizioni_da_convalidare"){
+				div_creato.setAttribute("class","openseadragon1");
+				if(pagine_opera[i].immagine_validata == "true"){
+					document.getElementById("buttonConvalida").setAttribute("disabled", "");
+					document.getElementById("buttonRimuovi").setAttribute("disabled", "");
+				}
+				else if (document.getElementById("buttonConvalida").disabled){
+					document.getElementById("buttonConvalida").removeAttribute("disabled");
+					document.getElementById("buttonRimuovi").removeAttribute("disabled"); 
+				}
+			}
 			div_creato.id = "openseadragon1";	
 			var body = document.getElementById("viewer_img");
 			body.appendChild(div_creato);
@@ -511,18 +521,22 @@ function convalidaPagina(data){
 }
 
 function convalidaLaPagina(){
-	debugger;
 	var j=0;
+	var tipo_aggiornamento;
+	if (sezione == "pagine_con_trascrizioni_da_convalidare"){
+		tipo_aggiornamento="valida_trascrizione";
+	}
+	else {
+		tipo_aggiornamento="valida_acquisizione";
+	}
 	for (var i = 0 ; i<pagine_opera.length; i++){
-		console.log(pagine_opera[i].numero);
-		console.log(document.getElementById('numeroPaginaDaTrascrivere').textContent);
 		if ( pagine_opera[i].numero == parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)){
 			j = i;
 			$.ajax({
 		        url: 'Aggiorna',
 		        dataType: "json",
 		        type: 'GET',
-		        data: 'tipoAggiornamento=valida_acquisizione&id_pagina='+ pagine_opera[i].id,
+		        data: 'tipoAggiornamento='+tipo_aggiornamento+'&id_pagina='+ pagine_opera[i].id,
 		            success: function(data) {
 		    	 		if (!eval(data)){
 		    	 			errore();
@@ -568,7 +582,47 @@ function nonConvalidarePagina(){
 }
 
 function revisione_trascrizione(){
+	$.ajax({
+        url: 'Ricerca',
+        dataType: "json",
+        type: 'GET',
+        data: 'tipoRicerca=opere_con_trascrizioni_da_convalidare',
+            success: function(data) {
+    	 		if (data.length == 0){
+    	 			errore();
+    	 		}
+    	 		else {
+    	 			paginatore(data);
+    	 			init();
+    	 			document.getElementById("lista_opere_da_convalidare").style.visibility="visible";
+    	 			document.getElementById("lista_opere_da_convalidare").style.display="block";
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
+    	 			
+    	 		}
+            }
+	});	
+}
+function pagine_con_trascrizioni_da_convalidare(data){
+	if (data.length > 0){
+    	if (data[0].trascrizione != ''){
+    		var testo = data[0].trascrizione.replace(/<br \/>/g,'\n');
+    		console.log(testo);
+    		document.getElementById("testoTrascrizione").value = testo;
+    		
+    	}
+    	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+    	openseadragon(data[0].id);
+    	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
+    	document.getElementById("editor_tei").setAttribute("disabled","");
+    	document.getElementById("openseadragon").style.display="block";
+    	document.getElementById("openseadragon").style.visibility="visible";
 	
+}
+else {
+    alert("Non ci sono pagine da trascrivere!!");
+    
+}
 }
 
 function stampaErrore(data){

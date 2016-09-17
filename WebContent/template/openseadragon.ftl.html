@@ -4,7 +4,7 @@
 		<div class="row">
 	                <div class="col-lg-12 text-center">
 	                    <hr class="star-primary">
-	                    <h2>SCRIVI LA PAGINA</h2>
+	                    <h2 >SCRIVI LA PAGINA</h2>
 	                    <h3>Trascrivi la pagina n.<div id="numeroPaginaDaTrascrivere"></div></h3>
 	                    <hr class="star-primary">
 	                </div>
@@ -32,11 +32,21 @@
                  <br>
                 <input type="hidden" name="id_della_pagina">
             </form>
-            <div class="row">
+            <#if revisore_acquisizioni?? && revisore_acquisizioni>
+        		<div class="row">
                     <div class="form-group col-xs-12">
                         <button onclick="invia_trascrizione()" class="btn btn-success btn-lg">Invia</button>
                     </div>
-            </div>
+            	</div>
+        	<#else if revisore_trascrizioni?? && revisore_trascrizioni >
+        		<div class="row">
+	        		<center> 
+						<button id="buttonConvalida" onclick="convalidaLaPagina()" class="btn btn-primary btn-lg">Convalida</button>
+						<button id="buttonRimuovi" onclick="nonConvalidarePagina()" class="btn btn-danger btn-lg">Rimuovi</button>
+					</center>
+				</div>
+        	</#if>
+
         </div>
             
      </div>

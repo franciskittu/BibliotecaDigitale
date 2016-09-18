@@ -11,7 +11,7 @@
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav navbar-right">
+                <ul id="ul_navbar" class="nav navbar-nav navbar-right">
                     <li class="hidden">
                         <a href="#page-top"></a>
                     </li>
@@ -79,7 +79,6 @@
   						
   							</tbody>
 								</table>
-                        
                     </div>
         </div>
 
@@ -115,17 +114,10 @@
 							    </tr>
 							  </thead>
 							  <tbody>
-                        
-							  
-								  	<tr class="riga_tabella" >
-								      
-								    </tr>
-							  
-  						
+								
   							</tbody>
 						</table>
-  						
-                        
+						<#include sezione_non_presente.ftl.html>
                     </div>
         </div>
 
@@ -135,21 +127,11 @@
 <#include "listaopere.ftl.html">
 
 <#include "openseadragon.ftl.html">
+<#include "sezione_non_presente.ftl.html">
 
- <section id="erroreRicerca">
-	<div class="container">
-        <div class="row">
-            <div class="col-lg-12 text-center">
-                <hr class="star-primary">
-                <h3 class="nessun_risultato">CI DISPIACE, NON CI SONO RISULTATI PER QUESTA SEZIONE</h3>
-                <hr class="star-primary">
-            </div>
-        </div>
-	</div>
-</section>
 <script type="text/javascript">
 
-		scelta_sezione(5);
+		scelta_sezione("trascrittore");
 	
 </script>
 

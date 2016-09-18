@@ -37,13 +37,13 @@ function scelta_sezione(caso){
 	    	sezione = 4;
 	    	listaUtenti();
 	    	break;
-	    case 5:
-	    	sezione = 5;
+	    case "trascrittore":
+	    	sezione = "trascrittore";
 	    	listaOpereTrascrittore();
 	    	listaOpereTrascrittoreDaTrascrivere();
 	    	break;
-	    case 6:
-	    	sezione = 6;
+	    case "editor_trascrittore":
+	    	sezione = "editor_trascrittore";
 	    	
 	    	break;
 	    case 7:
@@ -54,12 +54,12 @@ function scelta_sezione(caso){
 	    	sezione = 8;
 	    	gestisciUtente();
 	    	break;
-	    case 9:
-	    	sezione = 9;
+	    case "revisore_acquisizioni":
+	    	sezione = "revisore_acquisizioni";
 	    	revisoreAcquisizioni();
 	    	break;
-	    case 10:
-	    	sezione = 10;
+	    case "convalida_revisore_acquisizioni":
+	    	sezione = "convalida_revisore_acquisizioni";
 	    	break;
 	    case "revisore_trascrizione":
 	    	sezione = "revisore_trascrizione";

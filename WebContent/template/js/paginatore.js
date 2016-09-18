@@ -31,12 +31,12 @@ function paginatore(data){
 	 		 		 temp.push({riga_tabella:cont++, id: data[j].id, nomeutente: data[j].nomeutente, nome: data[j].nome, cognome: data[j].cognome , email: data[j].email,ruolo : vettore_ausiliario[j].nome_ruolo});
 	 		 	}
 	 		 	break;
-	 		case 5:
+	 		case "trascrittore":
 	 			for(j=i; j < i+3 && j < data.length; j++){
 	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
 	 		 	}
 	 			break;
-	 		case 9:
+	 		case "revisore_acquisizioni":
 	 			for(j=i; j < i+3 && j < data.length; j++){
 	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
 	 		 	}
@@ -279,7 +279,7 @@ function makeRow(datarow) {
 			
 		}
 	}
-	else if(sezione == 5){	
+	else if(sezione == "trascrittore"){	
 			row.onclick = function(){
 				self=this;
 				var id = self.id ;
@@ -291,7 +291,7 @@ function makeRow(datarow) {
 			         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 			             success: function(data) {
 			            	 if(data.length > 0){
-			            		 	scelta_sezione(6);
+			            		 	scelta_sezione("editor_trascrittore");
 				         	    	trascrizionePagina(id);
 				         	    	
 			            	 }
@@ -304,7 +304,7 @@ function makeRow(datarow) {
 				});
 			};
 	}
-	else if(sezione == 9){	
+	else if(sezione == "revisore_acquisizioni"){	
 		row.onclick = function(){
 			self=this;
 			var id = self.id ;
@@ -316,7 +316,7 @@ function makeRow(datarow) {
 		         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 		             success: function(data) {
 		            	 if(data.length > 0){
-		            		 	scelta_sezione(10);
+		            		 	scelta_sezione("convalida_revisore_acquisizioni");
 			         	    	convalidaPagina(data);
 			         	    	
 		            	 }
@@ -488,7 +488,7 @@ function switchPage(page) {
 		
 	}
 	}
-	else if (sezione==5){
+	else if (sezione=="trascrittore"){
 		if(table_opere_in_trascrizione){
 		updateTable("table_opere_in_trascrizione",data);
 		updatePager("paging",page);
@@ -498,7 +498,7 @@ function switchPage(page) {
 		updatePager("paging1",page);
 		}
 	}
-	else if (sezione == 9){
+	else if (sezione == "revisore_acquisizioni"){
 	updateTable("table_opere_da_convalidare",data);
 	updatePager("paging2",page);
 	}

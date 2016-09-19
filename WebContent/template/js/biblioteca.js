@@ -594,6 +594,12 @@ function convalidaLaPagina(){
 
 function nonConvalidarePagina(){
 	var obj=pagine_opera;
+	if (sezione == "pagine_con_trascrizioni_da_convalidare"){
+		var id='id_trascrizione=';
+	}
+	else if(sezione == "convalida_revisore_acquisizioni") {
+		var id='id_pagina=';
+	}
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		var j = i;
 		if ( pagine_opera[i].numero == parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)){
@@ -601,7 +607,7 @@ function nonConvalidarePagina(){
 		        url: 'Rimuovi',
 		        dataType: "json",
 		        type: 'GET',
-		        data: 'id_pagina='+ pagine_opera[i].id,
+		        data: id + pagine_opera[i].id,
 		            success: function(data) {
 		    	 		if (!eval(data)){
 		    	 			errore("NUMERO PAGINA DA TRASCRIVERE");

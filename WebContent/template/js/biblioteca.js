@@ -227,9 +227,7 @@ function errore (titolo){
 			document.getElementById("error2").style.visibility="visible";
 			document.getElementById("titoloSezioneErrore2").innerHTML = titolo;
 		}
-		else {
-			document.getElementById("titoloSezioneErrore").innerHTML = titolo;
-		}
+		document.getElementById("titoloSezioneErrore").innerHTML = titolo;
 		document.getElementById("erroreRicerca").style.display="block";
 		document.getElementById("erroreRicerca").style.visibility="visible";
 		window.location.hash='#erroreRicerca';

@@ -472,9 +472,8 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 				else if (document.getElementById("buttonConvalida").disabled){
 					document.getElementById("buttonConvalida").removeAttribute("disabled");
 					document.getElementById("buttonRimuovi").removeAttribute("disabled"); 
-						
-						
 				}
+				
 			}
 			else if (sezione == "pagine_con_trascrizioni_da_convalidare"){
 				div_creato.setAttribute("class","openseadragon1");
@@ -485,6 +484,13 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 				else if (document.getElementById("buttonConvalida").disabled){
 					document.getElementById("buttonConvalida").removeAttribute("disabled");
 					document.getElementById("buttonRimuovi").removeAttribute("disabled"); 
+				}
+				if (pagine_opera[i].trascrizione != ''){
+					var testo = pagine_opera[i].trascrizione.replace(/<br \/>/g,'\n');
+					document.getElementById("testoTrascrizione").value = testo;
+				}
+				else{
+					document.getElementById("testoTrascrizione").value = "";
 				}
 			}
 			div_creato.id = "openseadragon1";	

@@ -105,6 +105,7 @@ function gestioneRuoloUtente(data){
 			         url: 'Aggiorna',
 			         type: 'GET',
 			         data: 'tipoAggiornamento=aggiorna_privilegi_utente&nome_ruolo='+self.id+'&id_utente='+id_utente,
+			         async: 'false',
 			             success: function(response) {
 			            	 if(eval(response)){
 			            		 for (var i=0; i <ruolo.ruoli_db.length; i++){
@@ -222,28 +223,15 @@ function listaOpereAdmin() {
 }
 function errore (titolo){
 		if(document.getElementById("titoloSezioneErrore").textContent!= ""){
-			var div=document.createElement("div");
-			div.setAttribute("class","error");
-			var riga = document.createElement('div');
-			riga.setAttribute("class","row");
-			var div_interno = document.createElement('div');
-			div_interno.setAttribute("class","col-lg-12 text-center");
-			var h2 = document.createElement('h2');
-			h2.id ="titoloSezioneErrore2";
-			h2.innerHTML=titolo;
-			var hr = document.createElement('hr');
-			hr.setAttribute("class", "star-primary");
-			div_interno.appendChild(h2);
-			div_interno.appendChild(hr);
-			riga.appendChild(div_interno);
-			div.appendChild(riga);
-			console.log(div);
+			document.getElementById("error2").style.display="block";
+			document.getElementById("error2").style.visibility="visible";
+			document.getElementById("titoloSezioneErrore2").innerHTML = titolo;
 		}
 		else {
-			document.getElementById("erroreRicerca").style.display="block";
-			document.getElementById("erroreRicerca").style.visibility="visible";
 			document.getElementById("titoloSezioneErrore").innerHTML = titolo;
 		}
+		document.getElementById("erroreRicerca").style.display="block";
+		document.getElementById("erroreRicerca").style.visibility="visible";
 		window.location.hash='#erroreRicerca';
 }
 

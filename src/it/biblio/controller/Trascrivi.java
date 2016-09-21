@@ -18,6 +18,9 @@ import it.biblio.data.model.BibliotecaDataLayer;
 import it.biblio.data.model.Opera;
 import it.biblio.data.model.Pagina;
 import it.biblio.framework.data.DataLayerException;
+import it.biblio.framework.result.TemplateManagerException;
+import it.biblio.framework.result.TemplateResult;
+import it.biblio.framework.utility.SecurityLayer;
 
 /**
  * Servlet per l'inserimento della trascrizione in formato TEI nel sistema.
@@ -57,7 +60,7 @@ public class Trascrivi extends BibliotecaBaseController {
 					titolo+"</title></titleStmt><publicationStmt><p>"+
 					editore+"</p></publicationStmt><sourceDesc><p>"+
 					descrizione+"</p></sourceDesc></fileDesc></teiHeader>";
-			String body = "<text><body>"+testo+"</body></text></TEI>";
+			String body = "<text><body>"+SecurityLayer.addSlashes(testo)+"</body></text></TEI>";
 			return intestazione + System.lineSeparator() + header + System.lineSeparator() + body;
 		}catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -74,10 +77,12 @@ public class Trascrivi extends BibliotecaBaseController {
 	 * @param response servlet response
 	 * @throws IOException 
 	 * @throws FileNotFoundException 
+	 * @throws TemplateManagerException 
 	 */
-	private void action_memorizza_file(HttpServletRequest request, HttpServletResponse response, Pagina p) throws FileNotFoundException, IOException{
+	private void action_memorizza_file(HttpServletRequest request, HttpServletResponse response, Pagina p) throws FileNotFoundException, IOException, TemplateManagerException{
 		final String path = getServletContext().getInitParameter("system.directory_trascrizioni");
 		final String contenuto_file_tei = input_to_tei(request, response, p);
+		Boolean successo = true;
 		try(BufferedReader in = new BufferedReader(new StringReader(contenuto_file_tei));
 				PrintWriter out = new PrintWriter( new BufferedWriter(new FileWriter(path + File.separator + p.getOpera().getTitolo().replace(' ', '_') + p.getNumero()+".xml")))){
 			String s;
@@ -95,8 +100,12 @@ public class Trascrivi extends BibliotecaBaseController {
 			}
 			p.setPathTrascrizione(path + File.separator + p.getOpera().getTitolo().replace(' ', '_') + p.getNumero()+".xml");
 			
-			
 			datalayer.aggiornaPagina(p);
+			request.setAttribute("risultato", successo.toString());
+			request.setAttribute("outline_tpl", "");
+			
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", request, response);
 			
 		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
@@ -117,6 +126,9 @@ public class Trascrivi extends BibliotecaBaseController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TemplateManagerException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

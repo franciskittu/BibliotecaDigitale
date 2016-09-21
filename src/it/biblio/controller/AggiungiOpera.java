@@ -32,6 +32,7 @@ public class AggiungiOpera extends BibliotecaBaseController {
 			
 			Opera O = datalayer.creaOpera();
 			O.setAnno(SecurityLayer.addSlashes(request.getParameter("anno")));
+			O.setDescrizione(SecurityLayer.addSlashes(request.getParameter("descrizione")));
 			O.setLingua(SecurityLayer.addSlashes(request.getParameter("lingua")));
 			O.setTitolo(SecurityLayer.addSlashes(request.getParameter("titolo")));
 			O.setEditore(SecurityLayer.addSlashes(request.getParameter("editore")));
@@ -61,7 +62,7 @@ public class AggiungiOpera extends BibliotecaBaseController {
 		try{
 			if(request.getParameter("anno") != null && request.getParameter("titolo") != null 
 				&& request.getParameter("lingua") != null && request.getParameter("autore") != null
-				&& request.getParameter("editore") != null ){
+				&& request.getParameter("editore") != null && request.getParameter("descrizione") != null){
 				
 				SecurityLayer.checkNumeric(request.getParameter("numeroPagine"));
 				action_aggiungi_opera(request, response);

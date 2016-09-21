@@ -9,6 +9,9 @@
     "immagine_validata" : "${pagina.immagineValidata?then('true','false')?js_string}",
     "trascrizione_validata" : "${pagina.trascrizioneValidata?then('true','false')?js_string}",
     "ultima_modifica_trascrizione" : "${pagina.ultimaModificaTrascrizione!""?js_string}"
+    <#if trascrizioni_pubblicate??>,
+    "trascrizioni_pubblicate": "${trascrizioni_pubblicate?then('true','false')?js_string}"
+    </#if>
     }
     <#sep>, </#sep>
     </#list>

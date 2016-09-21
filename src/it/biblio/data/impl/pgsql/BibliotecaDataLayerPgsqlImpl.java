@@ -306,6 +306,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 		List<Opera> ris = new ArrayList<Opera>();
 		try{
 			String query = "SELECT * FROM Opera WHERE immagini_pubblicate = "+OI.getImmaginiPubblicate().toString()+" AND trascrizioni_pubblicate = "+OI.getTrascrizioniPubblicate().toString();
+			
 			if(O.getID() != 0){
 				query = query + " AND id = "+O.getID();
 			}
@@ -685,7 +686,7 @@ public class BibliotecaDataLayerPgsqlImpl extends DataLayerPgsqlImpl implements 
 	@Override
 	public List<Opera> getOpereConImmaginiMancanti() throws DataLayerException {
 		List<Opera> result = new ArrayList<>();
-		String query = "SELECT Opera.* FROM pagina JOIN opera ON (pagina.opera=opera.id) "
+		String query = "SELECT Opera.* FROM pagina RIGHT JOIN opera ON (pagina.opera=opera.id) "
 				+"GROUP BY (opera.id) HAVING COUNT(*) < opera.numero_pagine";
 		try(ResultSet rs = this.gOpereConImmaginiMancanti.executeQuery(query)){
 			while(rs.next()){

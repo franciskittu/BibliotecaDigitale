@@ -79,9 +79,12 @@ public class Ricerca extends BibliotecaBaseController {
 			O.setEditore(SecurityLayer.addSlashes(editore));
 			O.setTitolo(SecurityLayer.addSlashes(titolo));
 			O.setImmaginiPubblicate((immagini_pubblicate != null && immagini_pubblicate.equals("false")) ? false : true);
+			O.setTrascrizioniPubblicate(false);
 			O.setLingua(SecurityLayer.addSlashes(lingua));
 			opere = datalayer.getOpereByQuery(O);
 
+			O.setTrascrizioniPubblicate(true);
+			opere.addAll(datalayer.getOpereByQuery(O));
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
@@ -301,6 +304,8 @@ public class Ricerca extends BibliotecaBaseController {
 					
 				}
 			}
+			// per la semplice consultazione delle pagine pubblicate.
+			request.setAttribute("trascrizioni_pubblicate", datalayer.getOpera(id_opera).getTrascrizioniPubblicate());
 			request.setAttribute("pagine", pagine);
 			request.setAttribute("outline_tpl", "");
 			request.setAttribute("strip_slashes", new SplitSlashesFmkExt());
@@ -390,6 +395,19 @@ public class Ricerca extends BibliotecaBaseController {
 			O.setImmaginiPubblicate(true);
 			O.setTrascrizioniPubblicate(false);
 			List<Opera> opere = datalayer.getOpereByQuery(O);
+			
+			for(Opera o : opere){
+				List<Pagina> pagine_opera = datalayer.getPagineOpera(o.getID());
+				int cont = 0;
+				for(Pagina pagina : pagine_opera){
+					if(pagina.getTrascrizioneValidata()){
+						cont++;
+					}
+				}
+				if(cont == o.getNumeroPagine()){
+					opere.remove(o);
+				}
+			}
 			
 			request.setAttribute("opere", opere);
 			request.setAttribute("outline_tpl", "");

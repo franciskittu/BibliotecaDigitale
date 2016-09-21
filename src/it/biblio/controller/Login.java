@@ -53,6 +53,8 @@ public class Login extends BibliotecaBaseController {
 						nomi_ruoli_utente.add(ruolo.getNome());
 					}
 					SecurityLayer.createSession(request, U.getUsername(), U.getID(), nomi_ruoli_utente);
+					// è necessario ricaricare la pagina 
+					response.sendRedirect("Home");
 				} else {
 					// display dell'errore nella form di login
 					request.setAttribute("errore_login", true);
@@ -64,9 +66,6 @@ public class Login extends BibliotecaBaseController {
 				action_result(request,response);
 			}
 			
-			// fine processamento
-			// è necessario ricaricare la pagina 
-			response.sendRedirect("Home");
 			
 		} catch (DataLayerException ex) {
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());

@@ -72,4 +72,10 @@ public final class ParserTEI {
 		//}
 		return doc;
 	}
+	
+	public static String getBody(String doc){
+		int beginIndex = doc.indexOf("<body>")+6; 
+		int endIndex = doc.indexOf("</body>");
+		return doc.substring(beginIndex,endIndex);
+	}
 }

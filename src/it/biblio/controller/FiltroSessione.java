@@ -16,7 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 import it.biblio.framework.result.FailureResult;
 
 /**
- * Servlet Filter implementation class FiltroSessione
+ * Servlet Filter implementation class FiltroSessione.
+ * Protegge le servlet accessibili solo da utenti autorizzati.
+ * 
  */
 @WebFilter(description = "Protegge le servlet accessibili solo da utenti autorizzati", urlPatterns = { "/UploadImmagine", "/Trascrivi" })
 public class FiltroSessione implements Filter {

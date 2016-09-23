@@ -13,14 +13,23 @@ import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
+ * Servlet che gestisce le richieste di inserimento dei record delle entità
+ * presenti nella base di dati.
  * 
  * @author Marco D'Ettorre
  * @author Francesco Proietti
  */
-@WebServlet(name="AggiungiOpera", urlPatterns={"/AggiungiOpera"})
-public class AggiungiOpera extends BibliotecaBaseController {
+@WebServlet(name="Aggiungi", urlPatterns={"/AggiungiOpera","/Aggiungi"})
+public class Aggiungi extends BibliotecaBaseController {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -352354517627529114L;
+
+
+	/**
+	 * Aggiunta di un'opera nella base di dati.
 	 * 
 	 * @param request
 	 * @param response
@@ -52,11 +61,17 @@ public class AggiungiOpera extends BibliotecaBaseController {
 		}
 		catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());
-			action_error(request, response);
+			action_error_ajax(request, response);
 		}
 	}
 	
-	
+	/**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try{

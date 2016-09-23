@@ -1,4 +1,4 @@
-<section id="openseadragon">
+<section id="openseadragon" style="display:none;">
     
 	<div class="container">
 		<div class="row">
@@ -32,22 +32,6 @@
                  <br>
                 <input type="hidden" name="id_della_pagina">
             </form>
-            <#if trascrittore?? && trascrittore>
-        		<div class="row">
-                    <div class="form-group col-xs-12">
-                        <button onclick="invia_trascrizione()" class="btn btn-success btn-lg">Invia</button>
-                    </div>
-            	</div>
-        	<#elseif revisore_trascrizioni?? && revisore_trascrizioni >
-        		<div class="row">
-	        		<center> 
-						<button id="buttonConvalida" onclick="convalidaLaPagina()" class="btn btn-primary btn-lg">Convalida</button>
-						<button id="buttonRimuovi" onclick="nonConvalidarePagina()" class="btn btn-danger btn-lg">Rimuovi</button>
-					</center>
-				</div>
-			<#else>
-				
-        	</#if>
         </div>   
      </div>
 

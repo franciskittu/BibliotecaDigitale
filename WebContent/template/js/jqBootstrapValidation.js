@@ -9,7 +9,6 @@
  */
 
 (function( $ ){
-
 	var createdElements = [];
 
 	var defaults = {
@@ -183,7 +182,7 @@
             //                                                     EMAIL
             // ---------------------------------------------------------
             if ($this.attr("type") !== undefined && $this.attr("type").toLowerCase() === "email") {
-              message = "Not a valid email address<!-- data-validator-validemail-message to override -->";
+              message = "Indirizzo email non valido<!-- data-validator-validemail-message to override -->";
               if ($this.data("validationValidemailMessage")) {
                 message = $this.data("validationValidemailMessage");
               } else if ($this.data("validationEmailMessage")) {
@@ -191,6 +190,7 @@
               }
               $this.data("validationValidemailMessage", message);
             }
+            
             // ---------------------------------------------------------
             //                                                MINCHECKED
             // ---------------------------------------------------------

@@ -46,6 +46,11 @@ function paginatore(data){
 	 		 		 temp.push({riga_tabella:cont++,id:data[j].id, titolo: data[j].titolo, descrizione: data[j].descrizione, numero_pagine: data[j].numero_pagine});
 	 		 	}
 	 			break;
+	 		case "ricerca":
+	 			 for(j=i; j < i+3 && j < data.length; j++){
+            		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine });
+            	 }
+	 			 break;
 	 	 }
 	 	 pages[k++] = temp;
 	 	 i = i+3;
@@ -317,8 +322,7 @@ function makeRow(datarow) {
 		             success: function(data) {
 		            	 if(data.length > 0){
 		            		 	scelta_sezione("convalida_revisore_acquisizioni");
-			         	    	convalidaPagina(data);
-			         	    	
+			         	    	convalidaPagina(data);	
 		            	 }
 		            	 else 
 			            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
@@ -342,6 +346,37 @@ function makeRow(datarow) {
 		            	 if(data.length > 0){
 		            		 	scelta_sezione("pagine_con_trascrizioni_da_convalidare");
 		            		 	pagine_con_trascrizioni_da_convalidare(data);
+		            	 }
+		            	 else 
+			            		 alert("L'opera non ha ancora nessuna pagina con trascrizione validata!");
+		             },
+					error: function(data){
+					}
+			});
+		};
+	}
+	else if (sezione == "ricerca"){
+		row.onclick = function(){
+			self=this;
+			var id = self.id ;
+			id = id.slice (4, id.length);
+			$.ajax({
+		         url: 'Ricerca',
+		         dataType: 'json',
+		         type: 'GET',
+		         data: 'tipoRicerca=pagine_opera&id_opera='+id,
+		             success: function(data) {
+		            	 if(data.length > 0){
+		            		 console.log(data);
+		            		 if(data[0].trascrizioni_pubblicate!="false"){
+		            			 scelta_sezione("ricerca");
+		            			 pagine_con_trascrizioni_da_convalidare(data);
+		            		 }
+		            		 else {
+		            			 scelta_sezione("ricerca");
+		            			 convalidaPagina(data);
+		            		 }
+		            		 	
 		            	 }
 		            	 else 
 			            		 alert("L'opera non ha ancora nessuna pagina con trascrizione validata!");

@@ -4,6 +4,7 @@ var id_opera;
 var pagine_opera = [];
 var table_opere_in_trascrizione=false;
 var table_opere_acquisizione=false;
+var cont = 0;
 
 
 /*VISTA DEFAULT PER L'UTENTE ADMIN*/
@@ -35,7 +36,7 @@ function listaUtenti(){
     					    document.getElementById("utenti").style.display="block";
 		            },
 					error: function(error){
-						console.log(error);
+						alert("Errore nell'invio dei dati al server");
 					}
 		});
 }
@@ -159,6 +160,7 @@ function opereInPubblicazioneAcquisizioni(){
 		        url: 'Ricerca',
 		        dataType: "json",
 		        type: 'GET',
+		        async:'false',
 		        data: 'tipoRicerca=opereInPubblicazioneAcquisizioni',
 		            success: function(data) {
 		    	 		if (data.length == 0){
@@ -182,6 +184,7 @@ function opereInPubblicazioneTrascrizioni(){
         url: 'Ricerca',
         dataType: "json",
         type: 'GET',
+        async:'false',
         data: 'tipoRicerca=opereInPubblicazioneTrascrizioni',
             success: function(data) {
     	 		if (data.length == 0){
@@ -222,12 +225,17 @@ function listaOpereAdmin() {
 				});
 }
 function errore (titolo){
-		if(document.getElementById("titoloSezioneErrore").textContent!= ""){
+		if(cont !=0 ){
 			document.getElementById("error2").style.display="block";
 			document.getElementById("error2").style.visibility="visible";
 			document.getElementById("titoloSezioneErrore2").innerHTML = titolo;
+			document.getElementById("titoloSezioneErrore").textContent!= "";
+			cont=0;
 		}
+		else{
 		document.getElementById("titoloSezioneErrore").innerHTML = titolo;
+		cont++;
+		}
 		document.getElementById("erroreRicerca").style.display="block";
 		document.getElementById("erroreRicerca").style.visibility="visible";
 		window.location.hash='#erroreRicerca';
@@ -257,19 +265,8 @@ function ricerca(){
                 	 		window.location.hash='#erroreRicerca';
             	 		}
             	 		else {
-            	 			var k = 0;
-            	 			var i = 0;
-            	 			pages = [];
-            	 			while(i<data.length) {
-                        	 var temp = [];
-                        	 
-                        	 for(j=i; j < i+3 && j < data.length; j++){
-                        		 temp.push({id: data[j].id, titolo: data[j].titolo,  descrizione:data[j].descrizione, numero_pagine:data[j].numero_pagine });
-                        	 }
-                        	 pages[k++] = temp;
-                        	 i = i+3;
-                         }
-                         
+            	 		sezione = "ricerca";
+            	 		paginatore(data);
                         init();
          	 			document.getElementById("erroreRicerca").style.display="none";
 	                    document.getElementById("listaopere").style.display="inline";
@@ -296,16 +293,15 @@ function controllausername(obj){
             data: 'usernameAjax='+obj.value,
                 success: function(data) {
                             if (eval(data)){
-                                
+                            	document.getElementById("send_registrazione").setAttribute("disabled","");
                                 document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Username gia' presente, inserirne un altro</li></ul></p>";
-                                
                             }
                             
                             else {
                                 
                                 $("#status").remove();
                                 document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
-                                
+                                document.getElementById("send_registrazione").removeAttribute("disabled");
                             }
                 }
             });
@@ -347,6 +343,8 @@ function listaOpereTrascrittore(){
             success: function(data) {
     	 		if (data==""){
     	 			errore("OPERE IN TRASCRIZIONE");
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
     	 		}
     	 		else {
     	 			document.getElementById("lista_opere_in_trascrizione").style.display="block";
@@ -370,6 +368,8 @@ function listaOpereTrascrittoreDaTrascrivere(){
             success: function(data) {
     	 		if (data==""){
     	 			errore("OPERE DA TRASCRIVERE");
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
     	 		}
     	 		else {
     	 			document.getElementById("lista_opere_da_trascrivere").style.display="block";
@@ -510,6 +510,8 @@ function revisoreAcquisizioni(){
             success: function(data) {
     	 		if (data.length == 0){
     	 			errore("OPERE DA VALIDARE");
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
     	 		}
     	 		else {
     	 			paginatore(data);
@@ -527,6 +529,7 @@ function revisoreAcquisizioni(){
 function convalidaPagina(data){
 	pagine_opera= data;
 	var variabile;
+	debugger;
 	if(sezione == "pagine_con_trascrizioni_da_convalidare"){
 		variabile= pagine_opera[0].trascrizione_validata;
 		document.getElementById("ul_navbar").style.display="none";
@@ -541,6 +544,7 @@ function convalidaPagina(data){
 		document.getElementById("buttonRimuovi").setAttribute("disabled","");
 	}
 	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+	console.log(data[0].id);
 	openseadragon(data[0].id);
 	document.getElementById("openseadragon").style.display="block";
 	document.getElementById("openseadragon").style.visibility="visible";
@@ -625,6 +629,8 @@ function revisione_trascrizione(){
             success: function(data) {
     	 		if (data.length == 0){
     	 			errore("OPERE DA CONVALIDARE");
+    	 			document.getElementById("ricerca").style.display="block";
+    	 			document.getElementById("ricerca").style.visibility="visible";
     	 		}
     	 		else {
     	 			paginatore(data);
@@ -655,12 +661,11 @@ function pagine_con_trascrizioni_da_convalidare(data){
     	document.getElementById("testoTrascrizione").setAttribute("disabled","");
     	document.getElementById("openseadragon").style.display="block";
     	document.getElementById("openseadragon").style.visibility="visible";
-	
 }
 else {
     alert("Non ci sono pagine da trascrivere!!");
     
-}
+	}
 }
 
 

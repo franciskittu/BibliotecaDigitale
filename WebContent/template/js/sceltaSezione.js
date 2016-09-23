@@ -14,8 +14,10 @@ var admin=false;
 var sezione=0;
 
 function scelta_sezione(caso){
+		if (document.getElementById("error2")!= null){
 		document.getElementById("error2").style.visibility="none";
 		document.getElementById("error2").style.display="none";
+		}
 		var sezioni= document.getElementsByTagName("SECTION");
 		for (var i =0; i<sezioni.length; i++){
 			sezioni[i].style.visibility="none";
@@ -69,6 +71,9 @@ function scelta_sezione(caso){
 	    	break;
 	    case "pagine_con_trascrizioni_da_convalidare":
 	    	sezione = "pagine_con_trascrizioni_da_convalidare";
+	    	break;
+	    case "ricerca":
+	    	sezione = "ricerca";
 	    	break;
 	    default:
 	    	sezione=0

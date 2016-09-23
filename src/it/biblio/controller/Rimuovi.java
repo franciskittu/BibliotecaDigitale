@@ -170,14 +170,22 @@ public class Rimuovi extends BibliotecaBaseController {
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try{
+			Boolean privilegi = true;
 			if(request.getParameter("id_opera") != null){
-				action_rimuovi_opera(request,response);
+				if((Boolean)request.getAttribute("admin")){action_rimuovi_opera(request,response);}
+				else{privilegi = true;}
 			}else if(request.getParameter("id_utente") != null){
-				action_rimuovi_utente(request,response);
+				if((Boolean)request.getAttribute("admin")){action_rimuovi_utente(request,response);}
+				else{privilegi = true;}
 			}else if(request.getParameter("id_pagina") != null){
-				action_rimuovi_pagina(request,response);
+				if((Boolean)request.getAttribute("admin") || (Boolean)request.getAttribute("revisore_acquisizioni")){action_rimuovi_pagina(request,response);}
+				else{privilegi = true;}
 			}else if(request.getParameter("id_trascrizione") != null){
-				action_rimuovi_trascrizione(request,response);
+				if((Boolean)request.getAttribute("revisore_trascrizioni")){action_rimuovi_trascrizione(request,response);}
+				else{privilegi = true;}
+			}
+			if(!privilegi){
+				throw new ControllerException("Accesso alla funzione non consentito!");
 			}
 		}catch(TemplateManagerException | ControllerException ex){
 			request.setAttribute("exception", ex);

@@ -21,6 +21,7 @@ import it.biblio.data.model.Pagina;
 import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
+import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
@@ -123,21 +124,16 @@ public class Trascrivi extends BibliotecaBaseController {
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try{
-			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
-			Pagina p = datalayer.getPagina(Long.parseLong(request.getParameter("id_pagina")));
-			action_memorizza_file(request,response, p);
-		} catch(DataLayerException ex){
-			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			if((Boolean)request.getAttribute("trascrittore") == true){
+				BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+				Pagina p = datalayer.getPagina(Long.parseLong(request.getParameter("id_pagina")));
+				action_memorizza_file(request,response, p);
+			}else{
+				throw new ControllerException("Accesso alla funzione non consentito!");
+			}
+		} catch(DataLayerException | IOException | TemplateManagerException | ControllerException ex){
+			request.setAttribute("message", ex.getMessage());
 			action_error(request, response);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (TemplateManagerException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		}
 
 	}

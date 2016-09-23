@@ -199,11 +199,16 @@ public class UploadImmagine extends BibliotecaBaseController {
 
 		
 		try {
+			Boolean privilegi = true;
 			if (request.getParameter("numeroAJAX") != null) {
-				action_ajax(request, response);
+				if((Boolean)request.getAttribute("acquisitore")){action_ajax(request, response);}
+				else{privilegi = false;}
 			} else {
-				action_upload(request, response);
-				
+				if((Boolean)request.getAttribute("acquisitore")){action_upload(request, response);}
+				else{privilegi = false;}
+			}
+			if(!privilegi){
+				throw new ControllerException("Accesso alla funzione non consentito!");
 			}
 		} catch (ControllerException | IOException | TemplateManagerException ex) {
 			request.setAttribute("exception", ex);

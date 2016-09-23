@@ -80,7 +80,12 @@ public class Aggiungi extends BibliotecaBaseController {
 				&& request.getParameter("editore") != null && request.getParameter("descrizione") != null){
 				
 				SecurityLayer.checkNumeric(request.getParameter("numeroPagine"));
-				action_aggiungi_opera(request, response);
+				if((Boolean) request.getAttribute("admin") == true){
+					action_aggiungi_opera(request, response);
+				}
+				else{
+					throw new ControllerException("Accesso non consentito!");
+				}
 			}else{
 				throw new ControllerException("parametri non validi!");
 			}

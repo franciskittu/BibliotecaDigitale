@@ -1,5 +1,7 @@
 package it.biblio.controller;
 
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -66,6 +68,39 @@ public class Aggiorna extends BibliotecaBaseController {
 		}
 	}
 
+	/**
+	 * Gestisce la rimozione di un'opera dal sistema
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
+	private void action_rimuovi_opera(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException{
+		try{
+			BibliotecaDataLayer datalayer = (BibliotecaDataLayer) request.getAttribute("datalayer");
+			Boolean successo = true;
+			Opera O = datalayer.getOpera(Long.parseLong(request.getParameter("id_opera")));
+			List<Pagina> pagine = datalayer.getPagineOpera(O.getID());
+			for(Pagina p : pagine){
+				if(datalayer.rimuoviPagina(p) == null){
+					successo = false;
+				}
+			}
+			if(datalayer.rimuoviOpera(O) == null){
+				successo = false;
+			}
+			
+			request.setAttribute("risultato", successo.toString());
+			request.setAttribute("outline_tpl", "");
+			
+			TemplateResult tr = new TemplateResult(getServletContext());
+			tr.activate("controlloAjax.ftl.json", request, response);
+		} catch(DataLayerException ex){
+			request.setAttribute("message", "Data access exception: " + ex.getMessage());
+			action_error(request, response);
+		}
+	}
+	
 	/**
 	 * Funzione che aggiorna i privilegi utente rimuovendo quelli già presenti 
 	 * per inserire quelli ricevuti dalla richiesta.
@@ -154,18 +189,28 @@ public class Aggiorna extends BibliotecaBaseController {
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		if(request.getParameter("tipoAggiornamento") != null){
 			try{
+				Boolean privilegi = true;
 				switch(request.getParameter("tipoAggiornamento")){
-				case "aggiorna_privilegi_utente": action_aggiorna_privilegi_utente(request,response);
+				case "aggiorna_privilegi_utente": if((Boolean)request.getAttribute("admin")==true){action_aggiorna_privilegi_utente(request,response);}
+													else{privilegi = false;}
 					break;
-				case "pubblicazione_acquisizioni":	action_pubblica(request,response, "acquisizioni");
+				case "pubblicazione_acquisizioni":	if((Boolean)request.getAttribute("admin")==true){action_pubblica(request,response, "acquisizioni");}
+													else{privilegi = false;}
 					break;
-				case "pubblicazione_trascrizioni":	action_pubblica(request,response, "trascrizioni");
+				case "pubblicazione_trascrizioni":	if((Boolean)request.getAttribute("admin")==true){action_pubblica(request,response, "trascrizioni");}
+													else{privilegi = false;}
 					break;
-				case "valida_acquisizione": action_valida_pagina(request,response,"acquisizione");
+				case "valida_acquisizione": if((Boolean)request.getAttribute("revisore_acquisizioni")==true){action_valida_pagina(request,response,"acquisizione");}
+											else{privilegi = false;}
 					break;
-				case "valida_trascrizione": action_valida_pagina(request,response,"trascrizione");
+				case "valida_trascrizione": if((Boolean)request.getAttribute("revisore_trascrizioni")==true){action_valida_pagina(request,response,"trascrizione");}
+											else{privilegi = false;}
 					break;
-				default: action_aggiorna_privilegi_utente(request,response);
+				default: if((Boolean)request.getAttribute("admin")==true){action_aggiorna_privilegi_utente(request,response);}
+						else{privilegi = false;}
+				}
+				if(!privilegi){
+					throw new ControllerException("Accesso alla funzione negato!");
 				}
 			}catch(ControllerException | TemplateManagerException ex){
 				request.setAttribute("message", ex.getMessage());

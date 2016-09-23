@@ -20,6 +20,7 @@ import it.biblio.framework.result.AddSlashesFmkExt;
 import it.biblio.framework.result.SplitSlashesFmkExt;
 import it.biblio.framework.result.TemplateManagerException;
 import it.biblio.framework.result.TemplateResult;
+import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.ParserTEI;
 import it.biblio.framework.utility.SecurityLayer;
 
@@ -433,40 +434,53 @@ public class Ricerca extends BibliotecaBaseController {
 			if (request.getParameter("tipoRicerca") == null) {
 				action_ricerca_ajax(request, response);
 			} else {
+				Boolean privilegi = true;
 				switch (request.getParameter("tipoRicerca")) {
 				case "utenti":
-					action_ricerca_utenti_ajax(request, response);
+					if((Boolean)request.getAttribute("admin")==true){action_ricerca_utenti_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "tutteleopere":
-					action_tutteleopere_ajax(request, response);
+					if((Boolean)request.getAttribute("admin")==true){action_tutteleopere_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "opereInPubblicazioneAcquisizioni":
-					action_opere_in_pubblicazione_acquisizioni_ajax(request, response);
+					if((Boolean)request.getAttribute("admin")==true){action_opere_in_pubblicazione_acquisizioni_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "opereInPubblicazioneTrascrizioni":
-					action_opere_in_pubblicazione_trascrizioni_ajax(request, response);
+					if((Boolean)request.getAttribute("admin")==true){action_opere_in_pubblicazione_trascrizioni_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "opere_in_trascrizione":
-					action_opere_in_trascrizione_ajax(request, response);
+					if((Boolean)request.getAttribute("trascrittore")==true){action_opere_in_trascrizione_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "opere_da_trascrivere":
-					action_opere_da_trascrivere_ajax(request, response);
+					if((Boolean)request.getAttribute("trascrittore")==true){action_opere_da_trascrivere_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "opere_con_acquisizioni_da_convalidare":
-					action_opere_con_acquisizioni_da_convalidare_ajax(request, response);
+					if((Boolean)request.getAttribute("revisore_acquisizioni")==true){action_opere_con_acquisizioni_da_convalidare_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "opere_con_trascrizioni_da_convalidare":
-					action_opere_con_trascrizioni_da_convalidare_ajax(request, response);
+					if((Boolean)request.getAttribute("revisore_trascrizioni")==true){action_opere_con_trascrizioni_da_convalidare_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				case "pagine_opera":
-					action_pagine_opera_ajax(request, response);
+					if((Boolean)request.getAttribute("loggato")==true){action_pagine_opera_ajax(request, response);}
+					else{privilegi = false;}
 					break;
 				default:
 					action_ricerca_ajax(request, response);
 					break;
 				}
+				if(!privilegi){
+					throw new ControllerException("Accesso alla funzione negato!");
+				}
 			}
-		} catch (TemplateManagerException ex) {
+		} catch (TemplateManagerException | ControllerException ex) {
 			request.setAttribute("exception", ex);
 			action_error(request, response);
 		}

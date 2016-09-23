@@ -367,19 +367,12 @@ function makeRow(datarow) {
 		         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 		             success: function(data) {
 		            	 if(data.length > 0){
-		            		 console.log(data);
-		            		 if(data[0].trascrizioni_pubblicate!="false"){
-		            			 scelta_sezione("ricerca");
-		            			 pagine_con_trascrizioni_da_convalidare(data);
-		            		 }
-		            		 else {
-		            			 scelta_sezione("ricerca");
-		            			 convalidaPagina(data);
-		            		 }
-		            		 	
+		            		 scelta_sezione("ricerca");
+	            			 pagine_con_trascrizioni_da_convalidare(data);
 		            	 }
-		            	 else 
-			            		 alert("L'opera non ha ancora nessuna pagina con trascrizione validata!");
+		            	 else{ 
+			            		 alert("Impossibile visionare l'opera!");
+		            	 }
 		             },
 					error: function(data){
 					}
@@ -540,6 +533,10 @@ function switchPage(page) {
 	else if (sezione == "revisore_trascrizione"){
 		updateTable("table_opere_da_convalidare_trascrittore",data);
 		updatePager("paging3",page);
+	}
+	else if (sezione == "ricerca"){
+		updateTable("tablericerca",data);
+		updatePager("pagingricerca",page);
 	}
 	else {
 		updateTable("tableopere",data);

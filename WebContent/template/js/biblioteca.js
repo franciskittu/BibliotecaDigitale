@@ -451,7 +451,7 @@ function gestioneTrascrizione(numero_pagina_selezionata){
 			document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;
 			document.getElementById("openseadragon1").remove();
 			var div_creato = document.createElement("DIV");
-			if (sezione == "editor_trascrittore"){
+			if (sezione == "editor_trascrittore" || sezione == "ricerca"){
 				if (pagine_opera[i].trascrizione != ''){
 					var testo = pagine_opera[i].trascrizione.replace(/<br \/>/g,'\n');
 					document.getElementById("testoTrascrizione").value = testo;
@@ -529,7 +529,6 @@ function revisoreAcquisizioni(){
 function convalidaPagina(data){
 	pagine_opera= data;
 	var variabile;
-	debugger;
 	if(sezione == "pagine_con_trascrizioni_da_convalidare"){
 		variabile= pagine_opera[0].trascrizione_validata;
 		document.getElementById("ul_navbar").style.display="none";
@@ -544,10 +543,15 @@ function convalidaPagina(data){
 		document.getElementById("buttonRimuovi").setAttribute("disabled","");
 	}
 	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
-	console.log(data[0].id);
 	openseadragon(data[0].id);
+	if (sezione != "ricerca"){
 	document.getElementById("openseadragon").style.display="block";
 	document.getElementById("openseadragon").style.visibility="visible";
+	}
+	else {
+		document.getElementById("openseadragon_ricerca").style.display="block";
+		document.getElementById("openseadragon_ricerca").style.visibility="visible";
+	}
 }
 
 function convalidaLaPagina(){
@@ -651,6 +655,7 @@ function pagine_con_trascrizioni_da_convalidare(data){
     		document.getElementById("testoTrascrizione").value = testo;
     		
     	}
+    	if (sezione != "ricerca"){
     	var div = document.createElement('DIV');
     	div.id = "openseadragon1";
     	div.setAttribute("class","openseadragon1");
@@ -661,6 +666,15 @@ function pagine_con_trascrizioni_da_convalidare(data){
     	document.getElementById("testoTrascrizione").setAttribute("disabled","");
     	document.getElementById("openseadragon").style.display="block";
     	document.getElementById("openseadragon").style.visibility="visible";
+    	}
+    	else {
+    		convalidaPagina(data);
+        	document.getElementById("numeroPaginaDaTrascrivere").innerHTML = data[0].numero;
+        	document.getElementById("editor_tei").id_della_pagina.value = data[0].id;
+        	document.getElementById("testoTrascrizione").setAttribute("disabled","");
+        	document.getElementById("openseadragon_ricerca").style.display="block";
+        	document.getElementById("openseadragon_ricerca").style.visibility="visible";
+    	}
 }
 else {
     alert("Non ci sono pagine da trascrivere!!");

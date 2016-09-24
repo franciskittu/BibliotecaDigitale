@@ -35,9 +35,10 @@ function listaUtenti(){
 			                document.getElementById("utenti").style.visibility="yes";
     					    document.getElementById("utenti").style.display="block";
 		            },
-					error: function(error){
-						alert("Errore nell'invio dei dati al server");
-					}
+		            error: function(data){
+	        	 			console.log(data);
+	        	 			alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+		            }
 		});
 }
 
@@ -122,7 +123,11 @@ function gestioneRuoloUtente(data){
 			            	 }
 			            	 else 
 			            		 alert("");
-			             }
+			             },
+			             error: function(data){
+			        	 		console.log(data);
+			        	 		alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+			            }
 				});
 			}
 			var testo=document.createTextNode("Applica");
@@ -175,6 +180,10 @@ function opereInPubblicazioneAcquisizioni(){
 			                document.getElementById("opereInPubblicazioneAcquisizione").style.visibility="visible";
 			                
 		    	 		}
+		            },
+		            error: function(data){
+		        	 		console.log(data);
+		        	 		alert("ERRORE GRAVE!!! Contattare l'amministratore.")
 		            }
 			});
 }
@@ -199,6 +208,10 @@ function opereInPubblicazioneTrascrizioni(){
 	                document.getElementById("opereInPubblicazioneTrascrizione").style.visibility="visible";
 	                
     	 		}
+            },
+            error: function(data){
+            		console.log(data);
+            		alert("ERRORE GRAVE!!! Contattare l'amministratore.")
             }
 	});
 }
@@ -221,6 +234,10 @@ function listaOpereAdmin() {
 				                document.getElementById("listaopere").style.visible="yes";
 				                document.getElementById("listaopere").style.display="block";
 				                window.location.hash='#listaopere';
+			             },
+			             error: function(data){
+			         	 		console.log(data);
+			         	 		alert("ERRORE GRAVE!!! Contattare l'amministratore.")
 			             }
 				});
 }
@@ -273,8 +290,9 @@ function ricerca(){
 	                    window.location.hash='#listaopere';
             	 		}
              },
-             error: function(){
-            	 		
+             error: function(data){
+         	 		console.log(data);
+         	 		alert("ERRORE GRAVE!!! Contattare l'amministratore.")
              }
              
          });
@@ -303,9 +321,13 @@ function controllausername(obj){
                                 document.getElementById("usernamecheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-ok form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputSuccess2Status\" class=\"sr-only\">(success)</span></div>";
                                 document.getElementById("send_registrazione").removeAttribute("disabled");
                             }
+                },
+                error: function(data){
+            	 	console.log(data);
+            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
                 }
             });
-            };
+};
             
 ///////////////////////////////////////////////////
 /* 	CONTROLLA PAGINA GIA' INSERITA ACQUISIZIONE */
@@ -329,6 +351,10 @@ function controllaNumeroPagina(obj){
                     	document.getElementById("paginacheck").innerHTML ="<div id=\"status\"><span style=\"top:20px\" class=\"glyphicon glyphicon-remove form-control-feedback\" aria-hidden=\"true\"></span><span id=\"inputError2Status\" class=\"sr-only\">(error)</span></div><p class=\"help-block text-danger\"><ul role=\"alert\"><li>Pagina gia' presente, scegline un'altra</li></ul></p>";
                     	document.getElementById("button_carica_acquisitore").setAttribute("disabled","");
                     }
+        },
+        error: function(data){
+    	 	console.log(data);
+    	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
         }
     });
 }  
@@ -355,6 +381,10 @@ function listaOpereTrascrittore(){
     	 			paginatore(data);
     	 			init();
     	 		}
+            },
+            error: function(data){
+        	 	console.log(data);
+        	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
             }
 	});
 }
@@ -380,6 +410,10 @@ function listaOpereTrascrittoreDaTrascrivere(){
     	 			paginatore(data);
     	 			init();
     	 		}
+            },
+            error: function(data){
+        	 	console.log(data);
+        	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
             }
 	});
 	
@@ -403,7 +437,11 @@ function invia_trascrizione(obj){
 	                        alert("Trascrizione non salvata");
 	                        
 	                    }
-	        }
+	        },
+	        error: function(data){
+        	 	console.log(data);
+        	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+		}
 	    });
 }
 
@@ -439,7 +477,8 @@ function trascrizionePagina(idOpera){
             }
         },
         error: function(data){
-        	console.log(data);
+    	 	console.log(data);
+    	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
         }
         
 	});
@@ -522,6 +561,10 @@ function revisoreAcquisizioni(){
     	 			document.getElementById("ricerca").style.visibility="visible";
     	 			
     	 		}
+            },
+            error: function(data){
+        	 	console.log(data);
+        	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
             }
 	});
 	
@@ -586,6 +629,10 @@ function convalidaLaPagina(){
 		    	 			document.getElementById("buttonRimuovi").setAttribute("disabled","");		    	 			
 		    	 			alert("Pagina validata");
 		    	 		}
+		            },
+		            error: function(data){
+	            	 	console.log(data);
+	            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
 		            }
 			});
 		}
@@ -618,6 +665,10 @@ function nonConvalidarePagina(){
 		    	 			document.getElementById("buttonRimuovi").setAttribute("disabled","");
 		    	 			
 		    	 		}
+		            },
+		            error: function(data){
+	            	 	console.log(data);
+	            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
 		            }
 			});
 		}
@@ -645,6 +696,10 @@ function revisione_trascrizione(){
     	 			document.getElementById("ricerca").style.visibility="visible";
     	 			
     	 		}
+            },
+            error: function(data){
+        	 	console.log(data);
+        	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
             }
 	});	
 }

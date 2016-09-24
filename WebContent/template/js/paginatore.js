@@ -122,7 +122,11 @@ function makeRow(datarow) {
 				            		 scelta_sezione(3);
 				            		 
 				            	 }
-				             }
+				             },
+				             error: function(data){
+				            	 	console.log(data);
+				            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+							}
 					});
 				}
 				var cell1 = document.createElement('td');
@@ -153,7 +157,11 @@ function makeRow(datarow) {
 				            	 }
 				            	 else 
 				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
-				             }
+				             },
+				             error: function(data){
+				            	 	console.log(data);
+				            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+							}
 					});
 				};
 				var cell = document.createElement('td');
@@ -185,7 +193,11 @@ function makeRow(datarow) {
 				            	 }
 				            	 else 
 				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
-				             }
+				             },
+				             error: function(data){
+				            	 	console.log(data);
+				            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+							}
 					});
 				};
 				var pubblica = document.createElement('button');
@@ -202,7 +214,11 @@ function makeRow(datarow) {
 				            	 if(eval(data)){
 				            		 alert("Opera pubblicata!!")
 				            	 }
-				             }
+				             },
+				            error: function(data){
+				            	 	console.log(data);
+				            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+							}
 					});
 					}
 					else{
@@ -214,7 +230,11 @@ function makeRow(datarow) {
 					            	 if(eval(data)){
 					            		 alert("Opera pubblicata!!")
 					            	 }
-					             }
+					             },
+					             error: function(data){
+					            	 	console.log(data);
+					            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+								}
 						});
 					}
 				};
@@ -271,7 +291,11 @@ function makeRow(datarow) {
 				            	 }
 				            	 else 
 				            		 alert("Ci dispiace! A causa di un problema non è stato possibile rimuovere l'opera");
-				             }
+				             },
+							error: function(data){
+			            	 	console.log(data);
+			            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+							}
 					});
 				};
 				row.onclick = function(){
@@ -303,9 +327,10 @@ function makeRow(datarow) {
 			            	 else 
 				            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
 			             },
-						error: function(data){
-							console.log(data);
-						}
+			             error: function(data){
+			            	 	console.log(data);
+			            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+							}
 				});
 			};
 	}
@@ -327,8 +352,10 @@ function makeRow(datarow) {
 		            	 else 
 			            		 alert("L'opera non ha ancora nessuna pagina con immagine validata!");
 		             },
-					error: function(data){
-					}
+		             error: function(data){
+		            	 	console.log(data);
+		            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+						}
 			});
 		};
 	}
@@ -350,8 +377,10 @@ function makeRow(datarow) {
 		            	 else 
 			            		 alert("L'opera non ha ancora nessuna pagina con trascrizione validata!");
 		             },
-					error: function(data){
-					}
+		             error: function(data){
+		            	 	console.log(data);
+		            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+						}
 			});
 		};
 	}
@@ -369,12 +398,14 @@ function makeRow(datarow) {
 		            	 if(data.length > 0){
 		            		 scelta_sezione("ricerca");
 	            			 pagine_con_trascrizioni_da_convalidare(data);
+	            			 document.getElementById("ul_navbar").style.display="none";
 		            	 }
 		            	 else{ 
 			            		 alert("Impossibile visionare l'opera!");
 		            	 }
 		             },
 					error: function(data){
+						alert("ERRORE GRAVE!!! Contattare l'amministratore.")
 					}
 			});
 		};

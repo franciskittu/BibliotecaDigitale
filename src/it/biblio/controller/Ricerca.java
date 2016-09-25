@@ -1,8 +1,11 @@
 package it.biblio.controller;
 
 import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
@@ -280,7 +283,10 @@ public class Ricerca extends BibliotecaBaseController {
 					if (!p.getPathTrascrizione().equals("")) {
 
 						//lettura file
-						BufferedReader in = new BufferedReader(new FileReader(p.getPathTrascrizione()));
+						BufferedReader in = new BufferedReader(new InputStreamReader(
+								new FileInputStream(p.getPathTrascrizione())
+								,StandardCharsets.UTF_8)
+								);
 						String testo, riga;
 						testo = riga = "";
 						while ((riga = in.readLine()) != null) {

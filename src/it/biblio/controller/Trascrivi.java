@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -89,7 +90,7 @@ public class Trascrivi extends BibliotecaBaseController {
 				PrintWriter out = new PrintWriter(new BufferedWriter(
 								new OutputStreamWriter(
 										new FileOutputStream(path + File.separator + p.getOpera().getTitolo().replace(' ', '_') + p.getNumero()+".xml")
-										,"UTF-8")
+										,StandardCharsets.UTF_8)
 							)
 						)
 				){

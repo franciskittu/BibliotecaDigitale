@@ -160,7 +160,7 @@ public class Rimuovi extends BibliotecaBaseController {
 		
 			
 	/**
-	 * /**
+	 *
 	 * Analizza e smista le richieste ai dovuti metodi della classe.
 	 * 
 	 * @param request servlet request

@@ -37,9 +37,9 @@ import it.biblio.framework.utility.ControllerException;
  * @author Francesco Proietti
  * 
  */
-@WebServlet(name="UploadImmagine", description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/UploadImmagine" })
+@WebServlet(name="Upload", description = "gestisce l'upload delle immaggini acquisite", urlPatterns = { "/Upload", "/UploadImmagine" })
 @MultipartConfig
-public class UploadImmagine extends BibliotecaBaseController {
+public class Upload extends BibliotecaBaseController {
 
 	private static final long serialVersionUID = -2649569830853593682L;
 

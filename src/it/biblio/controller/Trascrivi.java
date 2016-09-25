@@ -62,7 +62,7 @@ public class Trascrivi extends BibliotecaBaseController {
 					titolo+"</title></titleStmt><publicationStmt><p>"+
 					editore+"</p></publicationStmt><sourceDesc><p>"+
 					descrizione+"</p></sourceDesc></fileDesc></teiHeader>";
-			String body = "<text><body>"+SecurityLayer.addSlashes(testo)+"</body></text></TEI>";
+			String body = "<text><body>"+testo+"</body></text></TEI>";
 			return intestazione + System.lineSeparator() + header + System.lineSeparator() + body;
 		}catch(DataLayerException ex){
 			request.setAttribute("message", "Data access exception: " + ex.getMessage());

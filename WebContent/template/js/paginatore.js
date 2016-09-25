@@ -310,9 +310,11 @@ function makeRow(datarow) {
 	}
 	else if(sezione == "trascrittore"){	
 			row.onclick = function(){
+				debugger;
 				self=this;
 				var id = self.id ;
 				id = id.slice (4, id.length);
+				debugger;
 				$.ajax({
 			         url: 'Ricerca',
 			         dataType: 'json',
@@ -401,7 +403,7 @@ function makeRow(datarow) {
 	            			 document.getElementById("ul_navbar").style.display="none";
 		            	 }
 		            	 else{ 
-			            		 alert("Impossibile visionare l'opera!");
+			            	 alert("Impossibile visionare l'opera!");
 		            	 }
 		             },
 					error: function(data){

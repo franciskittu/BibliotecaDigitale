@@ -18,7 +18,7 @@ import it.biblio.framework.data.DataLayerException;
 import it.biblio.framework.result.*;
 
 /**
- * servlet astratta che permette di inizializzare la connessione al DB.
+ * Servlet astratta che permette di inizializzare la connessione al DB.
  * Implementata da tutte le servlet che vogliono accedere al DB.
  * 
  * @author Marco D'Ettorre

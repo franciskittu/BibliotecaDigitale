@@ -18,6 +18,7 @@ import it.biblio.framework.utility.SecurityLayer;
 /**
  * Servlet Filter implementation class FiltroAttributi.
  * Inizializza gli attributi della request prendendoli dalla sessione.
+ * 
  */
 @WebFilter("/*")
 public class FiltroAttributi implements Filter {

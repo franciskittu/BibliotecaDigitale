@@ -122,6 +122,13 @@ public class Trascrivi extends BibliotecaBaseController {
 		}
 	}
 	
+	/**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 		try{

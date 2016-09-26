@@ -30,7 +30,7 @@ public class Rimuovi extends BibliotecaBaseController {
 	private static final long serialVersionUID = 3263374695997268057L;
 
 	/**
-	 * Gestisce la rimozione di un utente dal sistema.
+	 * Gestisce la rimozione di un utente dal sistema ed invia l'esito.
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response
@@ -56,7 +56,7 @@ public class Rimuovi extends BibliotecaBaseController {
 		}
 	}
 	/**
-	 * Gestisce la rimozione di un'opera dal sistema
+	 * Gestisce la rimozione di un'opera dal sistema ed invia l'esito.
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response
@@ -89,7 +89,7 @@ public class Rimuovi extends BibliotecaBaseController {
 	}
 	
 	/**
-	 * Gestisce la rimozione di una pagina nel sistema.
+	 * Gestisce la rimozione di una pagina nel sistema ed invia l'esito.
 	 * 
 	 * @param request servlet request
 	 * @param response servlet response
@@ -125,11 +125,12 @@ public class Rimuovi extends BibliotecaBaseController {
 	}
 	
 	/**
+	 * Gestisce la rimozione di una trascrizione nel sistema ed invia l'esito.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
-	 * @throws ControllerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 * @throws ControllerException se occorre un errore nella rimozione della pagina
 	 */
 	private void action_rimuovi_trascrizione(HttpServletRequest request, HttpServletResponse response) throws TemplateManagerException, ControllerException{
 		try{
@@ -160,7 +161,6 @@ public class Rimuovi extends BibliotecaBaseController {
 		
 			
 	/**
-	 *
 	 * Analizza e smista le richieste ai dovuti metodi della classe.
 	 * 
 	 * @param request servlet request

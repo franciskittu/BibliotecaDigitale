@@ -22,11 +22,11 @@ public class Logout extends HttpServlet {
 	private static final long serialVersionUID = -1503993411303022678L;
 
 	/**
-	 * Invalida la sessione.
+	 * Invalida la sessione e reindirizza nella homepage.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws ServletException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws ServletException 
 	 * @throws IOException
 	 */
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response)

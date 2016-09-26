@@ -487,7 +487,7 @@ function trascrizionePagina(idOpera){
 function gestioneTrascrizione(numero_pagina_selezionata){
 	for (var i = 0 ; i<pagine_opera.length; i++){
 		if ( pagine_opera[i].numero == numero_pagina_selezionata ){
-			if(sezione != ricerca){
+			if(sezione != "ricerca"){
 				document.getElementById("numeroPaginaDaTrascrivere").innerHTML = pagine_opera[i].numero;
 				document.getElementById("openseadragon1").remove();
 				var div_creato = document.createElement("DIV");
@@ -801,11 +801,23 @@ function scegliPagina(){
 }
 
 function previous(){
+	if (sezione == "ricerca"){
+		var pagina = parseInt(document.getElementById('numeroPaginaDaTrascrivere1').textContent)-1;
+		gestioneTrascrizione(pagina);
+	}
+	else {
 	var pagina = parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)-1;
 	gestioneTrascrizione(pagina);
+	}
 }
 
 function next(){
+	if (sezione == "ricerca"){
+		var pagina = parseInt(document.getElementById('numeroPaginaDaTrascrivere1').textContent)+1;
+		gestioneTrascrizione(pagina);
+	}
+	else {
 	var pagina = parseInt(document.getElementById('numeroPaginaDaTrascrivere').textContent)+1;
 	gestioneTrascrizione(pagina);
+	}
 }

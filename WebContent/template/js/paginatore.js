@@ -308,13 +308,11 @@ function makeRow(datarow) {
 			
 		}
 	}
-	else if(sezione == "trascrittore"){	
+	else if(sezione == "trascrittore"){
 			row.onclick = function(){
-				debugger;
 				self=this;
 				var id = self.id ;
 				id = id.slice (4, id.length);
-				debugger;
 				$.ajax({
 			         url: 'Ricerca',
 			         dataType: 'json',
@@ -361,7 +359,7 @@ function makeRow(datarow) {
 			});
 		};
 	}
-	else if(sezione == "revisore_trascrizione"){	
+	else if(sezione == "revisore_trascrizione"){
 		row.onclick = function(){
 			self=this;
 			var id = self.id ;
@@ -372,6 +370,7 @@ function makeRow(datarow) {
 		         type: 'GET',
 		         data: 'tipoRicerca=pagine_opera&id_opera='+id,
 		             success: function(data) {
+		            	 console.log(data);
 		            	 if(data.length > 0){
 		            		 	scelta_sezione("pagine_con_trascrizioni_da_convalidare");
 		            		 	pagine_con_trascrizioni_da_convalidare(data);
@@ -382,7 +381,7 @@ function makeRow(datarow) {
 		             error: function(data){
 		            	 	console.log(data);
 		            	 	alert("ERRORE GRAVE!!! Contattare l'amministratore.")
-						}
+					}
 			});
 		};
 	}

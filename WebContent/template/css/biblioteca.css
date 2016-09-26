@@ -148,6 +148,7 @@ a.list-group-item:hover{
 }
 
 @media (min-width: 768px) {
+
   header .container {
     padding-top: 200px;
     padding-bottom: 100px;
@@ -158,6 +159,12 @@ a.list-group-item:hover{
   header .intro-text .skills {
     font-size: 1.75em;
   }
+}
+.openseadragon1 {
+    margin: auto;
+    border: 1px solid #2C3E50;
+    width: 100%;
+    height: 300px;
 }
 .navbar-custom {
   background: #2C3E50;

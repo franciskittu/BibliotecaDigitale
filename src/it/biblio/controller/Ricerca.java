@@ -138,10 +138,12 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON con 
+	 * tutte le opere presenti nel sistema. Possibile solo per utenti admin.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_tutteleopere_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
@@ -162,10 +164,12 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON con le opere in stato "acquisito".
+	 * Ovvero con tutte le immagini validate.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_opere_in_pubblicazione_acquisizioni_ajax(HttpServletRequest request,
 			HttpServletResponse response) throws TemplateManagerException {
@@ -186,10 +190,12 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON con le opere che non risultano "trascritte" ed il cui 
+	 * trascrittore assegnato è l'utente che ha fatto tale richiesta.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_opere_in_trascrizione_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
@@ -215,10 +221,11 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON con tutte le opere non che non hanno nemmeno una pagina in trascrizione.
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_opere_da_trascrivere_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
@@ -239,10 +246,11 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON con le opere che risultano "trascritte".
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException  se occorre un errore nella logica del template manager
 	 */
 	private void action_opere_in_pubblicazione_trascrizioni_ajax(HttpServletRequest request,
 			HttpServletResponse response) throws TemplateManagerException {
@@ -263,10 +271,12 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON contenente tutte le pagine dell'opera. A seconda dell'utente che ne
+	 * fa richiesta restituisce una versione diversa della trascrizione presente.(con o senza tag TEI).
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_pagine_opera_ajax(HttpServletRequest request, HttpServletResponse response)
 			throws TemplateManagerException {
@@ -370,10 +380,11 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON contenente le opere in "revisione acquisizione".
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_opere_con_acquisizioni_da_convalidare_ajax(HttpServletRequest request,
 			HttpServletResponse response) throws TemplateManagerException {
@@ -394,10 +405,11 @@ public class Ricerca extends BibliotecaBaseController {
 	}
 
 	/**
+	 * Funzione che invia in risposta un JSON contenente le opere in "revisione trascrizione".
 	 * 
-	 * @param request
-	 * @param response
-	 * @throws TemplateManagerException
+	 * @param request servlet response
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
 	 */
 	private void action_opere_con_trascrizioni_da_convalidare_ajax(HttpServletRequest request,
 			HttpServletResponse response) throws TemplateManagerException {
@@ -433,6 +445,13 @@ public class Ricerca extends BibliotecaBaseController {
 		}
 	}
 
+	/**
+	 * Analizza e smista le richieste ai dovuti metodi della classe.
+	 * 
+	 * @param request servlet request
+	 * @param response servlet response
+	 * @throws TemplateManagerException se occorre un errore nella logica del template manager
+	 */
 	@Override
 	protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException {
 

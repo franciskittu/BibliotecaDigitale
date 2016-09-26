@@ -18,7 +18,7 @@ import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
- * Servlet per lo scaricamento di immagini.
+ * Servlet per lo scaricamento di flussi di dati.
  * 
  * @author Marco D'Ettorre
  * @author Francesco Proietti

@@ -18,7 +18,7 @@ import it.biblio.framework.utility.ControllerException;
 import it.biblio.framework.utility.SecurityLayer;
 
 /**
- * Servlet che gestisce il Login
+ * Servlet che gestisce il Login.
  * 
  * @author Marco D'Ettorre
  * @author Francesco Proietti
@@ -31,7 +31,8 @@ public class Login extends BibliotecaBaseController {
 	/**
 	 * Metodo che verifica le credenziali di accesso e crea una sessione utente reindirizzandolo
 	 * alla sua home page in caso le credenziali siano valide, richiama la home page generale con un messaggio di errore
-	 * in caso cotrario
+	 * in caso cotrario.
+	 * 
 	 * @param request servlet request
 	 * @param response servlet response
 	 * @throws TemplateManagerException se occorre un errore nella logica del template manager

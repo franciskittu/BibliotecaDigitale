@@ -110,6 +110,7 @@ public class Upload extends BibliotecaBaseController {
 	}
 	
 	/**
+	 * Memorizza il file nel file system del server e crea una nuova pagina nell'opera di riferimento.
 	 * 
 	 * @param request Servlet request
 	 * @param response servlet response

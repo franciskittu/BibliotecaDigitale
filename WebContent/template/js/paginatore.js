@@ -213,6 +213,14 @@ function makeRow(datarow) {
 				             success: function(data) {
 				            	 if(eval(data)){
 				            		 alert("Opera pubblicata!!")
+				            		 for(i=0; i< pages.length; i++){
+				            			 for(j=0; j<pages[i].length; j++){
+					            			 if(pages[i][j].id==self.id){
+					            				 pages[i].splice(j,1);
+					            			 }
+				            			 }
+				            		 }
+				            		 document.getElementById("riga"+self.id).remove();
 				            	 }
 				             },
 				            error: function(data){
@@ -255,14 +263,24 @@ function makeRow(datarow) {
 				rimuovi.appendChild(testo);
 				rimuovi.onclick= function(){
 					self=this;
+					 for(i=0; i< pages.length; i++){
+            			 for(j=0; j<pages[i].length; j++){
+	            			 if(pages[i][j].id==self.id){
+	            				 pages[i].splice(j,1);
+	            			 }
+            			 }            			 
+					 }
+					 document.getElementById("riga"+self.id).remove(); 
 					$.ajax({
 				         url: 'Rimuovi',
 				         type: 'GET',
 				         data: 'id_pagina='+self.id,
 				             success: function(data) {
+				            	 datarow.splice(datarow.riga_tabella,1);
 				            	 alert("Pagina rimossa correttamente");
 				             }
 					});
+					//rimuovi.setAttribute("disabled","");
 				};
 				row.appendChild(rimuovi);
 				break;
@@ -406,7 +424,8 @@ function makeRow(datarow) {
 		            	 }
 		             },
 					error: function(data){
-						alert("ERRORE GRAVE!!! Contattare l'amministratore.")
+						console.log(data);
+						alert("Impossibile accedere all'opera!")
 					}
 			});
 		};

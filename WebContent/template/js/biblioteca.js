@@ -285,7 +285,7 @@ function ricerca(){
             	 		sezione = "ricerca";
             	 		paginatore(data);
                         init();
-         	 			document.getElementById("erroreRicerca").style.display="none";
+         	 			//document.getElementById("erroreRicerca").style.display="none";
 	                    document.getElementById("listaopere").style.display="block";
 	                    window.location.hash='#listaopere';
             	 		}
@@ -422,7 +422,12 @@ function listaOpereTrascrittoreDaTrascrivere(){
 function invia_trascrizione(obj){
 	var testo = document.getElementById("testoTrascrizione").value;
 	testo = testo.replace(/\n/g,'<br />');
-	var id_pagina = document.getElementById("editor_tei").id_della_pagina.value;
+	var id_pagina = document.getElementById("editor_tei").id_della_pagina.value;	
+	for(var i = 0; i<pagine_opera.length; i++){
+		if(pagine_opera[i].id == id_pagina){
+			pagine_opera[i].trascrizione = testo;
+		}
+	}
 	$.ajax({
 	    url: 'Trascrivi',
 	    type: 'GET',
@@ -793,6 +798,7 @@ function openseadragon(idImmagine){
 function scegliPagina(){
 	document.getElementById("inserimentoNumeroPagina").addEventListener("keyup", function(event) {
 	event.preventDefault();
+	console.log(event.keyCode);
 	if (event.keyCode == 13) {
 		var pagina_selezionata = document.getElementById('inserimentoNumeroPagina').value;
 		gestioneTrascrizione(pagina_selezionata);
